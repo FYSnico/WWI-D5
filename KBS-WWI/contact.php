@@ -67,3 +67,4 @@
 </div>
 
 <?php include 'components/footer.php';?>
+Dikke tering
