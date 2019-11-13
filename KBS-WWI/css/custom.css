@@ -1,0 +1,41 @@
+html,
+body {
+    height: 100%;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: #343A40;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+nav {
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+.navrechts {
+    margin-right: 0;
+}
+@media screen and (min-width: 992px) {
+    nav input.search {
+        border-radius: 10px 0px 0px 10px;
+        margin-right: 0 !important;
+        border-right: none;
+    }
+
+    nav button.search {
+        border-radius: 0px 10px 10px 0px;
+    }
+
+    nav form {
+        margin: 0 auto;
+    }
+}
