@@ -9,7 +9,6 @@
     <!--  Styles  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-
     <link rel="stylesheet" href="css/custom.css">
 
     <!--  Scripts  -->
@@ -51,9 +50,16 @@
                 <input class="form-control mr-sm-2 search col-xl-10 col-lg-10" type="search" placeholder="Zoek een artikel.." aria-label="Search">
                 <button class="btn btn-outline-danger my-2 my-sm-0 search" type="submit"><i class="fas fa-search"></i></button>
             </form>
-            <ul class="navbar-nav navrechts col-xl-4 col-lg-3 p-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="far fa-user"></i></i> Account</a>
+            <ul class="navbar-nav navrechts col-xl-4 col-lg-3 p-0 align-items-center">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle far fa-user" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Account
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt"></i> Inloggen</a>
+                        <hr class="m-1">
+                        <a class="dropdown-item" href="register.php"><i class="fas fa-user-plus"></i> Registeren</a>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fas fa-shopping-basket"></i> MAND</a>

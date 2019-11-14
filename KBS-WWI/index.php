@@ -1,4 +1,7 @@
-<?php include('components/header.php') ?>
+<?php 
+include('components/header.php');
+include("components/config.php");
+?>
     <div class="container">
         <div class="content">
             <div class="voorwoord card p-4 shadow">
@@ -45,4 +48,26 @@
             </div>
         </div>
     </div>
+    <div class="temp">
+        <?php
+            $sql = "SELECT StockItemName FROM stockitems ORDER BY RAND() LIMIT 3";   
+            $result = $pdo->query($sql);
+            if($result->rowCount() > 0){
+                echo "<table>";
+                    echo "<tr>";
+                        echo "<th>Name</th>";
+                    echo "</tr>";
+                while($row = $result->fetch()){
+                    echo "<tr>";
+                        echo "<td>" . $row['StockItemName'] . "</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
+                unset($result);
+            } else{
+                echo "No records matching your query were found.";
+            }
+        ?>
+    </div>
+    <br><br>
 <?php include('components/footer.php') ?>
