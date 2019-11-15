@@ -20,15 +20,15 @@
 </head>
 <body>
 <div class="wrapper">
-    <h2>Sign Up <?php print("<br>Welkom " . $username); ?></h2>
+    <!--    <h2>Sign Up --><?php //print("<br>Welkom " . $username); ?><!--</h2>-->
     <p>Please fill this form to create an account.</p>
     <form action="Register.php" method="post">
         <label>Username</label>
-        <input type="text" name="username" class="form-control" value="<?php echo $username?>">
+        <input type="text" name="username" class="form-control">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
+        <input type="password" name="password" class="form-control">
         <label>Confirm Password</label>
-        <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+        <input type="password" name="confirm_password" class="form-control">
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit" name="submit">
             <p>Already have an account? <a href="login.php">Login here</a>.</p>

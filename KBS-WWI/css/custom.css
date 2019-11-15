@@ -1,17 +1,21 @@
-html,
 body {
     height: 100%;
+    background-image: url(https://www.wallpaperflare.com/static/589/373/209/the-witcher-3-wild-hunt-video-games-geralt-of-rivia-landscape-wallpaper.jpg);
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
 }
 
 header {
     position: sticky;
     top: 0;
     z-index: 1;
-    background-color: #343A40;
+    background-color: #131c27;
+    border-bottom: 3px solid black;
+
 }
 
 footer {
-    position: fixed;
     bottom: 0;
     width: 100%;
 }
@@ -21,25 +25,39 @@ nav {
     margin: 0 auto;
 }
 
-.navrechts {
-    margin-right: 0;
+nav {
+    max-width: 80rem;
+    margin: 0 auto;
+    white-space: nowrap;
 }
-@media screen and (min-width: 992px) {
-    nav input.search {
-        border-radius: 10px 0px 0px 10px;
-        margin-right: 0 !important;
-        border-right: none;
-    }
 
-    nav button.search {
-        border-radius: 0px 10px 10px 0px;
-    }
-
-    nav form {
-        margin: 0 auto;
-    }
+nav input.search {
+    border-radius: 10px 0px 0px 10px;
+    margin-right: 0px !important;
+    border-right: none;
 }
-.rand_products{
+
+nav button.search {
+    border-radius: 0px 10px 10px 0px;
+    height: 38px;
+    border-width: 2px;
+}
+
+.form-inline {
+    display: block !important;
+    width: 55% !important;
+    max-width: 400px;
+}
+
+.navbar-nav {
+    margin-left: 10px;
+}
+
+.fix-margin-left {
+    margin-left: 10px;
+}
+
+.rand_products {
     width: 300px;
     height: 700px;
 }
