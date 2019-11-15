@@ -34,7 +34,6 @@ include("components/config.php");
                                         echo "<h5 class='card-title'>";
                                             echo $row['StockItemName'];
                                         echo "</h5>";
-                                        echo "<div class"
                                         echo "<p class='card-title text-primary'><strong>Categorie: </strong>";
                                             echo $row['StockGroupName'];
                                         echo "</p>";
