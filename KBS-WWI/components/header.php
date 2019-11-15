@@ -50,16 +50,16 @@
                 <input class="form-control mr-sm-2 search col-xl-10 col-lg-10" type="search" placeholder="Zoek een artikel.." aria-label="Search">
                 <button class="btn btn-outline-danger my-2 my-sm-0 search" type="submit"><i class="fas fa-search"></i></button>
             </form>
-            <ul class="navbar-nav navrechts col-xl-4 col-lg-3 p-0 align-items-center">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle far fa-user" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Account
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#"><i class="fas fa-sign-in-alt"></i> Inloggen</a>
-                        <hr class="m-1">
-                        <a class="dropdown-item" href="register.php"><i class="fas fa-user-plus"></i> Registeren</a>
-                    </div>
+            <ul class="navbar-nav navrechts col-xl-4 col-lg-3 p-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><i class="far fa-user"></i></i> <?php
+                        session_start();
+                        if(isset($_SESSION["username"])){
+                            print ("Welkom " . $_SESSION["username"]);
+                        } else{
+                            print("Account");
+                        }
+                        ?></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="fas fa-shopping-basket"></i> MAND</a>
