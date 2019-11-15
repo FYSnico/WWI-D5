@@ -34,9 +34,12 @@
                         Categorieën
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Categorie 1</a>
-                        <a class="dropdown-item" href="#">Categorie 2</a>
-                        <a class="dropdown-item" href="#">Categorie 3</a>
+                        <?php
+                        include "./Categorie.php";
+                        foreach($naam AS $index => $categorie){
+                            print("<a class=\"dropdown-item\" href=\"#\">" . $categorie . "</a>");
+                        }
+                        ?>
                     </div>
                 </li>
                 <li class="nav-item">
