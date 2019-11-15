@@ -25,6 +25,7 @@ include("components/config.php");
                             LIMIT 3
                             ";
                     $result = $pdo->query($sql);
+                    //random products weergegeven
                     if($result->rowCount() > 0){
                         while($row = $result->fetch()){
                             echo "<div class=' products mb-3'>";
@@ -50,7 +51,7 @@ include("components/config.php");
                         }
                         unset($result);
                     } else{
-                        echo "No records matching your query were found.";
+                        echo "Geen producten gevonden.";
                     }
                 ?>
             </div>
