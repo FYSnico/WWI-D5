@@ -27,10 +27,10 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
                 session_start();
                 $_SESSION["username"] = $username;
                 print("<h2>U wordt nu ingelogd</h2>");
-                header("refresh:5;url=http://localhost/WWI-D5/KBS-WWI/index.php", true, 303);
+                header("refresh:5;url=index.php", true, 303);
                 die();
             }
-        } else {
+        }else {
             print("Deze gebruiker bestaat niet!");
         }
     }
