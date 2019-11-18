@@ -60,7 +60,7 @@ session_start();
                         <?php
                         include "./Categorie.php";
                         foreach($naam AS $index => $categorie){
-                            print("<a class=\"dropdown-item\" href=\"#\">" . $categorie . "</a>");
+                            print("<a class=\"dropdown-item\" href=\"./product.php?id=$index\">" . $categorie . "</a>");
                         }
                         ?>
                     </div>
