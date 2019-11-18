@@ -4,7 +4,7 @@
 include "components/config.php";
 $cat=array();
 
-$stmt= $pdo->prepare("SELECT StockGroupName FROM stockgroups ORDER BY StockGroupName;");
+$stmt= $pdo->prepare("SELECT StockGroupName FROM stockgroups ORDER BY StockGroupID;");
 
 $stmt->execute();
 $naam=array();

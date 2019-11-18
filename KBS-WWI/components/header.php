@@ -33,7 +33,7 @@ session_start();
 <body>
 <header>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">WWI</a>
+        <a class="navbar-brand" href="./">WWI</a>
         <form class="form-inline">
             <div class="input-group">
                 <input class="form-control mr-sm-2 search" type="search" placeholder="Zoeken..." aria-label="Search">
