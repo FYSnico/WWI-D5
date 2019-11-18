@@ -91,7 +91,6 @@ if ($check) {
         <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit" name="submit">
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
     </form>
 </div>
 </body>

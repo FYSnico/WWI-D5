@@ -63,6 +63,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <input type="password" name="password" class="form-control">
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit" name="login">
+            <p>Already have an account? <a href="login.php">Login here</a>.</p>
     </form>
 </div>
 </body>

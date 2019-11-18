@@ -81,8 +81,6 @@ session_start();
                         } else {
                             print("<li class=\"nav-item\">");
                             print("<a class=\"nav-link\" href=\"login.php\"><i class=\"fas fa-sign-in-alt\"></i> Log In</a>");
-                            print("<li class=\"nav-item\">");
-                            print("<a class=\"nav-link\" href=\"register.php\"><i class=\"fas fa-sign-in-alt\"></i> Registreer</a>");
                         }
                         ?>
                 </li>
