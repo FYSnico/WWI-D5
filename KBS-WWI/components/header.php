@@ -33,7 +33,7 @@ session_start();
 <body>
 <header>
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">WWI</a>
+        <a class="navbar-brand" href="./">WWI</a>
         <form class="form-inline">
             <div class="input-group">
                 <input class="form-control mr-sm-2 search" type="search" placeholder="Zoeken..." aria-label="Search">
@@ -50,7 +50,7 @@ session_start();
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><i class="fas fa-home"></i> Home<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="./"><i class="fas fa-home"></i> Home<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
@@ -81,6 +81,8 @@ session_start();
                         } else {
                             print("<li class=\"nav-item\">");
                             print("<a class=\"nav-link\" href=\"login.php\"><i class=\"fas fa-sign-in-alt\"></i> Log In</a>");
+                            print("<li class=\"nav-item\">");
+                            print("<a class=\"nav-link\" href=\"register.php\"><i class=\"fas fa-sign-in-alt\"></i> Registreer</a>");
                         }
                         ?>
                 </li>

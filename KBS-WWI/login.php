@@ -21,6 +21,15 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         if (($username_db == $username) && password_verify($password, $user_dbarray[1])) {
             print("Username: " . $username_db . " bestaat!<BR>");
             print("Password is " . $user_dbarray[1]);
+            unset($stmt);
+            $pdo = NULL;
+            if(isset($_POST["login"])) {
+                session_start();
+                $_SESSION["username"] = $username;
+                print("<h2>U wordt nu ingelogd");
+                header("refresh:5;url=http://localhost/WWI-D5/KBS-WWI/index.php", true, 303);
+                die();
+            }
         } else {
             print("Deze gebruiker bestaat niet!");
         }
@@ -49,9 +58,9 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     <h2>Login</h2>
     <form action="login.php" method="post">
         <label>Username</label>
-        <input type="text" name="username" class="form-control" value="">
+        <input type="text" name="username" class="form-control">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" value="">
+        <input type="password" name="password" class="form-control">
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit" name="login">
     </form>
