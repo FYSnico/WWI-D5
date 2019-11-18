@@ -23,7 +23,7 @@ include("components/config.php");
                         while($row = $result->fetch()){
                             echo "<div class=' products mb-3'>";
                                 echo "<div class='rand_products card shadow'>";
-                                    echo "<img src='$img' class='card-img-top h-75' alt=''>";
+                                    echo "<img src='$img' class='card-img-top h-50' alt=''>";
                                     echo "<div class='card-body d-flex flex-column'>";
                                         echo "<h5 class='card-title'>";
                                             echo $row['StockItemName'];
