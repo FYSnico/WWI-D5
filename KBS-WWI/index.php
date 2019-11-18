@@ -15,7 +15,7 @@ include("components/config.php");
                 <?php
                     //random products genareren
                     $img = 'https://picsum.photos/200/300';
-                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+                    $sql = "SELECT SG.StockGroupID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -30,12 +30,12 @@ include("components/config.php");
                         while($row = $result->fetch()){
                             echo "<div class=' products mb-3'>";
                                 echo "<div class='rand_products card shadow'>";
-                                    echo "<img src='$img' class='card-img-top' alt=''>";
+                                    echo "<img src='$img' class='card-img-top h-50' alt=''>";
                                     echo "<div class='card-body d-flex flex-column'>";
                                         echo "<h5 class='card-title'>";
                                             echo $row['StockItemName'];
                                         echo "</h5>";
-                                        echo "<p class='card-title text-primary'><a href='http://localhost/WWI-D5/KBS-WWI/product.php?categorie=" .  $row['StockGroupName'] . "'>" . $row['StockGroupName'] . "</a>";
+                                        echo "<p class='card-title text-primary'><a href='product.php?id=" .  $row['StockGroupID'] . "'>" . $row['StockGroupName'] . "</a>";
                                         echo "<p class='card-title text-warning'>" . $row['QuantityPerOuter'] . " op voorraad</p>";
                                         echo "<h5 class='card-title text-danger mt-auto'>";
                                             echo $row['RecommendedRetailPrice'];
