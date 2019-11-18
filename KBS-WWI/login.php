@@ -26,7 +26,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
             if(isset($_POST["login"])) {
                 session_start();
                 $_SESSION["username"] = $username;
-                print("<h2>U wordt nu ingelogd");
+                print("<h2>U wordt nu ingelogd</h2>");
                 header("refresh:5;url=http://localhost/WWI-D5/KBS-WWI/index.php", true, 303);
                 die();
             }
@@ -63,7 +63,7 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
         <input type="password" name="password" class="form-control">
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit" name="login">
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            <p>Heeft u nog geen account? <a href="register.php">Registreer hier</a>.</p>
     </form>
 </div>
 </body>
