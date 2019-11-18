@@ -1,5 +1,31 @@
 <?php
-
+include("functions.php");
+include "components/config.php";
+$username = "";
+$password = "";
+$login = false;
+//set password
+if (isset($_POST["username"]) && isset($_POST["password"])) {
+    $username = $_POST["username"];
+    $password = $_POST["password"];
+//check ifempty
+    if (check2Empty($username, $password)) {
+        print("Een of meerdere velden zijn leeg!");
+    } else {
+//Kijk of user exists
+        $stmt = $pdo->prepare("Select username,password FROM  users where username= :username");
+        $stmt->execute(array("username" => $username));
+        $user_dbarray = $stmt->fetch();
+       // print_r($username_dbarray[0]);
+        $username_db = $user_dbarray[0];
+        if (($username_db == $username) && password_verify($password, $user_dbarray[1])) {
+            print("Username: " . $username_db . " bestaat!<BR>");
+            print("Password is " . $user_dbarray[1]);
+        } else {
+            print("Deze gebruiker bestaat niet!");
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,18 +46,14 @@
 </head>
 <body>
 <div class="wrapper">
-    <h2>Sign Up <?php print("<br>Welkom " . $username); ?></h2>
-    <p>Please fill this form to create an account.</p>
-    <form action="Register.php" method="post">
+    <h2>Login</h2>
+    <form action="login.php" method="post">
         <label>Username</label>
-        <input type="text" name="username" class="form-control" value="<?php echo $username?>">
+        <input type="text" name="username" class="form-control" value="">
         <label>Password</label>
-        <input type="password" name="password" class="form-control" value="<?php echo $password; ?>">
-        <label>Confirm Password</label>
-        <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
+        <input type="password" name="password" class="form-control" value="">
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Submit" name="submit">
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            <input type="submit" class="btn btn-primary" value="Submit" name="login">
     </form>
 </div>
 </body>
