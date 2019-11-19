@@ -7,7 +7,7 @@ include("components/config.php");
         <div class="row">
             <?php
                 $item = $_GET['id'];
-                $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName
+                $sql = "SELECT SG.StockGroupID, Barcode, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName
                         FROM stockitems S 
                         JOIN stockitemstockgroups SIG 
                         ON S.StockitemID = SIG.StockitemID
@@ -20,7 +20,7 @@ include("components/config.php");
                     echo'<aside class="col-sm-5 border-right">';
                         echo'<article class="gallery-wrap">';
                             echo'<div class="img-big-wrap">';
-                                echo'<div> <a href="#"><img src="..."></a></div>';
+                                echo'<div> <a href="#"><img src="https://picsum.photos/460/500"></a></div>';
                             echo'</div>';
                         echo'</article>';
                     echo'</aside>';
@@ -29,6 +29,9 @@ include("components/config.php");
                             echo'<h3 class="title mb-3">';
                                 echo $row['StockItemName'];
                             echo'</h3>';
+                    echo'<h3 class="title mb-3">dsa';
+                    echo $row['Barcode'];
+                    echo'</h3>';
                             echo'<p class="price-detail-wrap">';
                                 echo'<dl class="param param-inline">';
                                     echo'<dt>';
