@@ -10,7 +10,18 @@ include "components/config.php";
                 $img = 'https://picsum.photos/200/300';
                 if (empty($_GET["query"])) {
                     print("Niks ingevoerd!");
-                } else {
+                    die();
+                } elseif(is_numeric($_GET["query"])){
+                    $int = $_GET["query"];
+                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+                            FROM stockitems S 
+                            JOIN stockitemstockgroups SIG 
+                            ON S.StockitemID = SIG.StockitemID
+                            JOIN stockgroups SG
+                            ON SIG.StockGroupID = SG.StockGroupID
+                            WHERE S.StockItemID = $int
+                            GROUP BY S.StockItemID";
+                }else {
                     $eerste = $_GET["query"];
                     $query_array = explode(' ', $_GET["query"]);
                     //print_r($query_array);
@@ -28,6 +39,7 @@ include "components/config.php";
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
                             WHERE $sqlb";
+                }
                     $result = $pdo->query($sql);
                     //random products weergegeven
                     if ($result->rowCount() > 0) {
@@ -57,7 +69,7 @@ include "components/config.php";
                     } else {
                         echo "Geen producten gevonden.";
                     }
-                }
+
                 ?>
             </div>
         </div>
