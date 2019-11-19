@@ -9,7 +9,7 @@ include("components/config.php");
                     $img = 'https://picsum.photos/200/300';
 
                     $item = $_GET['id'];
-                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+                    $sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -37,7 +37,7 @@ include("components/config.php");
                                         echo "<h5 class='card-title text-danger'>";
                                             echo $row['RecommendedRetailPrice'];
                                         echo "€</h5>";
-                                        echo "<a href='#' class='btn btn-primary mt-auto'>Meer informatie</a>";
+                                        echo "<a href='product_item.php?id=" .  $row['StockItemID'] . "' class='btn btn-primary mt-auto'>Meer informatie</a>";
                                     echo "</div>";
                                 echo "</div>";
                             echo "</div>";
