@@ -1,56 +1,53 @@
-<?php 
+<?php
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
 ?>
     <div class="container">
         <div class="content">
-            <div class="voorwoord card p-4 shadow">
-                <h1>Welkom in onze webshop!</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor eligendi et exercitationem illo, ipsa
-                    laborum, magnam maxime modi perspiciatis, praesentium quibusdam recusandae saepe ut! Dolorem error
-                    expedita inventore iusto odio.</p>
-            </div>
+            <h3>Ontdek onze winkel</h3>
             <br>
-            <div class="row justify-content-around">
-                <?php
-                    //random products genareren
-                    $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+            <?php
+            //random products genareren
+            $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
                             ORDER BY RAND()
-                            LIMIT 3
+                            LIMIT 5
                             ";
-                    $result = $pdo->query($sql);
-                    //random products weergegeven
-                    if($result->rowCount() > 0){
-                        while($row = $result->fetch()){
-                            echo "<div class=' products mb-3'>";
-                                echo "<div class='rand_products card shadow'>";
-                                    echo "<img src='" . randomPicture() . "' class='card-img-top h-50' alt=''>";
-                                    echo "<div class='card-body d-flex flex-column'>";
-                                        echo "<h5 class='card-title'>";
-                                            echo $row['StockItemName'];
-                                        echo "</h5>";
-                                        echo "<p class='card-title text-primary'><a href='product.php?id=" .  $row['StockGroupID'] . "'>" . $row['StockGroupName'] . "</a>";
-                                        echo "<p class='card-title text-warning'>" . $row['QuantityPerOuter'] . " op voorraad</p>";
-                                        echo "<h5 class='card-title text-danger mt-auto'>";
-                                            echo $row['RecommendedRetailPrice'];
-                                        echo "€</h5>";
-                                        echo "<a href='product_item.php?id=" .  $row['StockItemID'] . "' class='btn btn-primary mt-auto'>Meer informatie</a>";
-                                    echo "</div>";
-                                echo "</div>";
-                            echo "</div>";
-                        }
-                        unset($result);
-                    } else{
-                        echo "Geen producten gevonden.";
-                    }
+            $result = $pdo->query($sql);
+            //random products weergegeven
+            if ($result->rowCount() > 0) {
                 ?>
-            </div>
+                <div class="card-deck kaartdeck">
+                    <?php while ($row = $result->fetch()) { ?>
+                        <div class="card w-25 kaartbreedte" style="width: 18rem;">
+                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img class="card-img-top kaartimg" src="<?php echo randomPicture() ?>" alt="Productafbeelding"></a>
+                            <div class="card-body">
+                                <h5 class="card-title kaarttitel"><a
+                                            href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>
+                                </h5>
+                            </div>
+                            <div class="card-footer kaartfooter">
+                                <p class='card-text text-primary'><a
+                                            href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
+                                </p>
+                                <p class='card-text text-warning'><?php echo $row['QuantityPerOuter'] ?> op voorraad</p>
+                                <p class="card-text">
+                                    € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+                <?php
+                unset($result);
+            } else {
+                echo "Geen producten gevonden.";
+            }
+            ?>
         </div>
     </div>
 
