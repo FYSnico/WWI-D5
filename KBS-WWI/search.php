@@ -13,7 +13,7 @@ include "components/config.php";
                     die();
                 } elseif(is_numeric($_GET["query"])){
                     $int = $_GET["query"];
-                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -32,7 +32,7 @@ include "components/config.php";
                     }
                     $sqlb = implode(" OR ", $sqla);
                     print($sqlb);
-                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -60,7 +60,7 @@ include "components/config.php";
                             echo "<h5 class='card-title text-danger'>";
                             echo $row['RecommendedRetailPrice'];
                             echo "€</h5>";
-                            echo "<a href='#' class='btn btn-primary mt-auto'>Meer informatie</a>";
+                            echo "<a href='product_item.php?id=" .  $row['StockItemID'] . "' class='btn btn-primary mt-auto'>Meer informatie</a>";
                             echo "</div>";
                             echo "</div>";
                             echo "</div>";
