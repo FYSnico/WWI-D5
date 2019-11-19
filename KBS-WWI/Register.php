@@ -78,7 +78,7 @@ if ($check) {
 <body>
 <div class="wrapper">
     <p>Please fill this form to create an account.</p>
-    <form action="Register.php" method="post">
+    <form action="register.php" method="post">
         <label>Username</label>
         <input type="text" name="username" class="form-control">
         <label>Password</label>
@@ -88,7 +88,7 @@ if ($check) {
         <div class="form-group">
             <input type="submit" class="btn btn-primary" value="Submit" name="submit">
             <p>Heeft u al een account? <a href="login.php">Login hier</a>.</p>
-            <p>Heeft u de database niet <a href="Create_users.sql"><br>Klik hier voor het bestand</a>.</p>
+            <p>Heeft u de database niet <a href="components/create_users.sql"><br>Klik hier voor het bestand</a>.</p>
     </form>
 </div>
 </body>
