@@ -1,13 +1,12 @@
 <?php 
 include('components/header.php');
 include("components/config.php");
+include("functions.php");
 ?>
     <div class="container">
         <div class="content">
             <div class="row justify-content-around">
                 <?php
-                    $img = 'https://picsum.photos/200/300';
-
                     $item = $_GET['id'];
                     $sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
@@ -23,7 +22,7 @@ include("components/config.php");
                         while($row = $result->fetch()){
                             echo "<div class=' products mb-3'>";
                                 echo "<div class='rand_products card shadow'>";
-                                    echo "<img src='$img' class='card-img-top h-50' alt=''>";
+                                    echo "<img src='" . randomPicture() . "' class='card-img-top h-50' alt=''>";
                                     echo "<div class='card-body d-flex flex-column'>";
                                         echo "<h5 class='card-title'>";
                                             echo $row['StockItemName'];

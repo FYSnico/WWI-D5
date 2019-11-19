@@ -7,7 +7,6 @@ include "components/config.php";
             <div class="row justify-content-around">
                 <?php
                 //$test = "usb cube";
-                $img = 'https://picsum.photos/200/300';
                 if (empty($_GET["query"])) {
                     print("Niks ingevoerd!");
                     die();
@@ -46,7 +45,7 @@ include "components/config.php";
                         while ($row = $result->fetch()) {
                             echo "<div class=' products mb-3'>";
                             echo "<div class='rand_products card shadow'>";
-                            echo "<img src='$img' class='card-img-top h-50' alt=''>";
+                            echo "<img src='" . randomPicture() . "' class='card-img-top h-50' alt=''>";
                             echo "<div class='card-body d-flex flex-column'>";
                             echo "<h5 class='card-title'>";
                             echo $row['StockItemName'];
