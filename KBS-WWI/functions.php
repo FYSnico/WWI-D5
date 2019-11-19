@@ -11,9 +11,9 @@ function check2Empty($arg1, $arg2)
 function randomPicture()
 {
     $randomGetal = rand(0, 100);
-    $img = "https://picsum.photos/350/275?random=$randomGetal";
-    $smallImg = imagejpeg($img, NULL , 20);
-    return $smallImg;
+    $img = "https://picsum.photos/id/$randomGetal/350/275";
+    // $smallImg = imagejpeg($img, NULL , 20);
+    return $img;
 }
 //// Create a blank image and add some text
 //$im = imagecreatetruecolor(120, 20);
