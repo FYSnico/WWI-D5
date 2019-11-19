@@ -58,7 +58,7 @@ session_start();
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <?php
-                        include "./Categorie.php";
+                        include "./categorie.php";
                         foreach($naam AS $index => $categorie){
                             print("<a class=\"dropdown-item\" href=\"./product.php?id=$index\">" . $categorie . "</a>");
                         }
