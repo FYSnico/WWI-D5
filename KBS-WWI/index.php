@@ -15,7 +15,7 @@ include("components/config.php");
                 <?php
                     //random products genareren
                     $img = 'https://picsum.photos/200/300';
-                    $sql = "SELECT SG.StockGroupID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+                    $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -40,7 +40,7 @@ include("components/config.php");
                                         echo "<h5 class='card-title text-danger mt-auto'>";
                                             echo $row['RecommendedRetailPrice'];
                                         echo "€</h5>";
-                                        echo "<a href='#' class='btn btn-primary mt-auto'>Meer informatie</a>";
+                                        echo "<a href='product_item.php?id=" .  $row['StockItemID'] . "' class='btn btn-primary mt-auto'>Meer informatie</a>";
                                     echo "</div>";
                                 echo "</div>";
                             echo "</div>";
