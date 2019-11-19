@@ -32,12 +32,12 @@ include("components/config.php");
                             echo'<p class="price-detail-wrap">';
                                 echo'<dl class="param param-inline">';
                                     echo'<dt>';
-                                        while($categories = $result->fetch()){
-                                            include "./categorie.php";
-                                            echo "<a href='product.php?id=" .  $categories['StockGroupID'] . "'> ";
-                                                echo $categories['StockGroupName'];
-                                            echo '</a>';
-                                        }
+                                    $result = $pdo->query($sql);
+                                    while($categories = $result->fetch()){
+                                        echo "<a href='product.php?id=" .  $categories['StockGroupID'] . "'> ";
+                                            echo $categories['StockGroupName'] . " ";
+                                        echo '</a>';
+                                    }
                                     echo'</dt>';
                                 echo'</dl>';
                                 echo'<span class="price h3 text-warning">';
