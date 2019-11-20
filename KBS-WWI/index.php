@@ -50,6 +50,5 @@ include("functions.php");
             ?>
         </div>
     </div>
-
     <br><br>
 <?php include('components/footer.php') ?>

@@ -72,7 +72,6 @@ session_start();
             </div>
             <div class="collapse navbar-collapse  fix-margin-left" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto">
-
                     <?php
                     if (isset($_SESSION["username"])) {
                         print("<li class=\"nav-item dropdown\">");
@@ -96,8 +95,8 @@ session_start();
     </div>
 </header>
 <ul class="voordelen list-group list-group-horizontal-sm">
-    <li class="list-group-item"><i class="fas fa-check-circle"></i> <b>Gratis</b> thuisbezorgd</li>
-    <li class="list-group-item"><i class="fas fa-check-circle"></i> Betalen via <b>Ideal</b></li>
+    <li class="list-group-item"><i class="fas fa-check-circle"></i> <b>Gratis</b> levering</li>
+    <li class="list-group-item"><i class="fas fa-check-circle"></i> Eenvoudig betalen via <b>Ideal</b></li>
     <li class="list-group-item"><i class="fas fa-check-circle"></i> <b>24/7</b> bestellingen plaatsen</li>
 </ul>
 <br><br>
