@@ -119,3 +119,9 @@ nav button.search {
 .productkaartdeck {
     flex-wrap: wrap;
 }
+.welkom {
+    color: rgba(255,255,255,.5);
+    font-size: 0.8em;
+    text-align: right;
+    margin-right: 5px;
+}
