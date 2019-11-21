@@ -1,5 +1,3 @@
-<html>
-<body>
 <?php
 include "components/config.php";
 $cat=array();
@@ -16,13 +14,8 @@ while ($row = $stmt->fetch()) {
     $i ++;
 }
 
-
 //foreach($cat AS $index => $naam){
 //    print($naam);
 //}
 
 $pdo = NULL;
-
-?>
-</body>
-</html>

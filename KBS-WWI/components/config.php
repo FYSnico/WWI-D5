@@ -10,6 +10,6 @@ try{
     }
 }catch (PDOException $e){
     // report error message
-    echo $e->getMessage();
+    //echo $e->getMessage();
 }
 ?>
