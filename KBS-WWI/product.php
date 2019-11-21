@@ -1,15 +1,11 @@
-<?php 
+<?php
 include('components/header.php');
 include("components/config.php");
-?>
-    <div class="container">
-        <div class="content">
-            <div class="row justify-content-around">
-                <?php
-                    $img = 'https://picsum.photos/200/300';
+include("functions.php");
 
-                    $item = $_GET['id'];
-                    $sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+
+$item = $_GET['id'];
+$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -17,74 +13,67 @@ include("components/config.php");
                             ON SIG.StockGroupID = SG.StockGroupID
                             WHERE SIG.StockGroupID = $item  
                             ";
-                    $result = $pdo->query($sql);
-                //product soteren (moet nog gemaakt worden dit is mijn code, johan)
-                //$result = $pdo->query($sql);
-                /*            <form action="<?php echo($_SERVER["PHP_SELF"]);?>" method="get">*/
-                //                <select name="Order" class="form-control">
-                //                    <option value="createdDESC">Upload date</option>
-                //                    <option value="priceASC">Price low - high</option>
-                //                    <option value="priceDESC">Price high - low</option>
-                //                    <option value="nameASC">Title A - Z</option>
-                //                    <option value="nameDESC">Title Z - A</option>
-                //                </select><br>
-                //                <input type="submit" value="Order" class="btn btn-primary">
-                //            </form>
-                //        </div>
-                //        <?php
-                //        if(isset($_GET["Order"])){
-                //            if($_GET["Order"] == "priceASC"){
-                //                $result = $mysqli->query("SELECT * FROM products ORDER BY price ASC;");
-                //            }
-                //            elseif($_GET["Order"] == "priceDESC"){
-                //                $result = $mysqli->query("SELECT * FROM products ORDER BY price DESC;");
-                //            }
-                //            elseif($_GET["Order"] == "nameASC"){
-                //                $result = $mysqli->query("SELECT * FROM products ORDER BY name ASC;");
-                //            }
-                //            elseif($_GET["Order"] == "nameDESC"){
-                //                $result = $mysqli->query("SELECT * FROM products ORDER BY name DESC;");
-                //            }
-                //            else{
-                //                $result = $mysqli->query("SELECT * FROM products ORDER BY created_at DESC;");
-                //            }
-                //        }
-                //        else{
-                //            $result = $mysqli->query("SELECT * FROM products ORDER BY created_at DESC;");
-                //        }
-
-                    //random products weergegeven
-                    if($result->rowCount() > 0){
-                        while($row = $result->fetch()){
-                            echo "<div class=' products mb-3'>";
-                                echo "<div class='rand_products card shadow'>";
-                                    echo "<img src='$img' class='card-img-top h-50' alt=''>";
-                                    echo "<div class='card-body d-flex flex-column'>";
-                                        echo "<h5 class='card-title'>";
-                                            echo $row['StockItemName'];
-                                        echo "</h5>";
-                                        echo "<p class='card-title text-primary'><strong>Categorie: </strong>";
-                                            echo $row['StockGroupName'];
-                                        echo "</p>";
-                                        echo "<p class='card-title text-warning'><strong>Voorraad: </strong>";
-                                            echo $row['QuantityPerOuter'];
-                                        echo "</p>";
-                                        echo "<h5 class='card-title text-danger'>";
-                                            echo $row['RecommendedRetailPrice'];
-                                        echo "€</h5>";
-                                        echo "<a href='product_item.php?id=" .  $row['StockItemID'] . "' class='btn btn-primary mt-auto'>Meer informatie</a>";
-                                    echo "</div>";
-                                echo "</div>";
-                            echo "</div>";
-                        }
-                        unset($result);
-                    } else{
-                        echo "Geen producten gevonden.";
-                    }
+$result = $pdo->query($sql);
+$stmt2 = $pdo->prepare("SELECT StockGroupName FROM stockgroups WHERE StockGroupID = " . $item);
+$stmt2->execute();
+$categorienaam = $stmt2->fetch();
+?>
+    <div class="container">
+        <div class="content">
+            <h3><?php echo $categorienaam["StockGroupName"]; ?></h3>
+            <?php
+            //random products weergegeven
+            if ($result->rowCount() > 0) {
                 ?>
-            </div>
+                <br>
+                <div class="card-deck kaartdeck productkaartdeck">
+                    <?php while ($row = $result->fetch()) { ?>
+                        <div class="card w-25 kaartbreedte">
+                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
+                                        class="card-img-top kaartimg"
+                                        src="<?php echo randomPicture() ?>"
+                                        alt="Productafbeelding"></a>
+                            <div class="card-body">
+                                <h5 class="card-title kaarttitel"><a
+                                            href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>
+                                </h5>
+                            </div>
+                            <div class="card-footer kaartfooter">
+                                <p class='card-text text-primary'><a
+                                            href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
+                                </p>
+                                <p class='card-text text-warning'><?php echo $row['QuantityPerOuter'] ?> op voorraad</p>
+                                <p class="card-text">
+                                    € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
+                <?php
+                unset($result);
+            } else {
+                echo "Geen producten gevonden.";
+            }
+            ?>
+<!--            <nav aria-label="...">-->
+<!--                <ul class="pagination justify-content-center">-->
+<!--                    <li class="page-item disabled">-->
+<!--                        <span class="page-link">Previous</span>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                    <li class="page-item active">-->
+<!--                      <span class="page-link">-->
+<!--                        2-->
+<!--                        <span class="sr-only">(current)</span>-->
+<!--                      </span>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="#">Next</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
         </div>
     </div>
-
     <br><br>
 <?php include('components/footer.php') ?>

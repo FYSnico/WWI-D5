@@ -74,8 +74,54 @@ nav button.search {
     margin-left: 10px;
 }
 
-.rand_products {
-    width: 350px;
-    height: 550px;
+.kaartbreedte {
+    min-width: 210px!important;
+    margin: 0 auto;
+    margin-bottom: 15px!important;
 }
 
+@media (max-width: 580px){
+    .kaartbreedte {
+        width: 100%!important;
+    }
+}
+
+.kaarttitel {
+    font-size: 1rem;
+
+}
+
+.kaartfooter {
+    border-top: none;
+    background-color: #fff;
+    padding-top: 0;
+}
+
+.kaartimg {
+    object-fit: cover!important;
+    max-height: 200px;
+}
+
+.kaartdeck {
+    flex-flow: wrap-reverse;
+}
+
+.voordelen {
+    justify-content: center;
+}
+
+.voordelen li {
+    border: none;
+}
+.voordelen i {
+    color: #29A945;
+}
+.productkaartdeck {
+    flex-wrap: wrap;
+}
+.welkom {
+    color: rgba(255,255,255,.5);
+    font-size: 0.8em;
+    text-align: right;
+    margin-right: 5px;
+}
