@@ -2,14 +2,9 @@
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
-?>
-    <div class="container">
-        <div class="content">
-            <h3>Ontdek onze winkel</h3>
-            <br>
-            <?php
-            //random products genareren
-            $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+
+// Random products genareren
+$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -18,12 +13,17 @@ include("functions.php");
                             ORDER BY RAND()
                             LIMIT 5
                             ";
-            $result = $pdo->query($sql);
-            //random products weergegeven
+$result = $pdo->query($sql);
+?>
+    <div class="container">
+        <div class="content">
+            <h3>Ontdek onze winkel</h3>
+            <br>
+            <?php
+            // Random products weergeven
             if ($result->rowCount() > 0) {
-                ?>
-                <div class="card-deck kaartdeck">
-                    <?php while ($row = $result->fetch()) { ?>
+                echo "<div class=\"card-deck kaartdeck\">";
+                    while ($row = $result->fetch()) { ?>
                         <div class="card w-25 kaartbreedte" style="width: 18rem;">
                             <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img class="card-img-top kaartimg" src="<?php echo randomPicture() ?>" alt="Productafbeelding"></a>
                             <div class="card-body">

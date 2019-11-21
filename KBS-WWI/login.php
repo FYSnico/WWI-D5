@@ -12,6 +12,10 @@ $login = false;
 if (isset($_POST["username"]) && isset($_POST["password"])) {
     $username = $_POST["username"];
     $password = $_POST["password"];
+    if(strpos($username, "'1'") !== FALSE || strpos($password,"'1'") !== FALSE) {
+        echo "<img src='https://media.makeameme.org/created/sql-injection-sql.jpg' height=\"100%\" width=\"100%\">";
+        die();
+    }
     //check ifempty
     if (check2Empty($username, $password)) {
         print("Een of meerdere velden zijn leeg!");

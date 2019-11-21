@@ -74,7 +74,6 @@ if ($check) {
                 <div class="form-group">
                     <input type="submit" class="btn btn-primary" value="Submit" name="submit">
                     <p>Heeft u al een account? <a href="login.php">Klik hier om in te loggen</a></p>
-                    <p>Heeft u de database niet <a href="components/create_users.sql"><br>Klik hier voor het bestand</a></p>
                 </div>
             </form>
         </div>
