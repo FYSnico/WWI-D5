@@ -18,6 +18,41 @@ include("components/config.php");
                             WHERE SIG.StockGroupID = $item  
                             ";
                     $result = $pdo->query($sql);
+                //product soteren (moet nog gemaakt worden dit is mijn code, johan)
+                //$result = $pdo->query($sql);
+                /*            <form action="<?php echo($_SERVER["PHP_SELF"]);?>" method="get">*/
+                //                <select name="Order" class="form-control">
+                //                    <option value="createdDESC">Upload date</option>
+                //                    <option value="priceASC">Price low - high</option>
+                //                    <option value="priceDESC">Price high - low</option>
+                //                    <option value="nameASC">Title A - Z</option>
+                //                    <option value="nameDESC">Title Z - A</option>
+                //                </select><br>
+                //                <input type="submit" value="Order" class="btn btn-primary">
+                //            </form>
+                //        </div>
+                //        <?php
+                //        if(isset($_GET["Order"])){
+                //            if($_GET["Order"] == "priceASC"){
+                //                $result = $mysqli->query("SELECT * FROM products ORDER BY price ASC;");
+                //            }
+                //            elseif($_GET["Order"] == "priceDESC"){
+                //                $result = $mysqli->query("SELECT * FROM products ORDER BY price DESC;");
+                //            }
+                //            elseif($_GET["Order"] == "nameASC"){
+                //                $result = $mysqli->query("SELECT * FROM products ORDER BY name ASC;");
+                //            }
+                //            elseif($_GET["Order"] == "nameDESC"){
+                //                $result = $mysqli->query("SELECT * FROM products ORDER BY name DESC;");
+                //            }
+                //            else{
+                //                $result = $mysqli->query("SELECT * FROM products ORDER BY created_at DESC;");
+                //            }
+                //        }
+                //        else{
+                //            $result = $mysqli->query("SELECT * FROM products ORDER BY created_at DESC;");
+                //        }
+
                     //random products weergegeven
                     if($result->rowCount() > 0){
                         while($row = $result->fetch()){

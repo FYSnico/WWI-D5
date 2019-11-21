@@ -85,7 +85,7 @@ session_start();
                         ?>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fas fa-shopping-basket"></i> Winkelmand</a>
+                    <a class="nav-link" href="winkelmand.php"><i class="fas fa-shopping-basket"></i> Winkelmand</a>
                 </li>
             </ul>
         </div>
