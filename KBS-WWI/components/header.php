@@ -88,9 +88,9 @@ session_start();
                         print("<a class=\"nav-link\" href=\"login.php\"><i class=\"fas fa-sign-in-alt\"></i> Log In</a>");
                     }
                     ?>
-                    </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="winkelmand.php"><i class="fas fa-shopping-basket"></i> Winkelmand</a>
+                        <a class="nav-link" href="winkelmandpagina.php"><i class="fas fa-shopping-basket"></i> Winkelmand</a>
                     </li>
                 </ul>
             </div>
