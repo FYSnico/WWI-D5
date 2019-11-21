@@ -6,9 +6,6 @@
 <body>
     <?php
             include 'components/config.php';
-
-
-    //$relative_root = get_relative_root();
     $total = 0;
     $itemcount = 0;
     $discount = 0;
