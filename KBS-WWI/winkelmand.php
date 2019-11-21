@@ -13,14 +13,13 @@ if(isset($_SESSION["winkelmandkorting"])) {
     $discount = $_SESSION["winkelmandkorting"];
 }
 ?>
-
 <div class="container">
     <div class="row">
         <div class="col-12 shopping-cart">
             <table class="table my-4 ">
                 <thead class="thead-dark">
                 <tr>
-                    <th scope="col"></th>
+                    <th scope="col">WWI</th>
                     <th scope="col">Product</th>
                     <th scope="col">Beschrijving</th>
                     <th scope="col">Prijs</th>
@@ -172,20 +171,15 @@ EOT;
                 </tr>
             </table>
             <?php
+            //Geeft aan of je kunt bestellen of als je nog een account aan moet maken
             if (isset($_SESSION["username"])) {
-                echo "<a href='{$relative_root}/pages/shopping_cart/finalize_order.php' class='btn btn-primary mt-3'>Order</a>";
+                echo '<li>';
+
+                echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a></i>';
             } else {
-                echo '<li class=\"nav-item\">';
-                echo '<a class="nav-link" href="login.php">';
-                echo '<a class="fas fa-sign-in-alt" href="login.php">Login in om te bestellen</a></i>';
+                echo '<a class="fas fa-sign-in-alt" href="login.php">Login in om te bestellen</a>';
             }
-            //btn btn-primary mt-3
-
-
-
             ?>
-
-
         </div>
     </div>
 </div>
