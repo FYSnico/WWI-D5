@@ -8,4 +8,10 @@ function check2Empty($arg1, $arg2)
     }
 }
 
-?>
+function randomPicture()
+{
+    $randomGetal = rand(0, 0);
+    $img = "https://picsum.photos/id/$randomGetal/1000/800";
+    // $smallImg = imagejpeg($img, NULL , 20);
+    return $img;
+}
