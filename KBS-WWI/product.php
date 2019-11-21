@@ -26,7 +26,7 @@ $categorienaam = $stmt2->fetch();
             if ($result->rowCount() > 0) {
                 ?>
                 <br>
-                <div class="card-deck kaartdeck">
+                <div class="card-deck kaartdeck productkaartdeck">
                     <?php while ($row = $result->fetch()) { ?>
                         <div class="card w-25 kaartbreedte">
                             <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
@@ -55,6 +55,24 @@ $categorienaam = $stmt2->fetch();
                 echo "Geen producten gevonden.";
             }
             ?>
+<!--            <nav aria-label="...">-->
+<!--                <ul class="pagination justify-content-center">-->
+<!--                    <li class="page-item disabled">-->
+<!--                        <span class="page-link">Previous</span>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                    <li class="page-item active">-->
+<!--                      <span class="page-link">-->
+<!--                        2-->
+<!--                        <span class="sr-only">(current)</span>-->
+<!--                      </span>-->
+<!--                    </li>-->
+<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                    <li class="page-item">-->
+<!--                        <a class="page-link" href="#">Next</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--            </nav>-->
         </div>
     </div>
     <br><br>

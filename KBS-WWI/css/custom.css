@@ -116,3 +116,6 @@ nav button.search {
 .voordelen i {
     color: #29A945;
 }
+.productkaartdeck {
+    flex-wrap: wrap;
+}
