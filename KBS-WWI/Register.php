@@ -40,12 +40,14 @@ if (!$check) {
 
 //Username en wachtwoord inserten
 if ($check) {
-    session_start();
-    print($_POST["username"] . "<br>");
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
+    //print($_POST["username"] . "<br>");
     $_SESSION["username"] = $username;
     //Hashen wachtwoord
     $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
-    print($hashedpassword);
+    //print($hashedpassword);
     $stmt = $pdo->prepare(
         "INSERT INTO users (username, password) VALUES (?, ?)"
     );
@@ -63,7 +65,7 @@ if ($check) {
         <div class="content">
             <h3>Registreren</h3>
             <br>
-            <p>Please fill this form to create an account.</p>
+            <p>Vul alstublieft dit formulier in om een account aan te maken.</p>
             <form action="register.php" method="post">
                 <label>Username</label>
                 <input type="text" name="username" class="form-control">
