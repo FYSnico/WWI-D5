@@ -4,19 +4,19 @@ include("functions.php");
 include("components/config.php");
 
 //Variabelen
-$username = "";
+$email = "";
 $password = "";
 $confirm_password = "";
 
 //Checken of account al bestaat
 $check = false;
 if (!$check) {
-    if (isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confirm_password"])) {
-        $username = trim($_POST["username"]);
-        $password = trim($_POST["password"]);
+    if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm_password"])) {
+      $password = trim($_POST["password"]);
+      $email = trim($_POST["email"]);
         $confirm_password = $_POST["confirm_password"];
-        if (empty($username)) {
-            $userror = "<BR>Please enter username!";
+        if (empty($email)) {
+            $userror = "<BR>Please enter email!";
             print($userror);
         } elseif (empty(trim($_POST["password"]))) {
             $passerror = "<br>Please enter password!";
@@ -24,12 +24,16 @@ if (!$check) {
         } elseif (!($password == $confirm_password)) {
             print("Je moet wel hetzelfde wachtwoord invoeren!");
         } else {
-            $username = $_POST["username"];
-            $stmt = $pdo->prepare("Select username FROM  users where username= :username");
-            $stmt->execute(array("username" => $username));
-            $username_dbarray = $stmt->fetch();
-            $username_db = $username_dbarray[0];
-            if ($username_db == $username) {
+            $email = $_POST["email"];
+            $stmt = $pdo->prepare("Select LogonName FROM people where EmailAddress = :email");
+            $stmt->execute(array("email" => $email));
+            print_r($stmt);
+            print('hoi');
+            $email_dbarray = $stmt->fetch();
+            $email_db = $email_dbarray[0];
+            print($email_db);
+            print_r($email_dbarray);
+            if ($email_db == $email) {
                 print("Deze <gebruikersnaam></gebruikersnaam> bestaat al!<br>Probeer het opnieuw.");
             } else {
                 $check = true;
@@ -38,18 +42,18 @@ if (!$check) {
     }
 }
 
-//Username en wachtwoord inserten
+//email en wachtwoord inserten
 if ($check) {
     session_start();
-    print($_POST["username"] . "<br>");
-    $_SESSION["username"] = $username;
+    print($_POST["email"] . "<br>");
+    $_SESSION["email"] = $email;
     //Hashen wachtwoord
     $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
     print($hashedpassword);
     $stmt = $pdo->prepare(
-        "INSERT INTO users (username, password) VALUES (?, ?)"
+        "INSERT INTO people (LogonName, HashedPassword) VALUES (?, ?)"
     );
-    $stmt->execute(array(($username), ($hashedpassword)));
+    $stmt->execute(array(($email), ($hashedpassword)));
     unset($stmt);
     $PDO = null;
     if (isset($_POST["submit"])) {
@@ -65,8 +69,8 @@ if ($check) {
             <br>
             <p>Please fill this form to create an account.</p>
             <form action="register.php" method="post">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control">
                 <label>Confirm Password</label>

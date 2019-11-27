@@ -74,9 +74,9 @@ session_start();
             <div class="collapse navbar-collapse  fix-margin-left" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto">
                     <?php
-                    if (isset($_SESSION["username"])) {
-                        $username = $_SESSION["username"];
-                        echo "<li class='nav-item welkom'>Welkom<br>$username</li>";
+                    if (isset($_SESSION["email"])) {
+                        $email = $_SESSION["email"];
+                        echo "<li class='nav-item welkom'>Welkom<br>$email</li>";
                         print("<li class=\"nav-item dropdown\">");
                         print("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\"
                        aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"far fa-user\"></i> Mijn Account</a>");
