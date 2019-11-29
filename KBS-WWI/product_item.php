@@ -7,8 +7,10 @@ include("components/config.php");
         <div class="row">
             <?php
                 $item = $_GET['id'];
-                $sql = "SELECT SG.StockGroupID, Barcode, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName
+                $sql = "SELECT SG.StockGroupID, Barcode, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
                         FROM stockitems S 
+                        JOIN stockitemholdings SIH
+                        ON S.stockitemID = SIH.stockitemID
                         JOIN stockitemstockgroups SIG 
                         ON S.StockitemID = SIG.StockitemID
                         JOIN stockgroups SG
@@ -55,7 +57,7 @@ include("components/config.php");
                             echo'<div class="col-sm-5">';
                                 echo'<dl class="param param-inline">';
                                     echo'<dt> Voorraad: ';
-                                        echo $row['QuantityPerOuter'];
+                                        echo $row['LastStockTakeQuantity'];
                                     echo'</dt>';
                                 echo'</dl>';
                             echo'</div>';

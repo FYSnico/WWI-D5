@@ -4,8 +4,10 @@ include("components/config.php");
 include("functions.php");
 
 // Random products genareren
-$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
                             FROM stockitems S 
+                            JOIN stockitemholdings SIH
+                            ON S.stockitemID = SIH.stockitemID
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
@@ -35,7 +37,7 @@ $result = $pdo->query($sql);
                                 <p class='card-text text-primary'><a
                                             href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
                                 </p>
-                                <p class='card-text text-warning'><?php echo $row['QuantityPerOuter'] ?> op voorraad</p>
+                                <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> stocks op voorraad</p>
                                 <p class="card-text">
                                     € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
                             </div>

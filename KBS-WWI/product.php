@@ -5,8 +5,10 @@ include("functions.php");
 
 
 $item = $_GET['id'];
-$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName 
+$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
                             FROM stockitems S 
+                            JOIN stockitemholdings SIH
+                            ON S.stockitemID = SIH.stockitemID
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
@@ -42,7 +44,7 @@ $categorienaam = $stmt2->fetch();
                                 <p class='card-text text-primary'><a
                                             href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
                                 </p>
-                                <p class='card-text text-warning'><?php echo $row['QuantityPerOuter'] ?> op voorraad</p>
+                                <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op voorraad</p>
                                 <p class="card-text">
                                     € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
                             </div>
