@@ -54,7 +54,9 @@ $categorienaam = $stmt2->fetch();
                 <?php
                 unset($result);
             } else {
-                echo "Geen producten gevonden.";
+                echo "<div class='w-100 mt-5 pt-5'>";
+                    echo " <h2 class='text-center'>Geen producten gevonden. </h2>";
+                echo "</div>";
             }
             ?>
 <!--            <nav aria-label="...">-->
