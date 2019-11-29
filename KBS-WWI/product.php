@@ -3,6 +3,7 @@ include('components/header.php');
 include("components/config.php");
 include("functions.php");
 
+//systeem kijkt welke product volgorde is geselecteerd - johan
 if(isset($_POST["Order"])){
     if($_POST["Order"] == "nameASC"){
         $volgorde = " StockItemName ASC";
@@ -25,7 +26,6 @@ if(isset($_POST["Order"])){
 }
 else{
     $volgorde = " StockItemName DESC";
-    print "hoi";
 }
 
 $item = $_GET['id'];
@@ -53,6 +53,7 @@ $categorienaam = $stmt2->fetch();
             <?php
             //random products weergegeven
             if ($result->rowCount() > 0) {
+                // aangeven welke product volgorde de gebruiker wilt hebben - johan
                 ?>
                 <form action="" method="post">
                     <select name="Order" class="form-control">
