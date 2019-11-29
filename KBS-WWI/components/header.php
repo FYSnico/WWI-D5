@@ -35,7 +35,9 @@ session_start();
 <header>
     <div id="topheader">
         <nav class="nav navbar sticky-top navbar-expand-lg navbar-dark">
-            <a class="navbar-brand" href="./">WWI</a>
+            <div class="">
+                <img class="w-50" src="images/logo.png" alt="">
+            </div>
             <form class="form-inline" action="search.php">
                 <div class="input-group">
                     <input class="form-control mr-sm-2 search" type="search" placeholder="Zoeken..." aria-label="Search"
