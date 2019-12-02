@@ -5,6 +5,12 @@ include("functions.php");
 
 
 $item = $_GET['id'];
+if(isset($_GET['p'])){
+    $huidigepagina = $_GET['p'];
+}
+else{
+    $huidigepagina = 1;
+}
 $sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
@@ -29,27 +35,46 @@ $categorienaam = $stmt2->fetch();
                 ?>
                 <br>
                 <div class="card-deck kaartdeck productkaartdeck">
-                    <?php while ($row = $result->fetch()) { ?>
-                        <div class="card w-25 kaartbreedte">
-                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
-                                        class="card-img-top kaartimg"
-                                        src="<?php echo randomPicture() ?>"
-                                        alt="Productafbeelding"></a>
-                            <div class="card-body">
-                                <h5 class="card-title kaarttitel"><a
-                                            href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>
-                                </h5>
+                    <?php
+                    $productnummer = 1;
+                    $productoffset = 1;
+
+                    while (($row = $result->fetch()) && $productnummer <= 12) {
+                        if ($productoffset <= (12 * $huidigepagina) - 12) {
+                            $productoffset ++;
+                        }
+                        else {
+                            ?>
+                            <div class="card w-25 kaartbreedte">
+                                <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
+                                            class="card-img-top kaartimg"
+                                            src="<?php echo randomPicture() ?>"
+                                            alt="Productafbeelding"></a>
+                                <div class="card-body">
+                                    <h5 class="card-title kaarttitel"><a
+                                                href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>
+                                    </h5>
+                                </div>
+                                <div class="card-footer kaartfooter">
+                                    <p class='card-text text-primary'><a
+                                                href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
+                                    </p>
+                                    <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op
+                                        voorraad</p>
+                                    <p class="card-text">
+                                        € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                                </div>
                             </div>
-                            <div class="card-footer kaartfooter">
-                                <p class='card-text text-primary'><a
-                                            href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
-                                </p>
-                                <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op voorraad</p>
-                                <p class="card-text">
-                                    € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
-                            </div>
-                        </div>
-                    <?php } ?>
+                            <?php
+                            $productnummer++;
+                        }
+                    }
+                    $paginanummer = 1;
+                    while($paginanummer <= ceil($result->rowCount() / 12)){
+                        print("<a href='product.php?id=$item&p=$paginanummer'>$paginanummer</a>");
+                        $paginanummer ++;
+                    }
+                    ?>
                 </div>
                 <?php
                 unset($result);
