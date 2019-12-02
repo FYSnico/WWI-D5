@@ -36,7 +36,7 @@ session_start();
     <div id="topheader">
         <nav class="nav navbar sticky-top navbar-expand-lg navbar-dark">
             <div class="">
-                <img class="w-50" src="images/logo.png" alt="">
+                <a href="./"><img class="w-50" src="images/logo.png" alt=""></a>
             </div>
             <form class="form-inline" action="search.php">
                 <div class="input-group">

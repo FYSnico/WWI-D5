@@ -22,8 +22,11 @@ $result = $pdo->query($sql);
             <h3>Ontdek onze winkel</h3>
             <br>
             <?php
+            //Currency converter
+            $convertRate = convertCurrency2(1, 'USD', 'EUR');
             // Random products weergeven
             if ($result->rowCount() > 0) {
+
                 echo "<div class=\"card-deck kaartdeck\">";
                     while ($row = $result->fetch()) { ?>
                         <div class="card w-25 kaartbreedte" style="width: 18rem;">
@@ -39,7 +42,7 @@ $result = $pdo->query($sql);
                                 </p>
                                 <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> stocks op voorraad</p>
                                 <p class="card-text">
-                                    € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                                    € <?php echo round($row['RecommendedRetailPrice'] * $convertRate,2) ?></p>
                             </div>
                         </div>
                     <?php } ?>

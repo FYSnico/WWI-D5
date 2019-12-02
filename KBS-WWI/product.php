@@ -24,6 +24,8 @@ $categorienaam = $stmt2->fetch();
         <div class="content">
             <h3><?php echo $categorienaam["StockGroupName"]; ?></h3>
             <?php
+            //Currency converter
+            $convertRate = convertCurrency2(1, 'USD', 'EUR');
             //random products weergegeven
             if ($result->rowCount() > 0) {
                 ?>
@@ -46,7 +48,7 @@ $categorienaam = $stmt2->fetch();
                                 </p>
                                 <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op voorraad</p>
                                 <p class="card-text">
-                                    € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                                    € <?php echo round($row['RecommendedRetailPrice'] * $convertRate,2) ?></p>
                             </div>
                         </div>
                     <?php } ?>

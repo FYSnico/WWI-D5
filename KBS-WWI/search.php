@@ -53,6 +53,8 @@ include("functions.php");
                             WHERE $sqlb";
                 }
                     $result = $pdo->query($sql);
+                // Currency converter
+                $convertRate = convertCurrency2(1, 'USD', 'EUR');
                 //random products weergegeven
                 if ($result->rowCount() > 0) {
                     ?>
@@ -71,8 +73,9 @@ include("functions.php");
                                     </p>
                                     <p class='card-text text-warning'><?php echo $row['QuantityPerOuter'] ?> op voorraad</p>
                                     <p class="card-text">
-                                        € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                                        € <?php echo round($row['RecommendedRetailPrice'] * $convertRate,2) ?></p>
                                 </div>
+<!--                                $row['RecommendedRetailPrice'] *-->
                             </div>
                         <?php } ?>
                     </div>
