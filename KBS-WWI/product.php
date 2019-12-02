@@ -77,6 +77,9 @@ $categorienaam = $stmt2->fetch();
                 <br>
                 <div class="card-deck kaartdeck productkaartdeck">
                     <?php
+                    //Currency converter
+                    $convertRate = convertCurrency2(1, 'USD', 'EUR');
+
                     $productnummer = 1;
                     $productoffset = 1;
 
@@ -103,7 +106,7 @@ $categorienaam = $stmt2->fetch();
                                     <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op
                                         voorraad</p>
                                     <p class="card-text">
-                                        € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                                        € <?php echo round($row['RecommendedRetailPrice'] * $convertRate,2) ?></p>
                                 </div>
                             </div>
                             <?php
