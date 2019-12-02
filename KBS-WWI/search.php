@@ -2,6 +2,13 @@
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
+
+if(isset($_GET['p'])){
+    $huidigepagina = $_GET['p'];
+}
+else{
+    $huidigepagina = 1;
+}
 ?>
     <div class="container">
         <div class="content">
@@ -44,12 +51,14 @@ include("functions.php");
                     }
                     $sqlb = implode(" OR ", $sqla);
 //                    print($sqlb);
-                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID 
+                    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
+                            JOIN stockitemholdings SIH
+                            ON S.stockitemID = SIH.stockitemID
                             WHERE $sqlb";
                 }
                     $result = $pdo->query($sql);
@@ -57,7 +66,16 @@ include("functions.php");
                 if ($result->rowCount() > 0) {
                     ?>
                     <div class="card-deck kaartdeck">
-                        <?php while ($row = $result->fetch()) { ?>
+                    <?php
+                    $productnummer = 1;
+                    $productoffset = 1;
+
+                    while (($row = $result->fetch()) && $productnummer <= 12) {
+                        if ($productoffset <= (12 * $huidigepagina) - 12) {
+                            $productoffset ++;
+                        }
+                        else {
+                            ?>
                             <div class="card w-25 kaartbreedte" style="width: 18rem;">
                                 <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img class="card-img-top kaartimg" src="<?php echo randomPicture() ?>" alt="Productafbeelding"></a>
                                 <div class="card-body">
@@ -69,18 +87,28 @@ include("functions.php");
                                     <p class='card-text text-primary'><a
                                                 href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
                                     </p>
-                                    <p class='card-text text-warning'><?php echo $row['QuantityPerOuter'] ?> op voorraad</p>
+                                    <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op voorraad</p>
                                     <p class="card-text">
                                         € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
                                 </div>
                             </div>
-                        <?php } ?>
+                            <?php
+                            $productnummer++;
+                        }
+                    }
+                    ?>
                     </div>
                     <?php
+                    $paginanummer = 1;
+                    while($paginanummer <= ceil($result->rowCount() / 12)){
+                        print("<a href='search.php?query=$_GET[query]&p=$paginanummer'>$paginanummer</a>");
+                        $paginanummer ++;
+                    }
                     unset($result);
                 } else {
                     echo "Geen producten gevonden.";
                 }
+
                 ?>
         </div>
     </div>
