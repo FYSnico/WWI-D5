@@ -58,7 +58,7 @@ $categorienaam = $stmt2->fetch();
             <h3><?php echo $categorienaam["StockGroupName"]; ?></h3>
             <?php
             //Currency converter
-            $convertRate = convertCurrency2(1, 'USD', 'EUR');
+            $convertRate = convertCurrency(1, 'USD', 'EUR');
             //random products weergegeven
             if ($result->rowCount() > 0) {
                 // aangeven welke product volgorde de gebruiker wilt hebben - johan
