@@ -7,14 +7,22 @@ include("components/config.php");
 $email = "";
 $password = "";
 $confirm_password = "";
+$adress = "";
+$postcode = "";
+$telefoonnummer = "";
+$naam ="";
 
 //Checken of account al bestaat
 $check = false;
 if (!$check) {
     if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm_password"])) {
-      $password = trim($_POST["password"]);
-      $email = trim($_POST["email"]);
+        $password = trim($_POST["password"]);
+        $email = trim($_POST["email"]);
+        $adress = trim($_POST["address"]);
+        $postcode = trim($_POST["PostalCode"]);
+        $telefoonnummer = trim($_POST["phone"]);
         $confirm_password = $_POST["confirm_password"];
+        $naam = $_POST["name"];
         if (empty($email)) {
             $userror = "<BR>Please enter email!";
             print($userror);
@@ -25,7 +33,7 @@ if (!$check) {
             print("Je moet wel hetzelfde wachtwoord invoeren!");
         } else {
             $email = $_POST["email"];
-            $stmt = $pdo->prepare("Select LogonName FROM people where EmailAddress = :email");
+            $stmt = $pdo->prepare("Select EmailAddress FROM customers where EmailAddress = :email");
             $stmt->execute(array("email" => $email));
             print_r($stmt);
             print('hoi');
@@ -51,9 +59,9 @@ if ($check) {
     $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
     print($hashedpassword);
     $stmt = $pdo->prepare(
-        "INSERT INTO people (LogonName, HashedPassword) VALUES (?, ?)"
+        "INSERT INTO customers (CustomerName, EmailAddress, HashedPassword, DeliveryPostalCode, DeliveryLocation, PhoneNumber) VALUES (?, ?, ?, ?, ?)"
     );
-    $stmt->execute(array(($email), ($hashedpassword)));
+    $stmt->execute(array(($naam), ($email), ($hashedpassword), ($postcode), ($adress), ($telefoonnummer)));
     unset($stmt);
     $PDO = null;
     if (isset($_POST["submit"])) {
@@ -69,8 +77,16 @@ if ($check) {
             <br>
             <p>Please fill this form to create an account.</p>
             <form action="register.php" method="post">
+                <label>Naam</label>
+                <input type="text" name="name" class="form-control">
                 <label>Email</label>
                 <input type="email" name="email" class="form-control">
+                <label>Adress</label>
+                <input type="text" name="address" value="ABCstraat 123" class="form-control">
+                <label>Postcode</label>
+                <input type="text" name="PostalCode" Value="1234AB" class="form-control">
+                <label>Telefoonnummer</label>
+                <input type="int" name="phone" class="form-control">
                 <label>Password</label>
                 <input type="password" name="password" class="form-control">
                 <label>Confirm Password</label>
