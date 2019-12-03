@@ -5,6 +5,8 @@ include("components/config.php");
 <div class="container">
     <div class="card shadow">
         <div class="row">
+
+
             <?php
                 $item = $_GET['id'];
                 $sql = "SELECT SG.StockGroupID, Barcode, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
@@ -60,13 +62,61 @@ include("components/config.php");
                             echo'</div>';
                         echo'</div>';
                         echo'<hr>';
-                        echo'<a href="#" class="btn btn-lg btn-outline-primary text-uppercase"> <i class="fas fa-shopping-cart"></i> Toevoegen </a>';
-                    echo'</aside>';
 
+                    // product toevoegen in winkelmand - johan
+                    echo <<<EOT
+                    <form method="POST" action="">
+                    <input name="hoeveel" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
+                    <input name="id" type="text" class="d-none" value=$item>
+                    <button type="submit" name="submit" value="submit"class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form>
+ EOT;
+                    //controleren of getal is ingevoerd
+                    if (isset($_POST["submit"]) && $_POST["hoeveel"] > 0) {
+                        print "<br>Product is toegevoegd aan winkelmand";
+                    } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
+                        print "<br>Aantal moet hoger zijn dan 0";
+                    }
+
+                    echo  '</aside>';
+                    }
+
+            if (session_status() == PHP_SESSION_NONE) {
+                        session_start();
+                    }
+
+            //submit is gedrukt
+            if (isset($_POST["submit"]) && $_POST["hoeveel"] > 0)  {
+                //"" verwijderen dit komt door number type en hoeveel ophalen
+                $id = trim($item, "\"\"");
+                $hoeveel = $_POST["hoeveel"];
+
+                // starten session shoppincart
+                $shoppingcart = $_SESSION["shoppingcart"];
+                $productIsInCart = false;
+                $productIsInCartIndex = 0;
+
+//                 kijken of product in de shopping car zit
+                for($i = 0; $i < sizeof($shoppingcart); $i++ ){
+                    if($shoppingcart[$i][0] == $id){
+                        $productIsInCart = true;
+                        $productIsInCartIndex = $i;
+                    }
                 }
+                // als product al in shopping car zit word de hoeveelheid toegevoegd en anders een nieuwe array in de array $_SESSION["shoppingcart"] toevoegen
+                if ($productIsInCart) {
+                    $shoppingcart[$productIsInCartIndex][1] += $hoeveel;
+                } else {
+                    $shoppingcart[] = array($id, $hoeveel);
+                }
+                // in session zetten
+                $_SESSION["shoppingcart"] = $shoppingcart;
+
+            }
+
             ?>
+
         </div>
     </div>
 </div>
 <br><br>
-<?php include('components/footer.php') ?>
+<?php include('components/footer.php'); ?>

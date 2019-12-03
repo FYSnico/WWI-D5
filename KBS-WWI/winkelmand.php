@@ -1,17 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php   include 'components/header.php'; ?>
+    <?php   include 'components/header.php';
+            include 'components/ddb_connect_mysqli.php';
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+    ?>
 </head>
 <body>
 <?php
-include 'components/config.php';
+//$fakedata = array(
+//    array(1, 4),
+//    array(17, 1),
+//    array(16, 1)
+//);
+//$_SESSION["shoppingcart"] = array(array(1,4));
+//$_SESSION["shoppingcart"] = $fakedata;
+
+//waardes toevoegen en eventueel de korting - johan
 $total = 0;
 $itemcount = 0;
 $discount = 0;
-if(isset($_SESSION["winkelmandkorting"])) {
-    $discount = $_SESSION["winkelmandkorting"];
+if(isset($_SESSION["shopping_cart_discount"])) {
+    $discount = $_SESSION["shopping_cart_discount"];
 }
+
+//product verwijderen moet nog werkend worden gemaakt maar ik weet niet hoe ik de goede session verwijderd in de array van de array komt nog
+//if(isset($_POST["Remove"])) {
+//    $id = $_POST["product_id"];
+//    $shoppingcart = $_SESSION["shoppingcart"];
+//
+//    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+//        if ($shoppingcart[$i][0] == $id) {
+//            unset($shoppingcart[$i][1]);
+//            unset($shoppingcart[$i]);
+//        }
+//    }
+//    $_SESSION["shoppingcart"] = $shoppingcart;
+//}
+
 ?>
 <div class="container">
     <div class="row">
@@ -29,30 +57,32 @@ if(isset($_SESSION["winkelmandkorting"])) {
                 <tbody>
                 <?php
                 $count = 0;
-                if (isset($_SESSION["winkelmand"])) {
-                    foreach($_SESSION["winkelmand"] as $mand) {
-                        $count++;
-                        $product_id = mysqli_real_escape_string($mysqli, $mand[0]);
-                        $amount = $cart[1];
+                if (isset($_SESSION["shoppingcart"])) {
+                    foreach($_SESSION["shoppingcart"] as $cart) {
 
-                        $result = $mysqli->query("SELECT * FROM products WHERE id = {$product_id};");
+                        //data ophalen van de database
+                        $count++;
+                        $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
+                        $amount = $cart[1];
+                        $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
+
 
                         if ($result && mysqli_num_rows($result) > 0){
                             $row = mysqli_fetch_assoc($result);
-                            $description = substr($row['description'], 0, 64);
-                            $total += ($amount * $row['price']);
+                            $description = substr($row['MarketingComments'], 0, 64);
+                            $total += ($amount * $row['RecommendedRetailPrice']);
                             $itemcount += $amount;
 
                             echo <<<EOT
                                         <tr>
-                                            <th scope="col">{$count}</th>
-                                            <td>{$row['name']}</td>
+                                            <th scope="col">{$count}</th> 
+                                            <td>{$row['StockItemName']}</td>
                                             <td>{$description}</td>
-                                            <td>{$row['price']}</td>
+                                            <td>{$row['RecommendedRetailPrice']}</td>
                                             <td>
-                                                <form method="post" action="{$relative_root}/logic/shopping_cart/cart_update_product.php">
+                                                <form method="post" action="">
                                                     <input type="text" name="product_id" value="{$product_id}" class="d-none">
-                                                    <input type="submit" name="Remove" value="Remove" class="btn btn-danger" style="float: right;">
+                                                    <input type="submit" name="Remove" value="Verwijder" class="btn btn-danger" style="float: right;">
                                                 </form>
                                             </td>
                                         </tr>
@@ -63,7 +93,7 @@ EOT;
                 } else {
                     echo "
                                 <div class='alert alert-info' role='alert'>
-                                    You have no products in your cart!
+                                Je hebt geen producten geselecteerd!
                                 </div>";
                 }
                 ?>
@@ -77,35 +107,33 @@ EOT;
                         $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
                         $amount = $cart[1];
 
-                        $result = $mysqli->query("SELECT * FROM products WHERE id = {$product_id};");
+                        $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
 
-                        if (mysqli_num_rows($result) > 0){
+                        if ($result){
                             $row = mysqli_fetch_assoc($result);
-                            $totalprice = $row['price'] * $amount;
+                            $totalprice = $row['RecommendedRetailPrice'] * $amount;
 
                             echo <<<EOT
                                         <tr>
-                                            <td>{$row['name']}</td>
+                                            <td>{$row['StockItemName']}</td>
                                             <td>
                                                 <div style="width: 50%; float: left;">
-                                                    <p style="float: right; margin-right: 2rem;">Amount: {$amount}</p>
+                                                    <p style="float: right; margin-right: 2rem;">Aantal: {$amount}</p>
                                                 </div>
                                                 <div style="width: 50%; float: left;">
-                                                    <form method="post" action="{$relative_root}/logic/shopping_cart/cart_update_product.php">
+                                                    <form method="post" action="">
                                                         <input type="text" name="product_id" value="{$product_id}" class="d-none">
                                                         <button type="submit" name="+" value="+" class="btn btn-primary btn-sm"><i class="fas fa-plus-circle" data-fa-transform="grow-2"></i></button>
                                                         <button type="submit" name="-" value="-" class="btn btn-primary btn-sm"><i class="fas fa-minus-circle" data-fa-transform="grow-2"></i></button>
                                                     </form>
                                                 </div>
                                             </td>
-                                            <td style="text-align: right;">Price: &euro;{$totalprice}</td>
+                                            <td style="text-align: right;">Prijs: &euro;{$totalprice}</td>
                                         </tr>
 EOT;
 
                         }
                     }
-                } else {
-
                 }
                 ?>
                 </tbody>
@@ -113,7 +141,7 @@ EOT;
         </div>
         <div class="col-9">
             <div style="display:flex;align-items:flex-end; height: 250px;">
-                <form method="post" action="<?php echo $relative_root;?>/logic/shopping_cart/cart_set_discount.php">
+                <form method="post" action="">
                     <div class="form-group row">
                         <div class="col-9">
                             <input type="text" name="discount_code" class="form-control">
@@ -128,32 +156,32 @@ EOT;
         <div class="col-3 py-4">
             <table>
                 <tr>
-                    <td>Price: </td>
+                    <td>Prijs: </td>
                     <td>&euro;<?php echo $total ?></td>
                 </tr>
                 <tr>
-                    <td>Shipping:</td>
+                    <td>Verzending:</td>
                     <td>&euro;<?php
-                        $shipping = $itemcount * 1.5;
+                        $shipping = $itemcount * 0;
                         $total += $shipping;
                         echo $shipping;
                         ?></td>
                 </tr>
                 <tr>
-                    <td style="padding-right: 2rem;">Discount: </td>
+                    <td style="padding-right: 2rem;">Korting: </td>
                     <td>%<?php
                         $total -= $total * ($discount / 100);
                         echo $discount;
                         ?></td>
                 </tr>
                 <tr>
-                    <td style="padding-right: 2rem;">Total before taxes: </td>
+                    <td style="padding-right: 2rem;">Totaal voor BTW: </td>
                     <td>&euro;<?php
                         echo round($total, 2);
                         ?></td>
                 </tr>
                 <tr>
-                    <td>VAT: </td>
+                    <td>BTW: </td>
                     <td>&euro;<?php
                         // TODO: ADD TAX DEPENDENT ON CATEGORY
                         $tax = $total * 0.21;
@@ -162,7 +190,7 @@ EOT;
                         ?></td>
                 </tr>
                 <tr>
-                    <td>Total</td>
+                    <td>Totaal</td>
                     <td>&euro;<?php
                         $total = round($total, 2);
                         $_SESSION["shoppingcart_price"] = $total;
@@ -171,12 +199,11 @@ EOT;
                 </tr>
             </table>
             <?php
-            //Geeft aan of je kunt bestellen of als je nog een account aan moet maken
-            if (isset($_SESSION["username"])) {
+            //Geeft aan of je kunt bestelling afronden
+            if (isset($_SESSION["email"]) && $total > 0) {
                 echo '<li>';
-
                 echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a></i>';
-            } else {
+            } elseif ($total != 0){
                 echo '<a class="fas fa-sign-in-alt" href="login.php">Login in om te bestellen</a>';
             }
             ?>
