@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php   include 'components/header.php';
-            include 'components/ddb_connect_mysqli.php';
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
+    <?php include 'components/header.php';
+    include 'components/ddb_connect_mysqli.php';
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
     ?>
 </head>
 <body>
@@ -22,7 +22,7 @@
 $total = 0;
 $itemcount = 0;
 $discount = 0;
-if(isset($_SESSION["shopping_cart_discount"])) {
+if (isset($_SESSION["shopping_cart_discount"])) {
     $discount = $_SESSION["shopping_cart_discount"];
 }
 
@@ -58,7 +58,7 @@ if(isset($_SESSION["shopping_cart_discount"])) {
                 <?php
                 $count = 0;
                 if (isset($_SESSION["shoppingcart"])) {
-                    foreach($_SESSION["shoppingcart"] as $cart) {
+                    foreach ($_SESSION["shoppingcart"] as $cart) {
 
                         //data ophalen van de database
                         $count++;
@@ -67,7 +67,7 @@ if(isset($_SESSION["shopping_cart_discount"])) {
                         $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
 
 
-                        if ($result && mysqli_num_rows($result) > 0){
+                        if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
                             $description = substr($row['MarketingComments'], 0, 64);
                             $total += ($amount * $row['RecommendedRetailPrice']);
@@ -103,13 +103,13 @@ EOT;
                 <tbody>
                 <?php
                 if (isset($_SESSION["shoppingcart"])) {
-                    foreach($_SESSION["shoppingcart"] as $cart) {
+                    foreach ($_SESSION["shoppingcart"] as $cart) {
                         $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
                         $amount = $cart[1];
 
                         $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
 
-                        if ($result){
+                        if ($result) {
                             $row = mysqli_fetch_assoc($result);
                             $totalprice = $row['RecommendedRetailPrice'] * $amount;
 
@@ -156,7 +156,7 @@ EOT;
         <div class="col-3 py-4">
             <table>
                 <tr>
-                    <td>Prijs: </td>
+                    <td>Prijs:</td>
                     <td>&euro;<?php echo $total ?></td>
                 </tr>
                 <tr>
@@ -168,20 +168,20 @@ EOT;
                         ?></td>
                 </tr>
                 <tr>
-                    <td style="padding-right: 2rem;">Korting: </td>
+                    <td style="padding-right: 2rem;">Korting:</td>
                     <td>%<?php
                         $total -= $total * ($discount / 100);
                         echo $discount;
                         ?></td>
                 </tr>
                 <tr>
-                    <td style="padding-right: 2rem;">Totaal voor BTW: </td>
+                    <td style="padding-right: 2rem;">Totaal voor BTW:</td>
                     <td>&euro;<?php
                         echo round($total, 2);
                         ?></td>
                 </tr>
                 <tr>
-                    <td>BTW: </td>
+                    <td>BTW:</td>
                     <td>&euro;<?php
                         // TODO: ADD TAX DEPENDENT ON CATEGORY
                         $tax = $total * 0.21;
@@ -203,7 +203,7 @@ EOT;
             if (isset($_SESSION["email"]) && $total > 0) {
                 echo '<li>';
                 echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a></i>';
-            } elseif ($total != 0){
+            } elseif ($total != 0) {
                 echo '<a class="fas fa-sign-in-alt" href="login.php">Login in om te bestellen</a>';
             }
             ?>
@@ -212,6 +212,6 @@ EOT;
 </div>
 </body>
 <footer>
-    <?php   include 'components/footer.php';    ?>
+    <?php include 'components/footer.php'; ?>
 </footer>
 </html>
