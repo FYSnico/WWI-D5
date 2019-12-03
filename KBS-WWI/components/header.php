@@ -9,8 +9,7 @@ session_start();
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>WWI</title>
-    <link rel="shortcut icon"
-          href="https://fs.ypncdn.com/cb/bundles/youpornwebfront/images/favicon.ico?v=ac28d5914f49c42bc32b76d7b18a61296245cd2a">
+    <link rel="shortcut icon" href="images/logo.png">
 
     <!--  Styles  -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -43,7 +42,7 @@ session_start();
                     <input class="form-control mr-sm-2 search" type="search" placeholder="Zoeken..." aria-label="Search"
                            name="query">
                     <span class="input-group-btn">
-                    <button class="btn btn-outline-primary search" type="submit"><i class="fas fa-search"></i>
+                    <button class="btn btn-outline-primary search wwiblauw" type="submit"><i class="fas fa-search"></i>
                     </button>
                 </span>
                 </div>
