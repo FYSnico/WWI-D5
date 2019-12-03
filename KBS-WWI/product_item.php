@@ -76,7 +76,7 @@ include("components/config.php");
                     } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
                         print "<br>Aantal moet hoger zijn dan 0";
                     } elseif ($row['LastStockTakeQuantity'] < $_POST["hoeveel"]){
-                        print "<br>Je mag niet hoger dan voorraad selecteren";
+                        print "<br>Je mag niet hoger dan de voorraad selecteren";
                     }
 
                     echo  '</aside>';
@@ -87,7 +87,7 @@ include("components/config.php");
                     }
 
             //submit is gedrukt
-            if (isset($_POST["submit"]) && $_POST["hoeveel"] > 0)  {
+            if (isset($_POST["submit"]) && $_POST["hoeveel"] > 0 $row['LastStockTakeQuantity'] >= $_POST["hoeveel"])  {
                 //"" verwijderen dit komt door number type en hoeveel ophalen
                 $id = trim($item, "\"\"");
                 $hoeveel = $_POST["hoeveel"];
