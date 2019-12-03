@@ -71,10 +71,12 @@ include("components/config.php");
                     <button type="submit" name="submit" value="submit"class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form>
  EOT;
                     //controleren of getal is ingevoerd
-                    if (isset($_POST["submit"]) && $_POST["hoeveel"] > 0) {
+                    if (isset($_POST["submit"]) && $_POST["hoeveel"] > 0 && $row['LastStockTakeQuantity'] >= $_POST["hoeveel"]) {
                         print "<br>Product is toegevoegd aan winkelmand";
                     } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
                         print "<br>Aantal moet hoger zijn dan 0";
+                    } elseif ($row['LastStockTakeQuantity'] < $_POST["hoeveel"]){
+                        print "<br>Je mag niet hoger dan voorraad selecteren";
                     }
 
                     echo  '</aside>';
@@ -91,6 +93,7 @@ include("components/config.php");
                 $hoeveel = $_POST["hoeveel"];
 
                 // starten session shoppincart
+                $_SESSION["shoppingcart"] = array();
                 $shoppingcart = $_SESSION["shoppingcart"];
                 $productIsInCart = false;
                 $productIsInCartIndex = 0;
