@@ -4,35 +4,28 @@ include("components/config.php");
 include("functions.php");
 
 //systeem kijkt welke product volgorde is geselecteerd - johan
-if(isset($_POST["Order"])){
-    if($_POST["Order"] == "nameASC"){
+if (isset($_POST["Order"])) {
+    if ($_POST["Order"] == "nameASC") {
         $volgorde = " StockItemName ASC";
-    }
-    elseif($_POST["Order"] == "nameDESC"){
+    } elseif ($_POST["Order"] == "nameDESC") {
         $volgorde = " StockItemName DESC";
-    }
-    elseif($_POST["Order"] == "priceASC"){
+    } elseif ($_POST["Order"] == "priceASC") {
         $volgorde = " RecommendedRetailPrice ASC";
-    }
-    elseif($_POST["Order"] == "priceDESC"){
+    } elseif ($_POST["Order"] == "priceDESC") {
         $volgorde = " RecommendedRetailPrice DESC";
-    }
-    elseif($_POST["Order"] == "voorraadASC"){
+    } elseif ($_POST["Order"] == "voorraadASC") {
         $volgorde = " LastStockTakeQuantity ASC";
-    }
-    elseif($_POST["Order"] == "voorraadDESC"){
+    } elseif ($_POST["Order"] == "voorraadDESC") {
         $volgorde = " LastStockTakeQuantity DESC";
     }
-}
-else{
+} else {
     $volgorde = " StockItemName DESC";
 }
 
 $item = $_GET['id'];
-if(isset($_GET['p'])){
+if (isset($_GET['p'])) {
     $huidigepagina = $_GET['p'];
-}
-else{
+} else {
     $huidigepagina = 1;
 }
 $sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
@@ -52,15 +45,17 @@ $stmt2 = $pdo->prepare("SELECT StockGroupName FROM stockgroups WHERE StockGroupI
 $stmt2->execute();
 $categorienaam = $stmt2->fetch();
 ?>
-
     <div class="container">
         <div class="content">
             <h3><?php echo $categorienaam["StockGroupName"]; ?></h3>
+            <br>
             <?php
-            //random products weergegeven
+            // Currency converter
+            $convertRate = convertCurrency2(1, 'USD', 'EUR');
+            // Kijk of er producten in de tabel staan
             if ($result->rowCount() > 0) {
-                // aangeven welke product volgorde de gebruiker wilt hebben - johan
                 ?>
+                <!--Filteren producten-->
                 <form action="" method="post">
                     <select name="Order" class="form-control">
                         <option value="nameASC">Naam A - Z</option>
@@ -69,20 +64,20 @@ $categorienaam = $stmt2->fetch();
                         <option value="priceDESC">Prijs ↓</option>
                         <option value="voorraadASC">Voorraad ↑</option>
                         <option value="voorraadDESC">Voorraad ↓</option>
-                    </select><br>
-                    <input type="submit" value="Order" class="btn btn-primary">
+                    </select>
+                    <br>
+                    <input type="submit" value="ORDER!!!" class="btn btn-primary">
                 </form>
                 <br>
                 <div class="card-deck kaartdeck productkaartdeck">
                     <?php
+                    // Producten weergeven
                     $productnummer = 1;
                     $productoffset = 1;
-
                     while (($row = $result->fetch()) && $productnummer <= 12) {
                         if ($productoffset <= (12 * $huidigepagina) - 12) {
-                            $productoffset ++;
-                        }
-                        else {
+                            $productoffset++;
+                        } else {
                             ?>
                             <div class="card w-25 kaartbreedte">
                                 <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
@@ -101,46 +96,49 @@ $categorienaam = $stmt2->fetch();
                                     <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op
                                         voorraad</p>
                                     <p class="card-text">
-                                        € <?php echo str_replace(".", ",", $row['RecommendedRetailPrice']) ?></p>
+                                        € <?php echo round($row['RecommendedRetailPrice'] * $convertRate, 2) ?></p>
                                 </div>
                             </div>
                             <?php
                             $productnummer++;
                         }
                     }
-                    $paginanummer = 1;
-                    while($paginanummer <= ceil($result->rowCount() / 12)){
-                        print("<a href='product.php?id=$item&p=$paginanummer'>$paginanummer</a>");
-                        $paginanummer ++;
-                    }
                     ?>
                 </div>
+                <!-- Paginanavigatie -->
+                <nav aria-label="...">
+                    <ul class="pagination justify-content-center">
+                        <?php
+                        $paginanummer = 1;
+                        $vorigePaginaNummer = $huidigepagina -1;
+                        $volgendePaginaNummer = $huidigepagina + 1;
+                        if ($huidigepagina == 1) {
+                            print("<li class=\"page-item disabled\"><span class=\"page-link\">Vorige</span></li>");
+                        } else {
+                            print("<li class=\"page-item\"><a class='page-link' href='product.php?id=$item&p=$vorigePaginaNummer'>Vorige</a></li>");
+                        }
+                        while ($paginanummer <= ceil($result->rowCount() / 12)) {
+                            if($huidigepagina == $paginanummer){
+                                print("<li class=\"page-item active\"><span class=\"page-link\">$paginanummer<span class=\"sr-only\">(current)</span></span></li>");
+                            } else {
+                                print("<li class=\"page-item\"><a class='page-link' href='product.php?id=$item&p=$paginanummer'>$paginanummer</a></li>");
+                            }
+                            $paginanummer++;
+                        }
+                        if ($huidigepagina == $paginanummer - 1){
+                            print("<li class=\"page-item disabled\"><span class=\"page-link\">Volgende</span></li>");
+                        } else {
+                            print("<li class=\"page-item\"><a class=\"page-link\" href='product.php?id=$item&p=$volgendePaginaNummer'>Volgende</a></li>");
+                        }
+                        ?>
+                    </ul>
+                </nav>
                 <?php
                 unset($result);
             } else {
-                echo "<div class='w-100 mt-5 pt-5'>";
-                    echo " <h2 class='text-center'>Geen producten gevonden. </h2>";
-                echo "</div>";
+                echo "<div class='w-100 mt-5 pt-5'><h2 class='text-center'>Geen producten gevonden. </h2></div>";
             }
             ?>
-<!--            <nav aria-label="...">-->
-<!--                <ul class="pagination justify-content-center">-->
-<!--                    <li class="page-item disabled">-->
-<!--                        <span class="page-link">Previous</span>-->
-<!--                    </li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                    <li class="page-item active">-->
-<!--                      <span class="page-link">-->
-<!--                        2-->
-<!--                        <span class="sr-only">(current)</span>-->
-<!--                      </span>-->
-<!--                    </li>-->
-<!--                    <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                    <li class="page-item">-->
-<!--                        <a class="page-link" href="#">Next</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
         </div>
     </div>
     <br><br>
