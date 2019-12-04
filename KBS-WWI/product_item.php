@@ -74,10 +74,12 @@ include("components/config.php");
                     <button type="submit" name="submit" value="submit"class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form>
  EOT;
                     $lastStockTakeQuantity = $row['LastStockTakeQuantity'];
+                    $productmagwordentoegevoegd = false;
                     //controleren of getal is ingevoerd
                     if (isset($_POST["submit"])) {
                         if ($_POST["hoeveel"] > 0 && $lastStockTakeQuantity >= $_POST["hoeveel"]) {
                             print "<br>Product is toegevoegd aan winkelmand";
+                            $productmagwordentoegevoegd = true;
                         } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
                             print "<br>Aantal moet hoger zijn dan 0";
                         } elseif ($row['LastStockTakeQuantity'] < $_POST["hoeveel"]) {
@@ -86,17 +88,19 @@ include("components/config.php");
                     }
                     echo '</aside>';
                 }
-                
+
 
                 //submit is gedrukt
                 if (isset($_POST["submit"])) {
-                    if ($_POST["hoeveel"] > 0 && $lastStockTakeQuantity >= $_POST["hoeveel"]) {
+                    if ($_POST["hoeveel"] > 0 && $productmagwordentoegevoegd) {
                         //"" verwijderen dit komt door number type en hoeveel ophalen
                         $id = trim($item, "\"\"");
                         $hoeveel = $_POST["hoeveel"];
 
                         // starten session shoppincart
-                        $_SESSION["shoppingcart"] = array();
+                        if(!isset($_SESSION["shoppingcart"])){
+                            $_SESSION["shoppingcart"] = array();
+                        }
                         $shoppingcart = $_SESSION["shoppingcart"];
                         $productIsInCart = false;
                         $productIsInCartIndex = 0;

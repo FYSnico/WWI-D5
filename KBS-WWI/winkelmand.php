@@ -40,6 +40,10 @@ if (isset($_SESSION["shopping_cart_discount"])) {
 //    $_SESSION["shoppingcart"] = $shoppingcart;
 //}
 
+//USD naar EURO
+//$convertRate = convertCurrency2(1, 'USD', 'EUR');
+//€ <?php echo round($row['RecommendedRetailPrice'] * $convertRate, 2) ?><!--</p>-->
+
 ?>
 <div class="container">
     <div class="row">
@@ -201,8 +205,7 @@ EOT;
             <?php
             //Geeft aan of je kunt bestelling afronden
             if (isset($_SESSION["email"]) && $total > 0) {
-                echo '<li>';
-                echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a></i>';
+                echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a>';
             } elseif ($total != 0) {
                 echo '<a class="fas fa-sign-in-alt" href="login.php">Login in om te bestellen</a>';
             }
