@@ -37,12 +37,14 @@ if (empty($_GET["query"])) {
     die();
 } elseif (is_numeric($_GET["query"])) {
     $int = $_GET["query"];
-    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID 
+    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
+                            JOIN stockitemholdings SIH
+                            ON S.stockitemID = SIH.stockitemID
                             WHERE S.StockItemID = $int
                             GROUP BY S.StockItemID
                             ORDER BY $volgorde";
@@ -60,9 +62,9 @@ if (empty($_GET["query"])) {
         }
     }
     $zoekterm = implode(" OR ", $sqla);
-    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, LastStockTakeQuantity 
+    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
-                            JOIN stockitemstockgroups SIG 
+                            JOIN stockitemstockgroups SIG   
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
