@@ -38,7 +38,7 @@ $check = false;
                     $passerror = "<p class=\"alert alert-danger\">Wachtwoord is verplicht.</p>";
                     print($passerror);
                 }elseif(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,16}$/m', $password)) {
-                    print("<p class=\"alert alert-danger\">Het wachtwoord moet minimaal 8 tekens lang zijn, een hoofdletter bevatten, een getal en eén van de speciale tekens.</p>");
+                    print("<p class=\"alert alert-danger\">Het wachtwoord moet minimaal 8 tekens lang zijn, een hoofdletter bevatten, een getal en één van de speciale tekens.</p>");
                 }elseif (!($password == $confirm_password)) {
                     print("<p class=\"alert alert-danger\">Beide wachtwoorden moeten hetzelfde zijn.</p>");
                 }else{
@@ -83,7 +83,7 @@ $check = false;
             <label>E-mailadres<strong class="text-danger">*</strong></label>
             <input type="email" name="email" value="<?php echo $email ?>" class="form-control">
             <label>Adress</label>
-            <input type="text" name="address" value="<?php echo $adress ?>" placeholder="ABCstraat 123" class="form-control">
+            <input type="text" name="address" value="<?php echo $adress ?>" placeholder="VoorbeeldStraat 6" class="form-control">
             <label>Postcode</label>
             <input type="text" name="PostalCode" Value="<?php echo $postcode ?>" placeholder="1234AB" class="form-control">
             <label>Telefoonnummer</label>
