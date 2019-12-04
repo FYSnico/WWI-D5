@@ -66,16 +66,17 @@ include("components/config.php");
                     echo '</div>';
                     echo '<hr>';
 
-                    // product toevoegen in winkelmand - johan
+//product toevoegen in winkelmand - johan
                     echo <<<EOT
                     <form method="POST" action="">
                     <input name="hoeveel" value="1" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
                     <input name="id" type="text" class="d-none" value=$item>
-                    <button type="submit" name="submit" value="submit"class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form><br>
+                    <button type="submit" name="submit" value="submit" class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form><br>
  EOT;
                     $lastStockTakeQuantity = $row['LastStockTakeQuantity'];
                     $productmagwordentoegevoegd = false;
-                    //controleren of getal is ingevoerd
+
+//controleren of getal is ingevoerd
                     if (isset($_POST["submit"])) {
                         if ($_POST["hoeveel"] > 0 && $lastStockTakeQuantity >= $_POST["hoeveel"]) {
                             echo '<a class="alert alert-success"><strong>✓</strong> Toegevoegd</a>';
@@ -90,14 +91,14 @@ include("components/config.php");
                 }
 
 
-                //submit is gedrukt
+//submit is gedrukt
                 if (isset($_POST["submit"])) {
                     if ($_POST["hoeveel"] > 0 && $productmagwordentoegevoegd) {
                         //"" verwijderen dit komt door number type en hoeveel ophalen
                         $id = trim($item, "\"\"");
                         $hoeveel = $_POST["hoeveel"];
 
-                        // starten session shoppincart
+// starten session shoppincart
                         if(!isset($_SESSION["shoppingcart"])){
                             $_SESSION["shoppingcart"] = array();
                         }
@@ -105,14 +106,14 @@ include("components/config.php");
                         $productIsInCart = false;
                         $productIsInCartIndex = 0;
 
-//                 kijken of product in de shopping car zit
+//kijken of product in de shopping car zit
                         for ($i = 0; $i < sizeof($shoppingcart); $i++) {
                             if ($shoppingcart[$i][0] == $id) {
                                 $productIsInCart = true;
                                 $productIsInCartIndex = $i;
                             }
                         }
-                        // als product al in shopping car zit word de hoeveelheid toegevoegd en anders een nieuwe array in de array $_SESSION["shoppingcart"] toevoegen
+// als product al in shopping car zit word de hoeveelheid toegevoegd en anders een nieuwe array in de array $_SESSION["shoppingcart"] toevoegen
                         if ($productIsInCart) {
                             $shoppingcart[$productIsInCartIndex][1] += $hoeveel;
                         } else {

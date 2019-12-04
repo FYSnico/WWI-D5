@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <?php include 'components/header.php';
+    <?php
+//includes doen
+    include 'components/header.php';
     include 'components/ddb_connect_mysqli.php';
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+    include("functions.php");
     ?>
 </head>
 <body>
@@ -29,20 +29,19 @@ if (isset($_SESSION["shopping_cart_discount"])) {
 //product verwijderen moet nog werkend worden gemaakt maar ik weet niet hoe ik de goede session verwijderd in de array van de array komt nog
 //if(isset($_POST["Remove"])) {
 //    $id = $_POST["product_id"];
+//    $hoeveel = $_POST["hoeveel"];
 //    $shoppingcart = $_SESSION["shoppingcart"];
 //
-//    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
-//        if ($shoppingcart[$i][0] == $id) {
-//            unset($shoppingcart[$i][1]);
-//            unset($shoppingcart[$i]);
-//        }
-//    }
+//    $shoppingcart = unset(array($id, $hoeveel));
+////    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+////        if ($shoppingcart[$i][0] == $id) {
+////            $shoppingcart = array_diff_key($shoppingcart, [$id]);
+////        }
+////    }
 //    $_SESSION["shoppingcart"] = $shoppingcart;
 //}
 
-//USD naar EURO
-//$convertRate = convertCurrency2(1, 'USD', 'EUR');
-//€ <?php echo round($row['RecommendedRetailPrice'] * $convertRate, 2) ?><!--</p>-->
+
 
 ?>
 <div class="container">
@@ -53,8 +52,8 @@ if (isset($_SESSION["shopping_cart_discount"])) {
                 <tr>
                     <th scope="col">WWI</th>
                     <th scope="col">Product</th>
-                    <th scope="col">Beschrijving</th>
                     <th scope="col">Prijs</th>
+                    <th scope="col">Aantal</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -62,39 +61,64 @@ if (isset($_SESSION["shopping_cart_discount"])) {
                 <?php
                 $count = 0;
                 if (isset($_SESSION["shoppingcart"])) {
+// bijwerken van de aantal in winkelmand
+                    if(isset($_POST["hoeveelheid"]) && isset($_POST["product_id"]) && $_POST["hoeveelheid"] > 0) {
+                        $shoppingcart = $_SESSION["shoppingcart"];
+
+                        $productIsInCartIndex = 0;
+                        for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+                            if ($shoppingcart[$i][0] == $_POST["product_id"]) {
+                                $productIsInCartIndex = $i;
+                            }
+                        }
+                        $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
+                        $_SESSION["shoppingcart"] = $shoppingcart;
+                    }
+
                     foreach ($_SESSION["shoppingcart"] as $cart) {
 
-                        //data ophalen van de database
+//data ophalen van de database halen wat geselecteerd is in session
                         $count++;
                         $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
                         $amount = $cart[1];
                         $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
 
-
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
-                            $description = substr($row['MarketingComments'], 0, 64);
-                            $total += ($amount * $row['RecommendedRetailPrice']);
-                            $itemcount += $amount;
+                            $convertRate = convertCurrency2(1, 'USD', 'EUR');
+                            $prijs =  round($row['RecommendedRetailPrice'] * $convertRate, 2);
 
+                            $total += ($amount * $prijs);
+                            $itemcount += $amount;
+                            $totalprice = $prijs * $amount;
+                            $StockItemName = $row['StockItemName'];
+
+// De waardens in tabbellen zetten
                             echo <<<EOT
-                                        <tr>
+                                        <tr xmlns="http://www.w3.org/1999/html">
                                             <th scope="col">{$count}</th> 
-                                            <td>{$row['StockItemName']}</td>
-                                            <td>{$description}</td>
-                                            <td>{$row['RecommendedRetailPrice']}</td>
+                                            <td>{$StockItemName}</td>
+                                            <td>&euro;{$totalprice}</td>
                                             <td>
-                                                <form method="post" action="">
+                                                <form method="post" action="" style="display: inline">
                                                     <input type="text" name="product_id" value="{$product_id}" class="d-none">
-                                                    <input type="submit" name="Remove" value="Verwijder" class="btn btn-danger" style="float: right;">
+                                                    <input type="number" name="hoeveelheid" value="$amount" class="btn btn-outline-primary text-uppercase">
+                                            </td>
+                                            <td>
+                                                    <input type="submit" name="Bewerk" value="Bewerk" class="btn btn-primary" >
                                                 </form>
+                                                <form method="post" action="" style="display: inline">
+                                                    <input type="text" name="product_id" value="{$product_id}" class="d-none">
+                                                    <input type="hidden" name="hoeveel" value="{$amount}">
+                                                    <input type="submit" name="Remove" value="Verwijder" class="btn btn-danger" style="float: right">
+                                                </form>                                           
                                             </td>
                                         </tr>
 EOT;
-
                         }
                     }
                 } else {
+// als je geen producten heb geselecteerd
                     echo "
                                 <div class='alert alert-info' role='alert'>
                                 Je hebt geen producten geselecteerd!
@@ -103,46 +127,10 @@ EOT;
                 ?>
                 </tbody>
             </table>
-            <table class="table mt-4 table-sm">
-                <tbody>
-                <?php
-                if (isset($_SESSION["shoppingcart"])) {
-                    foreach ($_SESSION["shoppingcart"] as $cart) {
-                        $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
-                        $amount = $cart[1];
-
-                        $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
-
-                        if ($result) {
-                            $row = mysqli_fetch_assoc($result);
-                            $totalprice = $row['RecommendedRetailPrice'] * $amount;
-
-                            echo <<<EOT
-                                        <tr>
-                                            <td>{$row['StockItemName']}</td>
-                                            <td>
-                                                <div style="width: 50%; float: left;">
-                                                    <p style="float: right; margin-right: 2rem;">Aantal: {$amount}</p>
-                                                </div>
-                                                <div style="width: 50%; float: left;">
-                                                    <form method="post" action="">
-                                                        <input type="text" name="product_id" value="{$product_id}" class="d-none">
-                                                        <button type="submit" name="+" value="+" class="btn btn-primary btn-sm"><i class="fas fa-plus-circle" data-fa-transform="grow-2"></i></button>
-                                                        <button type="submit" name="-" value="-" class="btn btn-primary btn-sm"><i class="fas fa-minus-circle" data-fa-transform="grow-2"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            <td style="text-align: right;">Prijs: &euro;{$totalprice}</td>
-                                        </tr>
-EOT;
-
-                        }
-                    }
-                }
-                ?>
-                </tbody>
-            </table>
         </div>
+        <?php
+// hier is de input voor je korting
+        ?>
         <div class="col-9">
             <div style="display:flex;align-items:flex-end; height: 250px;">
                 <form method="post" action="">
@@ -151,12 +139,15 @@ EOT;
                             <input type="text" name="discount_code" class="form-control">
                         </div>
                         <div class="col-3">
-                            <input type="submit" name="discount" value="Use Discount" class="btn btn-primary">
+                            <input type="submit" name="discount" value="Kortingscode" class="btn btn-primary">
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        <?php
+// hier is krijg je een overzicht van alle kosten
+        ?>
         <div class="col-3 py-4">
             <table>
                 <tr>
@@ -179,22 +170,21 @@ EOT;
                         ?></td>
                 </tr>
                 <tr>
-                    <td style="padding-right: 2rem;">Totaal voor BTW:</td>
+                    <td style="padding-right: 2rem;">Totaal (excl):</td>
                     <td>&euro;<?php
                         echo round($total, 2);
                         ?></td>
                 </tr>
                 <tr>
-                    <td>BTW:</td>
+                    <td>Btw:</td>
                     <td>&euro;<?php
-                        // TODO: ADD TAX DEPENDENT ON CATEGORY
                         $tax = $total * 0.21;
                         $total += $tax;
                         echo round($tax, 2);
                         ?></td>
                 </tr>
                 <tr>
-                    <td>Totaal</td>
+                    <td>Totaal (incl):</td>
                     <td>&euro;<?php
                         $total = round($total, 2);
                         $_SESSION["shoppingcart_price"] = $total;
@@ -203,7 +193,7 @@ EOT;
                 </tr>
             </table>
             <?php
-            //Geeft aan of je kunt bestelling afronden
+//Geeft aan of je kunt bestelling afronden
             if (isset($_SESSION["email"]) && $total > 0) {
                 echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a>';
             } elseif ($total != 0) {
