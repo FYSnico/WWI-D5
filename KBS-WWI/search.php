@@ -2,6 +2,26 @@
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
+if(isset($_POST["Order"])) {
+    $_SESSION["Order"] = $_POST["Order"];
+}
+if (isset($_SESSION["Order"])) {
+    if ($_SESSION["Order"] == "nameASC") {
+        $volgorde = " StockItemName ASC";
+    } elseif ($_SESSION["Order"] == "nameDESC") {
+        $volgorde = " StockItemName DESC";
+    } elseif ($_SESSION["Order"] == "priceASC") {
+        $volgorde = " RecommendedRetailPrice ASC";
+    } elseif ($_SESSION["Order"] == "priceDESC") {
+        $volgorde = " RecommendedRetailPrice DESC";
+    } elseif ($_SESSION["Order"] == "voorraadASC") {
+        $volgorde = " LastStockTakeQuantity ASC";
+    } elseif ($_SESSION["Order"] == "voorraadDESC") {
+        $volgorde = " LastStockTakeQuantity DESC";
+    }
+} else {
+    $volgorde = " StockItemName DESC";
+}
 
 $zoekterm = "";
 
@@ -24,7 +44,8 @@ if (empty($_GET["query"])) {
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
                             WHERE S.StockItemID = $int
-                            GROUP BY S.StockItemID";
+                            GROUP BY S.StockItemID
+                            ORDER BY $volgorde";
 } else {
     $eerste = $_GET["query"];
     $query_array = explode(' ', $_GET["query"]);
@@ -47,7 +68,8 @@ if (empty($_GET["query"])) {
                             ON SIG.StockGroupID = SG.StockGroupID
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
-                            WHERE $zoekterm";
+                            WHERE $zoekterm
+                            ORDER BY $volgorde";
 }
 $result = $pdo->query($sql);
 ?>

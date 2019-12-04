@@ -2,20 +2,22 @@
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
-
+if(isset($_POST["Order"])) {
+    $_SESSION["Order"] = $_POST["Order"];
+}
 //systeem kijkt welke product volgorde is geselecteerd - johan
-if (isset($_POST["Order"])) {
-    if ($_POST["Order"] == "nameASC") {
+if (isset($_SESSION["Order"])) {
+    if ($_SESSION["Order"] == "nameASC") {
         $volgorde = " StockItemName ASC";
-    } elseif ($_POST["Order"] == "nameDESC") {
+    } elseif ($_SESSION["Order"] == "nameDESC") {
         $volgorde = " StockItemName DESC";
-    } elseif ($_POST["Order"] == "priceASC") {
+    } elseif ($_SESSION["Order"] == "priceASC") {
         $volgorde = " RecommendedRetailPrice ASC";
-    } elseif ($_POST["Order"] == "priceDESC") {
+    } elseif ($_SESSION["Order"] == "priceDESC") {
         $volgorde = " RecommendedRetailPrice DESC";
-    } elseif ($_POST["Order"] == "voorraadASC") {
+    } elseif ($_SESSION["Order"] == "voorraadASC") {
         $volgorde = " LastStockTakeQuantity ASC";
-    } elseif ($_POST["Order"] == "voorraadDESC") {
+    } elseif ($_SESSION["Order"] == "voorraadDESC") {
         $volgorde = " LastStockTakeQuantity DESC";
     }
 } else {
