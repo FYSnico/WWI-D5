@@ -69,7 +69,7 @@ include("components/config.php");
                     // product toevoegen in winkelmand - johan
                     echo <<<EOT
                     <form method="POST" action="">
-                    <input name="hoeveel" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
+                    <input name="hoeveel" value="1" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
                     <input name="id" type="text" class="d-none" value=$item>
                     <button type="submit" name="submit" value="submit"class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form><br>
  EOT;
@@ -78,12 +78,12 @@ include("components/config.php");
                     //controleren of getal is ingevoerd
                     if (isset($_POST["submit"])) {
                         if ($_POST["hoeveel"] > 0 && $lastStockTakeQuantity >= $_POST["hoeveel"]) {
-                            echo '<a class="alert alert-success">Product toegevoegd.</a>';
+                            echo '<a class="alert alert-success"><strong>✓</strong> Toegevoegd</a>';
                             $productmagwordentoegevoegd = true;
                         } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
-                            echo '<a class="alert alert-warning">Aantal moet hoger zijn dan 0.</a>';
+                            echo '<a class="alert alert-warning"><strong>!</strong> Aantal graag hoger dan 0.</a>';
                         } elseif ($row['LastStockTakeQuantity'] < $_POST["hoeveel"]) {
-                            echo '<a class="alert alert-warning">Voorraad is te laag.</a>';
+                            echo '<a class="alert alert-warning"><strong>!</strong> Aantal te hoog.</a>';
                         }
                     }
                     echo '</aside>';
