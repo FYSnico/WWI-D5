@@ -44,7 +44,8 @@ if (isset($_SESSION["shopping_cart_discount"])) {
 
 
 ?>
-<div class="container">
+<div class="container border rounded shadow p-3">
+    <h2>Winkelmand</h2>
     <div class="row">
         <div class="col-12 shopping-cart">
             <table class="table my-4 ">
@@ -156,11 +157,12 @@ EOT;
                 </tr>
                 <tr>
                     <td>Verzending:</td>
-                    <td>&euro;<?php
-                        $shipping = $itemcount * 0;
-                        $total += $shipping;
-                        echo $shipping;
-                        ?></td>
+<!--                    <td>&euro;--><?php
+//                        $shipping = $itemcount * 0;
+//                        $total += $shipping;
+//                        echo $shipping;
+//                        ?><!--</td>-->
+                    <td><strong class="text-success h6">gratis</strong></td>
                 </tr>
                 <tr>
                     <td style="padding-right: 2rem;">Korting:</td>
@@ -190,14 +192,16 @@ EOT;
                         $_SESSION["shoppingcart_price"] = $total;
                         echo $_SESSION["shoppingcart_price"];
                         ?></td>
+
                 </tr>
             </table>
             <?php
 //Geeft aan of je kunt bestelling afronden
             if (isset($_SESSION["email"]) && $total > 0) {
-                echo '<a class="btn btn-primary mt-3" href="afrekenen.php">Bestellen</a>';
+                echo '<a class="btn btn-primary mt-3 " href="afrekenen.php">Bestellen</a>';
             } elseif ($total != 0) {
-                echo '<a class="fas fa-sign-in-alt" href="login.php">Login in om te bestellen</a>';
+                echo '<a class="btn btn-primary fas fa-sign-in-alt p-3 mt-2" href="login.php"> Inloggen om te bestellen</a>';
+
             }
             ?>
         </div>
