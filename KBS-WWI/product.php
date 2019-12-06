@@ -21,7 +21,7 @@ if (isset($_SESSION["Order"])) {
         $volgorde = " LastStockTakeQuantity DESC";
     }
 } else {
-    $volgorde = " StockItemName DESC";
+    $volgorde = " StockItemName ASC";
 }
 
 $item = $_GET['id'];
@@ -53,7 +53,7 @@ $categorienaam = $stmt2->fetch();
             <br>
             <?php
             // Currency converter
-            $convertRate = convertCurrency2(1, 'USD', 'EUR');
+            $convertRate = convertCurrency(1, 'USD', 'EUR');
             // Kijk of er producten in de tabel staan
             if ($result->rowCount() > 0) {
                 ?>
@@ -68,7 +68,7 @@ $categorienaam = $stmt2->fetch();
                         <option value="voorraadDESC">Voorraad ↓</option>
                     </select>
                     <br>
-                    <input type="submit" value="ORDER!!!" class="btn btn-primary">
+                    <input type="submit" value="Sorteren" class="btn btn-primary">
                 </form>
                 <br>
                 <div class="card-deck kaartdeck productkaartdeck">
