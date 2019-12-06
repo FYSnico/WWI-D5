@@ -23,7 +23,7 @@ $result = $pdo->query($sql);
             <br>
             <?php
             //Currency converter
-            $convertRate = convertCurrency(1, 'USD', 'EUR');
+            $convertRate = @convertCurrency(1, 'USD', 'EUR');
             // Random products weergeven
             if ($result->rowCount() > 0) {
 
