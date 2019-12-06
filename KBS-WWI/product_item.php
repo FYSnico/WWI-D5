@@ -27,7 +27,7 @@ include("functions.php");
                     echo '<aside class="col-sm-5 border-right">';
                         echo '<article class="gallery-wrap">';
                             echo '<div class="img-big-wrap">';
-                                echo '<div> <a href="#"><img src="https://picsum.photos/460/500"></a></div>';
+                                echo '<div> <a href="#"><img src="https://picsum.photos/460/600"></a></div>';
                             echo '</div>';
                         echo '</article>';
                     echo '</aside>';
