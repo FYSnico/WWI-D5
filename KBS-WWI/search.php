@@ -72,7 +72,7 @@ if (empty($_GET["query"])) {
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
                             WHERE $zoekterm
-                            ORDER BY $volgorde";
+                            ORDER BY (CASE WHEN StockItemName = '$eerste' THEN 0 ELSE 1 END),$volgorde";
 }
 $result = $pdo->query($sql);
 ?>
