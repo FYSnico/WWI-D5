@@ -43,7 +43,7 @@ if(isset($_POST["Remove"])) {
     <h2>Winkelmand</h2>
     <div class="row">
         <div class="col-12 shopping-cart">
-            <tbody>
+
             <table class="table my-4 ">
                 <thead class="thead-dark">
                 <tr>
@@ -138,7 +138,7 @@ EOT;
                     } else {
 // als je geen producten heb geselecteerd
                         echo "
-                                <div class='alert alert-info' role='alert'>
+                                <div class='alert alert-info'  role='alert'>
                                 Je hebt geen producten geselecteerd!
                                 </div>";
                     }
@@ -147,8 +147,8 @@ EOT;
                                 <div class='alert alert-info' role='alert'>
                                 Je hebt geen producten geselecteerd!
                                 </div>";
+                    }
 
-                }
                 ?>
 
             </table>
@@ -232,8 +232,7 @@ EOT;
         </div>
     </div>
 </div>
-</body>
-<footer>
+
     <?php include 'components/footer.php'; ?>
-</footer>
+
 </html>

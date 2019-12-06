@@ -90,7 +90,7 @@ include("functions.php");
 
                     //product toevoegen in winkelmand - johan
                     echo <<<EOT
-                    <div class="card-body pt-0 pr-5 pb-0 pl-5">
+                    <div class="card-body pt-0 pr-5 pb-0 pl-0">
                         <form method="POST" action="" class="">
                         <input name="hoeveel" value="1" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
                         <input name="id" type="text" class="d-none" value=$item>
