@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
+
     <?php
     //includes doen
     include 'components/header.php';
     include 'components/ddb_connect_mysqli.php';
     include("functions.php");
     ?>
-</head>
-<body>
 <?php
 //$fakedata = array(
 //    array(1, 4),
