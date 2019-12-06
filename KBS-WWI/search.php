@@ -8,16 +8,22 @@ if(isset($_POST["Order"])) {
 if (isset($_SESSION["Order"])) {
     if ($_SESSION["Order"] == "nameASC") {
         $volgorde = " StockItemName ASC";
+        $dropdown = "Naam A - Z";
     } elseif ($_SESSION["Order"] == "nameDESC") {
         $volgorde = " StockItemName DESC";
+        $dropdown = "Naam Z - A";
     } elseif ($_SESSION["Order"] == "priceASC") {
         $volgorde = " RecommendedRetailPrice ASC";
+        $dropdown = "Prijs ↑";
     } elseif ($_SESSION["Order"] == "priceDESC") {
         $volgorde = " RecommendedRetailPrice DESC";
+        $dropdown = "Prijs ↓";
     } elseif ($_SESSION["Order"] == "voorraadASC") {
         $volgorde = " LastStockTakeQuantity ASC";
+        $dropdown = "Voorraad ↑";
     } elseif ($_SESSION["Order"] == "voorraadDESC") {
         $volgorde = " LastStockTakeQuantity DESC";
+        $dropdown = "Voorraad ↓";
     }
 } else {
     $volgorde = " StockItemName ASC";
@@ -88,12 +94,15 @@ $result = $pdo->query($sql);
                 <!--Filteren producten-->
                 <form action="" method="post">
                     <select name="Order" class="form-control">
-                        <option value="nameASC">Naam A - Z</option>
-                        <option value="nameDESC">Naam Z - A</option>
-                        <option value="priceASC">Prijs ↑</option>
-                        <option value="priceDESC">Prijs ↓</option>
-                        <option value="voorraadASC">Voorraad ↑</option>
-                        <option value="voorraadDESC">Voorraad ↓</option>
+                        <?php
+                        if($_SESSION["Order"] != NULL){echo "<option value=" . $_SESSION["Order"] . ">" . $dropdown . "</option>";}
+                        if($_SESSION["Order"] != "nameASC"){echo "<option value=\"nameASC\">Naam A - Z</option>";}
+                        if($_SESSION["Order"] != "nameDESC"){echo "<option value=\"nameDESC\">Naam Z - A</option>";}
+                        if($_SESSION["Order"] != "priceASC"){echo "<option value=\"priceASC\">Prijs ↑</option>";}
+                        if($_SESSION["Order"] != "priceDESC"){echo "<option value=\"priceDESC\">Prijs ↓</option>";}
+                        if($_SESSION["Order"] != "voorraadASC"){echo "<option value=\"voorraadASC\">Voorraad ↑</option>";}
+                        if($_SESSION["Order"] != "voorraadDESC"){echo "<option value=\"voorraadDESC\">Voorraad ↓</option>";}
+                        ?>
                     </select>
                     <br>
                     <input type="submit" value="Sorteren" class="btn btn-primary">
