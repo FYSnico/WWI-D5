@@ -16,7 +16,7 @@ function randomPicture()
     return $img;
 }
 function convertCurrency($amount,$from_currency,$to_currency){
-    $apikey = 'f185f1f2896499b90eab';
+    $apikey = '4560a3f7760193469e10';
 
     $from_Currency = urlencode($from_currency);
     $to_Currency = urlencode($to_currency);
@@ -30,8 +30,8 @@ function convertCurrency($amount,$from_currency,$to_currency){
 
 
     $total = $val * $amount;
-    return number_format($total, 2, ',', '.');
+    return number_format($total, 2, '.', '.');
 }
 function convertCurrency2($amount,$from_currency,$to_currency){
-    return 1.09;
+    return 2;
 }

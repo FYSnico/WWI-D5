@@ -53,7 +53,7 @@ if (empty($_GET["query"])) {
     $query_array = explode(' ', $_GET["query"]);
     //print_r($query_array);
     //$sqla = array('0'); // Stop errors when $words is empty
-    $sqla[0] = "S.SearchDetails LIKE '%$eerste%'";
+    $sqla[0] = "S.StockItemName = '%$eerste%'";
     foreach ($query_array as $word) {
         $sqla[] = "S.SearchDetails LIKE '%$word%'";
         if ($word == "'1'") {
@@ -81,7 +81,7 @@ $result = $pdo->query($sql);
             <br>
             <?php
             // Currency converter
-            $convertRate = convertCurrency2(1, 'USD', 'EUR');
+            $convertRate = convertCurrency(1, 'USD', 'EUR');
             // Kijk of er producten in de tabel staan
             if ($result->rowCount() > 0) {
                 ?>
@@ -96,7 +96,7 @@ $result = $pdo->query($sql);
                         <option value="voorraadDESC">Voorraad ↓</option>
                     </select>
                     <br>
-                    <input type="submit" value="ORDER!!!" class="btn btn-primary">
+                    <input type="submit" value="Sorteren" class="btn btn-primary">
                 </form>
                 <br>
                 <div class="card-deck kaartdeck productkaartdeck">

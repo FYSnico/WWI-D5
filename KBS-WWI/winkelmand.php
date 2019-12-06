@@ -86,7 +86,7 @@ if (isset($_SESSION["shopping_cart_discount"])) {
 
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
-                            $convertRate = convertCurrency2(1, 'USD', 'EUR');
+                            $convertRate = convertCurrency(1, 'USD', 'EUR');
                             $prijs =  round($row['RecommendedRetailPrice'] * $convertRate, 2);
 
                             $total += ($amount * $prijs);
