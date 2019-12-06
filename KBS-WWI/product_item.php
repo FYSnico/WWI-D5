@@ -1,6 +1,7 @@
 <?php
 include('components/header.php');
 include("components/config.php");
+include("functions.php");
 ?>
     <div class="container">
         <div class="card shadow">
@@ -21,6 +22,7 @@ include("components/config.php");
                         WHERE SIG.StockItemID = $item  
                         ";
                 $result = $pdo->query($sql);
+                $convertRate = @convertCurrency(1, 'USD', 'EUR');
                 while ($row = $result->fetch()) {
                     echo '<aside class="col-sm-5 border-right">';
                         echo '<article class="gallery-wrap">';
@@ -47,7 +49,7 @@ include("components/config.php");
                                 echo '</dl>';
                                 echo '<span class="price h3 text-warning">';
                                     echo '<span class="currency">€</span><span class="num">';
-                                        echo $row['RecommendedRetailPrice'];
+                                        echo round($row['RecommendedRetailPrice'] * $convertRate, 2);
                                     echo '</span>';
                                 echo '</span>';
                             echo '</p>';
@@ -92,7 +94,7 @@ include("components/config.php");
                     <input name="hoeveel" value="1" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
                     <input name="id" type="text" class="d-none" value=$item>
                     <button type="submit" name="submit" value="submit" class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form><br>
- EOT;
+EOT;
                     $lastStockTakeQuantity = $row['LastStockTakeQuantity'];
                     $productmagwordentoegevoegd = false;
 

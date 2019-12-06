@@ -87,7 +87,7 @@ $result = $pdo->query($sql);
             <br>
             <?php
             // Currency converter
-            $convertRate = convertCurrency(1, 'USD', 'EUR');
+            $convertRate = @convertCurrency(1, 'USD', 'EUR');
             // Kijk of er producten in de tabel staan
             if ($result->rowCount() > 0) {
                 ?>
