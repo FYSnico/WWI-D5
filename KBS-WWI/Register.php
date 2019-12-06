@@ -37,7 +37,7 @@ $check = false;
                 } elseif (empty(trim($_POST["password"]))) {
                     $passerror = "<p class=\"alert alert-danger\">Wachtwoord is verplicht.</p>";
                     print($passerror);
-                }elseif(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,16}$/m', $password)) {
+                }elseif(!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,}$/m', $password)) {
                     print("<p class=\"alert alert-danger\">Het wachtwoord moet minimaal 8 tekens lang zijn, een hoofdletter bevatten, een getal en één van de speciale tekens.</p>");
                 }elseif (!($password == $confirm_password)) {
                     print("<p class=\"alert alert-danger\">Beide wachtwoorden moeten hetzelfde zijn.</p>");
