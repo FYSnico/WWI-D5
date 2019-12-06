@@ -105,17 +105,11 @@ if(isset($_POST["Remove"])) {
                             $amount = $cart[1];
                             $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
 
-<<<<<<< Updated upstream
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
                             $convertRate = @convertCurrency(1, 'USD', 'EUR');
                             $prijs =  round($row['RecommendedRetailPrice'] * $convertRate, 2);
-=======
-                            if ($result && mysqli_num_rows($result) > 0) {
-                                $row = mysqli_fetch_assoc($result);
-                                $convertRate = convertCurrency(1, 'USD', 'EUR');
-                                $prijs = round($row['RecommendedRetailPrice'] * $convertRate, 2);
->>>>>>> Stashed changes
+
 
                                 $total += ($amount * $prijs);
                                 $itemcount += $amount;
