@@ -2,7 +2,7 @@
 <html>
 <head>
     <?php
-//includes doen
+    //includes doen
     include 'components/header.php';
     include 'components/ddb_connect_mysqli.php';
     include("functions.php");
@@ -17,6 +17,8 @@
 //);
 //$_SESSION["shoppingcart"] = array(array(1,4));
 //$_SESSION["shoppingcart"] = $fakedata;
+//$_SESSION["shoppingcart"] = $array;
+//print_r(array_values($_SESSION["shoppingcart"]));
 
 //waardes toevoegen en eventueel de korting - johan
 $total = 0;
@@ -27,20 +29,17 @@ if (isset($_SESSION["shopping_cart_discount"])) {
 }
 
 //product verwijderen moet nog werkend worden gemaakt maar ik weet niet hoe ik de goede session verwijderd in de array van de array komt nog
-//if(isset($_POST["Remove"])) {
-//    $id = $_POST["product_id"];
-//    $hoeveel = $_POST["hoeveel"];
-//    $shoppingcart = $_SESSION["shoppingcart"];
-//
-//    $shoppingcart = unset(array($id, $hoeveel));
-////    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
-////        if ($shoppingcart[$i][0] == $id) {
-////            $shoppingcart = array_diff_key($shoppingcart, [$id]);
-////        }
-////    }
-//    $_SESSION["shoppingcart"] = $shoppingcart;
-//}
+if(isset($_POST["Remove"])) {
+    $id = $_POST["product_id"];
+    $shoppingcart = $_SESSION["shoppingcart"];
 
+    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+        if ($shoppingcart[$i][0] == $id) {
+            unset($shoppingcart[$i]);
+        }
+    }
+    $_SESSION["shoppingcart"] = array_values($shoppingcart);
+}
 
 
 ?>
@@ -62,23 +61,45 @@ if (isset($_SESSION["shopping_cart_discount"])) {
                 <?php
                 $count = 0;
                 if (isset($_SESSION["shoppingcart"])) {
-// bijwerken van de aantal in winkelmand
-                    if(isset($_POST["hoeveelheid"]) && isset($_POST["product_id"]) && $_POST["hoeveelheid"] > 0) {
-                        $shoppingcart = $_SESSION["shoppingcart"];
 
-                        $productIsInCartIndex = 0;
-                        for ($i = 0; $i < sizeof($shoppingcart); $i++) {
-                            if ($shoppingcart[$i][0] == $_POST["product_id"]) {
-                                $productIsInCartIndex = $i;
-                            }
+                // bijwerken van de aantal in winkelmand
+                if(isset($_POST["hoeveelheid"]) && isset($_POST["product_id"]) && $_POST["hoeveelheid"] > 0) {
+                    $shoppingcart = $_SESSION["shoppingcart"];
+
+                    $productIsInCartIndex = 0;
+                    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+                        if ($shoppingcart[$i][0] == $_POST["product_id"]) {
+                            $productIsInCartIndex = $i;
                         }
-                        $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
-                        $_SESSION["shoppingcart"] = $shoppingcart;
                     }
+                    $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
+                    $_SESSION["shoppingcart"] = $shoppingcart;
+                }
 
-                    foreach ($_SESSION["shoppingcart"] as $cart) {
+//                    if (isset($_POST["hoeveelheid"]) && isset($_POST["product_id"])) {
+////                        $result = $mysqli->query("SELECT LastStockTakeQuantity FROM stockitemholdings WHERE id = {$_POST["product_id"]};");
+////                        if (mysqli_num_rows($result) > 0) {
+////                            $row = mysqli_fetch_assoc($result);
+//// < $rowT['LastStockTakeQuantity']
+//                            if ($_POST["hoeveelheid"] > 0 && $_POST["hoeveelheid"] ) {
+//                                $shoppingcart = $_SESSION["shoppingcart"];
+//
+//                                $productIsInCartIndex = 0;
+//                                for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+//                                    if ($shoppingcart[$i][0] == $_POST["product_id"]) {
+//                                        $productIsInCartIndex = $i;
+//                                    }
+//                                }
+//                                $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
+//                                $_SESSION["shoppingcart"] = $shoppingcart;
+//                            }
+//                        }
+//                    }
 
-//data ophalen van de database halen wat geselecteerd is in session
+
+
+                        //data ophalen van de database halen wat geselecteerd is in session
+                        foreach ($_SESSION["shoppingcart"] as $cart) {
                         $count++;
                         $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
                         $amount = $cart[1];
@@ -110,7 +131,6 @@ if (isset($_SESSION["shopping_cart_discount"])) {
                                                 </form>
                                                 <form method="post" action="" style="display: inline">
                                                     <input type="text" name="product_id" value="{$product_id}" class="d-none">
-                                                    <input type="hidden" name="hoeveel" value="{$amount}">
                                                     <input type="submit" name="Remove" value="Verwijder" class="btn btn-danger" style="float: right">
                                                 </form>                                           
                                             </td>
@@ -196,7 +216,7 @@ EOT;
                 </tr>
             </table>
             <?php
-//Geeft aan of je kunt bestelling afronden
+// Geeft aan of je kunt bestelling afronden
             if (isset($_SESSION["email"]) && $total > 0) {
                 echo '<a class="btn btn-primary mt-3 " href="afrekenen.php">Bestellen</a>';
             } elseif ($total != 0) {
