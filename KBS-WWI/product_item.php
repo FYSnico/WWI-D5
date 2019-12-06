@@ -61,8 +61,8 @@ include("functions.php");
                             echo '</span>';
                         echo '</article>';
                         echo '<hr>';
-                    echo '<div class="row">';
-                        echo '<div class="col-sm-5">';
+                    echo '<div class="card-body pt-0 pr-5 pb-0 pl-5">';
+                        echo '<div class="">';
                             echo '<dl class="param param-inline">';
                                 echo '<dt> Voorraad: ';
                                     echo $row['LastStockTakeQuantity'];
@@ -90,11 +90,15 @@ include("functions.php");
 
                     //product toevoegen in winkelmand - johan
                     echo <<<EOT
-                    <form method="POST" action="">
-                    <input name="hoeveel" value="1" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
-                    <input name="id" type="text" class="d-none" value=$item>
-                    <button type="submit" name="submit" value="submit" class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form><br>
+                    <div class="card-body pt-0 pr-5 pb-0 pl-5">
+                        <form method="POST" action="" class="">
+                        <input name="hoeveel" value="1" type="number" class="btn btn-lg btn-outline-primary text-uppercase">
+                        <input name="id" type="text" class="d-none" value=$item>
+                        <button type="submit" name="submit" value="submit" class="btn btn-lg btn-outline-primary text-uppercase"><i class="fas fa-shopping-cart"></i> Toevoegen</button></form>
+                        <br>
+                    </div>
 EOT;
+
                     $lastStockTakeQuantity = $row['LastStockTakeQuantity'];
                     $productmagwordentoegevoegd = false;
 
