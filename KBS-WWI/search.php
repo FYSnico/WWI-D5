@@ -62,7 +62,6 @@ if (empty($_GET["query"])) {
         }
     }
     $zoekterm = implode(" OR ", $sqla);
-    print_r($sqla);
     $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG   
