@@ -47,6 +47,7 @@ if(isset($_POST["Remove"])) {
     <h2>Winkelmand</h2>
     <div class="row">
         <div class="col-12 shopping-cart">
+            <tbody>
             <table class="table my-4 ">
                 <thead class="thead-dark">
                 <tr>
@@ -57,24 +58,24 @@ if(isset($_POST["Remove"])) {
                     <th scope="col"></th>
                 </tr>
                 </thead>
-                <tbody>
                 <?php
                 $count = 0;
                 if (isset($_SESSION["shoppingcart"])) {
+                    if (isset($_SESSION["shoppingcart"][0][0])) {
 
-                // bijwerken van de aantal in winkelmand
-                if(isset($_POST["hoeveelheid"]) && isset($_POST["product_id"]) && $_POST["hoeveelheid"] > 0) {
-                    $shoppingcart = $_SESSION["shoppingcart"];
+                        // bijwerken van de aantal in winkelmand
+                        if (isset($_POST["hoeveelheid"]) && isset($_POST["product_id"]) && $_POST["hoeveelheid"] > 0) {
+                            $shoppingcart = $_SESSION["shoppingcart"];
 
-                    $productIsInCartIndex = 0;
-                    for ($i = 0; $i < sizeof($shoppingcart); $i++) {
-                        if ($shoppingcart[$i][0] == $_POST["product_id"]) {
-                            $productIsInCartIndex = $i;
+                            $productIsInCartIndex = 0;
+                            for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+                                if ($shoppingcart[$i][0] == $_POST["product_id"]) {
+                                    $productIsInCartIndex = $i;
+                                }
+                            }
+                            $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
+                            $_SESSION["shoppingcart"] = $shoppingcart;
                         }
-                    }
-                    $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
-                    $_SESSION["shoppingcart"] = $shoppingcart;
-                }
 
 //                    if (isset($_POST["hoeveelheid"]) && isset($_POST["product_id"])) {
 ////                        $result = $mysqli->query("SELECT LastStockTakeQuantity FROM stockitemholdings WHERE id = {$_POST["product_id"]};");
@@ -97,26 +98,32 @@ if(isset($_POST["Remove"])) {
 //                    }
 
 
-
                         //data ophalen van de database halen wat geselecteerd is in session
                         foreach ($_SESSION["shoppingcart"] as $cart) {
-                        $count++;
-                        $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
-                        $amount = $cart[1];
-                        $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
+                            $count++;
+                            $product_id = mysqli_real_escape_string($mysqli, $cart[0]);
+                            $amount = $cart[1];
+                            $result = $mysqli->query("SELECT * FROM stockitems WHERE StockItemID = {$product_id};");
 
+<<<<<<< Updated upstream
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
                             $convertRate = @convertCurrency(1, 'USD', 'EUR');
                             $prijs =  round($row['RecommendedRetailPrice'] * $convertRate, 2);
+=======
+                            if ($result && mysqli_num_rows($result) > 0) {
+                                $row = mysqli_fetch_assoc($result);
+                                $convertRate = convertCurrency(1, 'USD', 'EUR');
+                                $prijs = round($row['RecommendedRetailPrice'] * $convertRate, 2);
+>>>>>>> Stashed changes
 
-                            $total += ($amount * $prijs);
-                            $itemcount += $amount;
-                            $totalprice = $prijs * $amount;
-                            $StockItemName = $row['StockItemName'];
+                                $total += ($amount * $prijs);
+                                $itemcount += $amount;
+                                $totalprice = $prijs * $amount;
+                                $StockItemName = $row['StockItemName'];
 
 // De waardens in tabbellen zetten
-                            echo <<<EOT
+                                echo <<<EOT
                                         <tr xmlns="http://www.w3.org/1999/html">
                                             <th scope="col">{$count}</th> 
                                             <td>{$StockItemName}</td>
@@ -136,18 +143,26 @@ if(isset($_POST["Remove"])) {
                                             </td>
                                         </tr>
 EOT;
+                            }
                         }
+                    } else {
+// als je geen producten heb geselecteerd
+                        echo "
+                                <div class='alert alert-info' role='alert'>
+                                Je hebt geen producten geselecteerd!
+                                </div>";
                     }
                 } else {
-// als je geen producten heb geselecteerd
                     echo "
                                 <div class='alert alert-info' role='alert'>
                                 Je hebt geen producten geselecteerd!
                                 </div>";
+
                 }
                 ?>
-                </tbody>
+
             </table>
+            </tbody>
         </div>
         <?php
 // hier is de input voor je korting
