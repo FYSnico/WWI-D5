@@ -20,7 +20,7 @@ if (isset($_SESSION["Order"])) {
         $volgorde = " LastStockTakeQuantity DESC";
     }
 } else {
-    $volgorde = " StockItemName DESC";
+    $volgorde = " StockItemName ASC";
 }
 
 $zoekterm = "";
@@ -53,7 +53,7 @@ if (empty($_GET["query"])) {
     $query_array = explode(' ', $_GET["query"]);
     //print_r($query_array);
     //$sqla = array('0'); // Stop errors when $words is empty
-    $sqla[0] = "S.StockItemName = '%$eerste%'";
+    $sqla[0] = "S.StockItemName = '$eerste'";
     foreach ($query_array as $word) {
         $sqla[] = "S.SearchDetails LIKE '%$word%'";
         if ($word == "'1'") {
@@ -62,6 +62,7 @@ if (empty($_GET["query"])) {
         }
     }
     $zoekterm = implode(" OR ", $sqla);
+    print_r($sqla);
     $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG   

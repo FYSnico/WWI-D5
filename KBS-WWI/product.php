@@ -21,7 +21,7 @@ if (isset($_SESSION["Order"])) {
         $volgorde = " LastStockTakeQuantity DESC";
     }
 } else {
-    $volgorde = " StockItemName DESC";
+    $volgorde = " StockItemName ASC";
 }
 
 $item = $_GET['id'];
