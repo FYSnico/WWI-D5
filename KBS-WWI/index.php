@@ -42,7 +42,8 @@ $result = $pdo->query($sql);
                                 </p>
                                 <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> stocks op voorraad</p>
                                 <p class="card-text">
-                                    € <?php echo round($row['UnitPrice'] * $convertRate,2) ?></p>
+                                    €<?php $UnitPrice = $row['UnitPrice'] * $convertRate;
+                                echo number_format($UnitPrice,2,",",".") ?></p>
                             </div>
                         </div>
                     <?php } ?>
