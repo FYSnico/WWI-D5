@@ -104,7 +104,7 @@ if(isset($_POST["Remove"])) {
 
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
-                            $convertRate = @convertCurrency(1, 'USD', 'EUR');
+                            $convertRate = @convertCurrency2(1, 'USD', 'EUR');
                             $prijs =  round(($row['UnitPrice'] * $convertRate), 2);
 
 

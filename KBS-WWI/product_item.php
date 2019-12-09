@@ -22,7 +22,7 @@ include("functions.php");
                     WHERE SIG.StockItemID = $item  
                     ";
             $result = $pdo->query($sql);
-            $convertRate = @convertCurrency(1, 'USD', 'EUR');
+            $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             while ($row = $result->fetch()) {
                 echo '<aside class="col-sm-5 border-right p-0">';
                     echo '<article class="gallery-wrap">';
