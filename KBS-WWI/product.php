@@ -40,11 +40,7 @@ if (isset($_GET['p'])) {
 } else {
     $huidigepagina = 1;
 }
-<<<<<<< HEAD
-$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, Photo, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
-=======
-$sql = "SELECT StockItemName, S.StockItemID, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
->>>>>>> master
+$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, Photo, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID

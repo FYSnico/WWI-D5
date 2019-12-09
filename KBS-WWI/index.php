@@ -4,11 +4,9 @@ include("components/config.php");
 include("functions.php");
 
 // Random products genareren
-<<<<<<< HEAD
+
 $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, Photo, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
-=======
-$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
->>>>>>> master
+
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID

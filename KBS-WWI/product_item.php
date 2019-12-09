@@ -12,11 +12,8 @@ include("functions.php");
                 session_start();
             }
             $item = $_GET['id'];
-<<<<<<< HEAD
-            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
-=======
-            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, SearchDetails, S.StockItemID, StockItemName, UnitPrice, LastStockTakeQuantity, StockGroupName
->>>>>>> master
+            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, UnitPrice, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
+
                     FROM stockitems S 
                     JOIN stockitemholdings SIH
                     ON S.stockitemID = SIH.stockitemID
