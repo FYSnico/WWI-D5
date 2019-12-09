@@ -39,5 +39,5 @@ function convertCurrency($amount,$from_currency,$to_currency){
 
 }
 function convertCurrency2($amount,$from_currency,$to_currency){
-    return 1.09;
+    return 0.90;
 }

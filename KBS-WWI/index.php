@@ -4,7 +4,11 @@ include("components/config.php");
 include("functions.php");
 
 // Random products genareren
+<<<<<<< HEAD
 $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, Photo, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
+=======
+$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
+>>>>>>> master
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
@@ -23,7 +27,7 @@ $result = $pdo->query($sql);
             <br>
             <?php
             //Currency converter
-            $convertRate = @convertCurrency(1, 'USD', 'EUR');
+            $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             // Random products weergeven
             if ($result->rowCount() > 0) {
 
@@ -50,7 +54,8 @@ $result = $pdo->query($sql);
                                 </p>
                                 <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> stocks op voorraad</p>
                                 <p class="card-text">
-                                    € <?php echo round($row['RecommendedRetailPrice'] * $convertRate,2) ?></p>
+                                    €<?php $UnitPrice = $row['UnitPrice'] * $convertRate;
+                                echo number_format($UnitPrice,2,",",".") ?></p>
                             </div>
                         </div>
                     <?php } ?>

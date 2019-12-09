@@ -30,7 +30,6 @@ session_start();
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
 </head>
-<body>
 <header>
     <div id="topheader">
         <nav class="nav navbar sticky-top navbar-expand-lg navbar-dark">
@@ -104,3 +103,4 @@ session_start();
     <li class="list-group-item"><i class="fas fa-check-circle"></i> <b>24/7</b> bestellingen plaatsen</li>
 </ul>
 <br><br>
+<body>

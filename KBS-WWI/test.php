@@ -16,5 +16,5 @@ function convertCurrency($amount,$from_currency,$to_currency){
     $total = $val * $amount;
     return number_format($total, 2, ',', '.');
 }
-echo convertCurrency(10, 'USD', 'PHP');
+echo convertCurrency2(10, 'USD', 'PHP');
 ?>

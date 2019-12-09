@@ -12,7 +12,11 @@ include("functions.php");
                 session_start();
             }
             $item = $_GET['id'];
+<<<<<<< HEAD
             $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
+=======
+            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, SearchDetails, S.StockItemID, StockItemName, UnitPrice, LastStockTakeQuantity, StockGroupName
+>>>>>>> master
                     FROM stockitems S 
                     JOIN stockitemholdings SIH
                     ON S.stockitemID = SIH.stockitemID
@@ -23,7 +27,7 @@ include("functions.php");
                     WHERE SIG.StockItemID = $item  
                     ";
             $result = $pdo->query($sql);
-            $convertRate = @convertCurrency(1, 'USD', 'EUR');
+            $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             while ($row = $result->fetch()) {
                 echo '<aside class="col-sm-5 border-right p-0">';
                     echo '<article class="gallery-wrap">';
@@ -63,7 +67,8 @@ include("functions.php");
                             echo '</dl>';
                             echo '<span class="price h3 text-warning">';
                                 echo '<span class="currency">€</span><span class="num">';
-                                    echo round($row['RecommendedRetailPrice'] * $convertRate, 2);
+                                    $UnitPrice = $row['UnitPrice'] * $convertRate;
+                                    echo number_format($UnitPrice,2,",",".");
                                 echo '</span>';
                             echo '</span>';
                         echo '</p>';
