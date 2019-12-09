@@ -210,8 +210,7 @@ EOT;
                 </tr>
                 <tr>
                     <td><strong>Totaalprijs (incl):</strong></td>
-                    <td>&euro;<?php
-                        $total = number_format($total,2,",",".");
+                    <td>&euro;<?php 
                         $_SESSION["shoppingcart_price"] = $total;
                         echo $_SESSION["shoppingcart_price"];
                         ?></td>
