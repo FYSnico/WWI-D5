@@ -31,7 +31,7 @@ include("functions.php");
                         echo '<div class="img-big-wrap">';
                             echo '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">';
                                 echo '<ol class="carousel-indicators">';
-                                    echo '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>';
+//                                    echo '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>';
                                 echo '</ol>';
                                 echo '<div class="carousel-inner">';
                                     echo '<div class="carousel-item active">';
@@ -117,12 +117,16 @@ include("functions.php");
                             $imagetmp = addslashes(file_get_contents($_FILES['myimage']['tmp_name']));
                             $sql = "UPDATE stockitems SET Photo = '$imagetmp' WHERE StockItemID = $id";
                             $insert_image = $pdo->query($sql);
+
                             if( $insert_image) {
                                 echo "Afbeelding uploaded <br>";
                             }
+                            $secondsWait = 0;
+                            echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
                         }else{
                             echo "Er moet een bestand gekozen worden <br>";
                         }
+
                     }
                     //product toevoegen in winkelmand - johan
                     echo '<div class="card-body pt-0 pr-5 pb-0 pl-0">';
