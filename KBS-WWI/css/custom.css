@@ -79,7 +79,10 @@ nav button.search {
     margin: 0 auto;
     margin-bottom: 15px!important;
 }
-
+.product-img-size{
+    width: 400px;
+    height: 600px;
+}
 @media (max-width: 580px){
     .kaartbreedte {
         width: 100%!important;

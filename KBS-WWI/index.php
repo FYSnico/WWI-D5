@@ -4,7 +4,7 @@ include("components/config.php");
 include("functions.php");
 
 // Random products genareren
-$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
+$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, Photo, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
@@ -30,7 +30,15 @@ $result = $pdo->query($sql);
                 echo "<div class=\"card-deck kaartdeck\">";
                     while ($row = $result->fetch()) { ?>
                         <div class="card w-25 kaartbreedte" style="width: 18rem;">
-                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img class="card-img-top kaartimg" src="<?php echo randomPicture() ?>" alt="Productafbeelding"></a>
+                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'>
+                                <?php
+                                if ($row['Photo']) {
+                                    echo '<img class="card-img-top kaartimg" src="data:image/jpeg;base64,' . base64_encode($row['Photo']) . '"/>';
+                                } else {
+                                    echo '<img class="card-img-top kaartimg" src="images/default-product.png" alt="">';
+                                }
+                                ?>
+                            </a>
                             <div class="card-body">
                                 <h5 class="card-title kaarttitel"><a
                                             href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>

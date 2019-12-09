@@ -36,7 +36,7 @@ if (isset($_GET['p'])) {
 } else {
     $huidigepagina = 1;
 }
-$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
+$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, Photo, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
@@ -91,10 +91,15 @@ $categorienaam = $stmt2->fetch();
                         } else {
                             ?>
                             <div class="card w-25 kaartbreedte">
-                                <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
-                                            class="card-img-top kaartimg"
-                                            src="<?php echo randomPicture() ?>"
-                                            alt="Productafbeelding"></a>
+                                <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'>
+                                    <?php
+                                    if ($row['Photo']){
+                                        echo '<img class="card-img-top kaartimg" src="data:image/jpeg;base64,'.base64_encode( $row['Photo'] ).'"/>';
+                                    }else{
+                                        echo '<img class="card-img-top kaartimg" src="images/default-product.png" alt="">';
+                                    }
+                                    ?>
+                                </a>
                                 <div class="card-body">
                                     <h5 class="card-title kaarttitel"><a
                                                 href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>

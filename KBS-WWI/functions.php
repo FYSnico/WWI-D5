@@ -8,13 +8,13 @@ function check2Empty($arg1, $arg2)
     }
 }
 
-function randomPicture()
-{
-    $randomGetal = rand(0, 0);
-    $img = "https://picsum.photos/id/$randomGetal/1000/800";
-    // $smallImg = imagejpeg($img, NULL , 20);
-    return $img;
-}
+//function randomPicture()
+//{
+//    $randomGetal = rand(0, 0);
+//    $img = "https://picsum.photos/id/$randomGetal/1000/800";
+//    // $smallImg = imagejpeg($img, NULL , 20);
+//    return $img;
+//}
 function convertCurrency($amount,$from_currency,$to_currency){
     $apikey = '4560a3f7760193469e10';
 

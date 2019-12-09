@@ -3,6 +3,7 @@ include('components/header.php');
 include("components/config.php");
 include("functions.php");
 ?>
+
 <div class="container">
     <div class="card shadow">
         <div class="row">
@@ -11,7 +12,7 @@ include("functions.php");
                 session_start();
             }
             $item = $_GET['id'];
-            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
+            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
                     FROM stockitems S 
                     JOIN stockitemholdings SIH
                     ON S.stockitemID = SIH.stockitemID
@@ -30,28 +31,16 @@ include("functions.php");
                             echo '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">';
                                 echo '<ol class="carousel-indicators">';
                                     echo '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>';
-                                    echo '<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>';
-                                    echo '<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>';
                                 echo '</ol>';
                                 echo '<div class="carousel-inner">';
                                     echo '<div class="carousel-item active">';
-                                        echo '<img class="d-block w-100" src="https://picsum.photos/460/600" alt="Afbeelding">';
-                                    echo '</div>';
-                                    echo '<div class="carousel-item">';
-                                        echo '<img class="d-block w-100" src="https://picsum.photos/460/600" alt="Afbeelding">';
-                                    echo '</div>';
-                                    echo '<div class="carousel-item">';
-                                        echo '<img class="d-block w-100" src="https://picsum.photos/460/600" alt="Afbeelding">';
+                                        if ($row['Photo']){
+                                            echo '<img class="product-img-size" src="data:image/jpeg;base64,'.base64_encode( $row['Photo'] ).'"/>';
+                                        }else{
+                                            echo '<img class="product-img-size" src="images/default-product.png" alt="">';
+                                        }
                                     echo '</div>';
                                 echo '</div>';
-                                echo '<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">';
-                                    echo '<span class="carousel-control-prev-icon" aria-hidden="true"></span>';
-                                    echo '<span class="sr-only">Vorige</span>';
-                                echo '</a>';
-                                echo '<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">';
-                                    echo '<span class="carousel-control-next-icon" aria-hidden="true"></span>';
-                                    echo '<span class="sr-only">Volgende</span>';
-                                echo '</a>';
                             echo '</div>';
                         echo '</div>';
                     echo '</article>';
@@ -112,6 +101,27 @@ include("functions.php");
                         echo '</div>';
                     echo '</div>';
                     echo '<hr>';
+                    //Afbeelding toevoegen
+                    echo '<form method="POST" action="product_item.php?id='.  $row['StockItemID'] . '"enctype="multipart/form-data">';
+                        echo '<input type="file" name="myimage">';
+                        echo '<input type="submit" name="submitImage" value="Uploaden">';
+                    echo '</form>';
+                    echo '<br>';
+                    if(isset($_POST['submitImage'])) {
+                        $id = $row['StockItemID'];
+                        if(!empty($_FILES['myimage']['tmp_name'])
+                            && file_exists($_FILES['myimage']['tmp_name'])) {
+                            $imagename = $_FILES["myimage"]["name"];
+                            $imagetmp = addslashes(file_get_contents($_FILES['myimage']['tmp_name']));
+                            $sql = "UPDATE stockitems SET Photo = '$imagetmp' WHERE StockItemID = $id";
+                            $insert_image = $pdo->query($sql);
+                            if( $insert_image) {
+                                echo "Afbeelding uploaded <br>";
+                            }
+                        }else{
+                            echo "Er moet een bestand gekozen worden <br>";
+                        }
+                    }
                     //product toevoegen in winkelmand - johan
                     echo '<div class="card-body pt-0 pr-5 pb-0 pl-0">';
                         echo '<form method="POST" action="" class="">';
