@@ -11,7 +11,7 @@ include("functions.php");
                 session_start();
             }
             $item = $_GET['id'];
-            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
+            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, SearchDetails, S.StockItemID, StockItemName, UnitPrice, LastStockTakeQuantity, StockGroupName
                     FROM stockitems S 
                     JOIN stockitemholdings SIH
                     ON S.stockitemID = SIH.stockitemID
@@ -74,7 +74,7 @@ include("functions.php");
                             echo '</dl>';
                             echo '<span class="price h3 text-warning">';
                                 echo '<span class="currency">€</span><span class="num">';
-                                    echo round($row['RecommendedRetailPrice'] * $convertRate, 2);
+                                    echo round($row['UnitPrice'] * $convertRate, 2);
                                 echo '</span>';
                             echo '</span>';
                         echo '</p>';

@@ -13,10 +13,10 @@ if (isset($_SESSION["Order"])) {
         $volgorde = " StockItemName DESC";
         $dropdown = "Naam Z - A";
     } elseif ($_SESSION["Order"] == "priceASC") {
-        $volgorde = " RecommendedRetailPrice ASC";
+        $volgorde = " UnitPrice ASC";
         $dropdown = "Prijs ↑";
     } elseif ($_SESSION["Order"] == "priceDESC") {
-        $volgorde = " RecommendedRetailPrice DESC";
+        $volgorde = " UnitPrice DESC";
         $dropdown = "Prijs ↓";
     } elseif ($_SESSION["Order"] == "voorraadASC") {
         $volgorde = " LastStockTakeQuantity ASC";
@@ -43,7 +43,7 @@ if (empty($_GET["query"])) {
     die();
 } elseif (is_numeric($_GET["query"])) {
     $int = $_GET["query"];
-    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
+    $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -68,7 +68,7 @@ if (empty($_GET["query"])) {
         }
     }
     $zoekterm = implode(" OR ", $sqla);
-    $sql = "SELECT StockItemName, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
+    $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG   
                             ON S.StockitemID = SIG.StockitemID
@@ -134,7 +134,7 @@ $result = $pdo->query($sql);
                                     <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op
                                         voorraad</p>
                                     <p class="card-text">
-                                        € <?php echo round($row['RecommendedRetailPrice'] * $convertRate, 2) ?></p>
+                                        € <?php echo round($row['UnitPrice'] * $convertRate, 2) ?></p>
                                 </div>
                             </div>
                             <?php

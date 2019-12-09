@@ -1,7 +1,11 @@
+
 <?php
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
+?>
+<body>
+<?php
 if(isset($_POST["Order"])) {
     $_SESSION["Order"] = $_POST["Order"];
 }
@@ -14,10 +18,10 @@ if (isset($_SESSION["Order"])) {
         $volgorde = " StockItemName DESC";
         $dropdown = "Naam Z - A";
     } elseif ($_SESSION["Order"] == "priceASC") {
-        $volgorde = " RecommendedRetailPrice ASC";
+        $volgorde = " UnitPrice ASC";
         $dropdown = "Prijs ↑";
     } elseif ($_SESSION["Order"] == "priceDESC") {
-        $volgorde = " RecommendedRetailPrice DESC";
+        $volgorde = " UnitPrice DESC";
         $dropdown = "Prijs ↓";
     } elseif ($_SESSION["Order"] == "voorraadASC") {
         $volgorde = " LastStockTakeQuantity ASC";
@@ -36,7 +40,7 @@ if (isset($_GET['p'])) {
 } else {
     $huidigepagina = 1;
 }
-$sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
+$sql = "SELECT StockItemName, S.StockItemID, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
@@ -107,7 +111,7 @@ $categorienaam = $stmt2->fetch();
                                     <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> op
                                         voorraad</p>
                                     <p class="card-text">
-                                        € <?php echo round($row['RecommendedRetailPrice'] * $convertRate, 2) ?></p>
+                                        € <?php echo round(($row['UnitPrice'] * $convertRate), 2) ?></p>
                                 </div>
                             </div>
                             <?php
@@ -153,4 +157,5 @@ $categorienaam = $stmt2->fetch();
         </div>
     </div>
     <br><br>
+</body>
 <?php include('components/footer.php') ?>
