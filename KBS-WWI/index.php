@@ -5,7 +5,7 @@ include("functions.php");
 
 // Random products genareren
 
-$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, Photo, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
+$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, Photo, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
 
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
