@@ -3,11 +3,12 @@
     <div class="container text-center p-2">
         <small>Copyright &copy; <?php echo date("Y"); ?> -  WWI-Webshop</small>
         <?php
-        if ($mysqli){
+        if (isset($mysqli)){
             $mysqli -> close();
         }
-        if ($pdo){
-            $pdo -> close();
+
+        if (isset($pdo)){
+            $pdo = null;
         }
         ?>
     </div>
