@@ -4,9 +4,7 @@
 include 'components/header.php';
 include 'components/ddb_connect_mysqli.php';
 include("functions.php");
-?>
-<body>
-<?php
+
 //$fakedata = array(
 //    array(1, 4),
 //    array(17, 1),
@@ -61,39 +59,23 @@ if(isset($_POST["Remove"])) {
                     if (isset($_SESSION["shoppingcart"][0][0])) {
 
                         // bijwerken van de aantal in winkelmand
-                        if (isset($_POST["hoeveelheid"]) && isset($_POST["product_id"]) && $_POST["hoeveelheid"] > 0) {
-                            $shoppingcart = $_SESSION["shoppingcart"];
+                        if (isset($_POST["hoeveelheid"]) && isset($_POST["product_id"])) {
+                            $product_id = $_POST["product_id"];
+                            $query = mysqli_query($mysqli, "SELECT LastStocktakeQuantity FROM stockitemholdings WHERE StockItemID = {$product_id};");
+                            $row = mysqli_fetch_assoc($query);
+                            if ($_POST["hoeveelheid"] > 0 && $_POST["hoeveelheid"] <= $row["LastStocktakeQuantity"]){
+                                $shoppingcart = $_SESSION["shoppingcart"];
 
-                            $productIsInCartIndex = 0;
-                            for ($i = 0; $i < sizeof($shoppingcart); $i++) {
-                                if ($shoppingcart[$i][0] == $_POST["product_id"]) {
-                                    $productIsInCartIndex = $i;
+                                $productIsInCartIndex = 0;
+                                for ($i = 0; $i < sizeof($shoppingcart); $i++) {
+                                    if ($shoppingcart[$i][0] == $_POST["product_id"]) {
+                                        $productIsInCartIndex = $i;
+                                    }
                                 }
+                                $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
+                                $_SESSION["shoppingcart"] = $shoppingcart;
                             }
-                            $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
-                            $_SESSION["shoppingcart"] = $shoppingcart;
                         }
-
-//                    if (isset($_POST["hoeveelheid"]) && isset($_POST["product_id"])) {
-////                        $result = $mysqli->query("SELECT LastStockTakeQuantity FROM stockitemholdings WHERE id = {$_POST["product_id"]};");
-////                        if (mysqli_num_rows($result) > 0) {
-////                            $row = mysqli_fetch_assoc($result);
-//// < $rowT['LastStockTakeQuantity']
-//                            if ($_POST["hoeveelheid"] > 0 && $_POST["hoeveelheid"] ) {
-//                                $shoppingcart = $_SESSION["shoppingcart"];
-//
-//                                $productIsInCartIndex = 0;
-//                                for ($i = 0; $i < sizeof($shoppingcart); $i++) {
-//                                    if ($shoppingcart[$i][0] == $_POST["product_id"]) {
-//                                        $productIsInCartIndex = $i;
-//                                    }
-//                                }
-//                                $shoppingcart[$productIsInCartIndex][1] = $_POST["hoeveelheid"];
-//                                $_SESSION["shoppingcart"] = $shoppingcart;
-//                            }
-//                        }
-//                    }
-
 
                         //data ophalen van de database halen wat geselecteerd is in session
                         foreach ($_SESSION["shoppingcart"] as $cart) {
@@ -229,7 +211,5 @@ EOT;
         </div>
     </div>
 </div>
-</body>
     <?php include 'components/footer.php'; ?>
 
-</html>
