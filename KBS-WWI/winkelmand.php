@@ -212,7 +212,7 @@ EOT;
                     <td><strong>Totaalprijs (incl):</strong></td>
                     <td>&euro;<?php 
                         $_SESSION["shoppingcart_price"] = $total;
-                        echo $_SESSION["shoppingcart_price"];
+                        echo number_format($_SESSION["shoppingcart_price"],2);
                         ?></td>
 
                 </tr>
@@ -220,7 +220,7 @@ EOT;
             <?php
 // Geeft aan of je kunt bestelling afronden
             if (isset($_SESSION["email"]) && $total > 0) {
-                echo '<a class="btn btn-primary mt-3 " href="examples/payments/create-payment.php">Bestellen</a>';
+                echo '<a class="btn btn-primary mt-3 " href="create-payment.php">Bestellen</a>';
             } elseif ($total != 0) {
                 echo '<a class="btn btn-primary fas fa-sign-in-alt p-3 mt-2" href="login.php"> Inloggen om te bestellen</a>';
 
