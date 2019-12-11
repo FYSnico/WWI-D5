@@ -4,7 +4,7 @@
         <small>Copyright &copy; <?php echo date("Y"); ?> -  WWI-Webshop</small>
         <?php
         if (isset($mysqli)){
-            $mysqli -> close();
+            mysqli_close($mysqli);
         }
 
         if (isset($pdo)){
