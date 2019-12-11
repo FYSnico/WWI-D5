@@ -26,7 +26,7 @@ include("functions.php");
             $result = $pdo->query($sql);
             $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             while ($row = $result->fetch()) {
-                echo '<aside class="col-sm-5 border-right p-0">';
+                echo '<aside class="col-sm-5 border-right">';
                     echo '<article class="gallery-wrap">';
                         echo '<div class="img-big-wrap">';
                             echo '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">';

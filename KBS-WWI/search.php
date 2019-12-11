@@ -121,9 +121,9 @@ $result = $pdo->query($sql);
                                 <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'>
                                     <?php
                                     if ($row['Photo']){
-                                        echo '<img class="product-img-size" src="data:image/jpeg;base64,'.base64_encode( $row['Photo'] ).'"/>';
+                                        echo '<img class="card-img-top kaartimg"  src="data:image/jpeg;base64,'.base64_encode( $row['Photo'] ).'"/>';
                                     }else{
-                                        echo '<img class="product-img-size" src="images/default-product.png" alt="">';
+                                        echo '<img class="card-img-top kaartimg" src="images/default-product.png" alt="">';
                                     }
                                     ?>
 
