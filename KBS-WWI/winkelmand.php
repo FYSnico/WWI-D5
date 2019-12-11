@@ -104,13 +104,14 @@ if(isset($_POST["Remove"])) {
 
                         if ($result && mysqli_num_rows($result) > 0) {
                             $row = mysqli_fetch_assoc($result);
-                            $convertRate = @convertCurrency(1, 'USD', 'EUR');
+                            $convertRate = @convertCurrency2(1, 'USD', 'EUR');
                             $prijs =  round(($row['UnitPrice'] * $convertRate), 2);
 
 
                                 $total += ($amount * $prijs);
                                 $itemcount += $amount;
                                 $totalprice = $prijs * $amount;
+                                $totalprice = number_format($totalprice,2,",",".");
                                 $StockItemName = $row['StockItemName'];
 
 // De waardens in tabbellen zetten
@@ -178,10 +179,6 @@ EOT;
         <div class="col-3 py-4">
             <table>
                 <tr>
-                    <td>Prijs:</td>
-                    <td>&euro;<?php echo $total ?></td>
-                </tr>
-                <tr>
                     <td>Verzending:</td>
 <!--                    <td>&euro;--><?php
 //                        $shipping = $itemcount * 0;
@@ -192,31 +189,30 @@ EOT;
                 </tr>
                 <tr>
                     <td style="padding-right: 2rem;">Korting:</td>
-                    <td>%<?php
+                    <td><?php
                         $total -= $total * ($discount / 100);
                         echo $discount;
-                        ?></td>
+                        ?>%</td>
                 </tr>
                 <tr>
-                    <td style="padding-right: 2rem;">Totaal (excl):</td>
+                    <td style="padding-right: 2rem;">Prijs (excl):</td>
                     <td>&euro;<?php
-                        echo round($total, 2);
+                        $tax = $total * 0.21;
+                        $totalexcl = $total-$tax;
+                        echo number_format($totalexcl,2,",",".");
                         ?></td>
                 </tr>
                 <tr>
                     <td>Btw:</td>
                     <td>&euro;<?php
-                        $tax = $total * 0.21;
-                        $total += $tax;
-                        echo round($tax, 2);
+                        echo number_format($tax,2,",",".");
                         ?></td>
                 </tr>
                 <tr>
-                    <td>Totaal (incl):</td>
-                    <td>&euro;<?php
-                        $total = round($total, 2);
-                        $_SESSION["shoppingcart_price"] = $total;
-                        echo number_format($_SESSION["shoppingcart_price"],2);
+                    <td><strong>Totaalprijs (incl):</strong></td>
+                    <td>&euro;<?php 
+                        $_SESSION["shoppingcart_price"] = number_format($total,2);
+                        echo str_replace(".",",",$_SESSION["shoppingcart_price"]);
                         ?></td>
 
                 </tr>

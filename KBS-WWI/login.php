@@ -7,12 +7,13 @@ include "components/config.php";
 $email = "";
 $password = "";
 $login = false;
+$naam = "";
 
 //set password
 if (isset($_POST["email"]) && isset($_POST["password"])) {
     $email = $_POST["email"];
     $password = $_POST["password"];
-    if(strpos($email, "'1'") !== FALSE || strpos($password,"'1'") !== FALSE) {
+    if (strpos($email, "'1'") !== FALSE || strpos($password, "'1'") !== FALSE) {
         echo "<img src='https://media.makeameme.org/created/sql-injection-sql.jpg' height=\"100%\" width=\"100%\">";
         die();
     }
@@ -21,7 +22,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         print("Een of meerdere velden zijn leeg!");
     } else {
         //Kijk of user exists
-        $stmt = $pdo->prepare("Select Emailaddress, HashedPassword FROM customers where Emailaddress= :email");
+        $stmt = $pdo->prepare("Select Emailaddress, HashedPassword, CustomerName FROM customers where Emailaddress= :email");
         $stmt->execute(array("email" => $email));
         $email_dbarray = $stmt->fetch();
         $email_db = $email_dbarray[0];
@@ -32,30 +33,40 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             $pdo = NULL;
             if (isset($_POST["login"])) {
                 $_SESSION["email"] = $email;
+                $_SESSION["naam"] = $email_dbarray[2];
 //                            print("<h2>U wordt nu ingelogd</h2>");
                 echo '<script type="text/javascript">window.location = "index.php"</script>';
                 die();
             }
         } else {
-            print("Deze gebruiker bestaat niet!");
+            print("<p class=\"mt-2 pnormaal\">Dit e-mailadres is niet bekend bij ons. Controleer op spelfouten of registreer je account.</p>");
         }
     }
 }
 ?>
     <div class="container">
         <div class="content">
-            <h3>Login</h3>
-            <br>
-            <form action="login.php" method="post">
-                <label>Email</label>
-                <input type="text" name="email" class="form-control">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control">
-                <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="Inloggen" name="login">
-                    <p>Heeft u nog geen account? <a href="register.php">Registreer hier</a>.</p>
-                </div>
-            </form>
+            <div class="invoerform">
+                <h3>Login</h3>
+                <br>
+                <form class="conversieform" action="login.php" method="post">
+                    <label>
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="email" class="form-control" required placeholder="E-mailadres">
+                    </label>
+                    <label>
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password" class="form-control" required placeholder="Wachtwoord">
+                    </label>
+                    <div class="form-group mt-3">
+                        <input class="formulierknop" type="submit" class="btn btn-primary" value="Login" name="login">
+                        <br>
+                        <p class="mt-2 pnormaal">Heeft nog geen account?</p>
+                        <input class="formulierknop" class="btn btn-primary" value="Registreren"
+                               onclick="window.location='Register.php';"/>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <br><br>

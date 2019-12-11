@@ -4,7 +4,9 @@ include("components/config.php");
 include("functions.php");
 
 // Random products genareren
-$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
+
+$sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailPrice, Photo, UnitPrice, QuantityPerOuter, StockGroupName, LastStockTakeQuantity 
+
                             FROM stockitems S 
                             JOIN stockitemholdings SIH
                             ON S.stockitemID = SIH.stockitemID
@@ -23,14 +25,22 @@ $result = $pdo->query($sql);
             <br>
             <?php
             //Currency converter
-            $convertRate = @convertCurrency(1, 'USD', 'EUR');
+            $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             // Random products weergeven
             if ($result->rowCount() > 0) {
 
                 echo "<div class=\"card-deck kaartdeck\">";
                     while ($row = $result->fetch()) { ?>
                         <div class="card w-25 kaartbreedte" style="width: 18rem;">
-                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img class="card-img-top kaartimg" src="<?php echo randomPicture() ?>" alt="Productafbeelding"></a>
+                            <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'>
+                                <?php
+                                if ($row['Photo']) {
+                                    echo '<img class="card-img-top kaartimg" src="data:image/jpeg;base64,' . base64_encode($row['Photo']) . '"/>';
+                                } else {
+                                    echo '<img class="card-img-top kaartimg" src="images/default-product.png" alt="">';
+                                }
+                                ?>
+                            </a>
                             <div class="card-body">
                                 <h5 class="card-title kaarttitel"><a
                                             href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>
@@ -42,7 +52,8 @@ $result = $pdo->query($sql);
                                 </p>
                                 <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> stocks op voorraad</p>
                                 <p class="card-text">
-                                    € <?php echo round($row['UnitPrice'] * $convertRate,2) ?></p>
+                                    €<?php $UnitPrice = $row['UnitPrice'] * $convertRate;
+                                echo number_format($UnitPrice,2,",",".") ?></p>
                             </div>
                         </div>
                     <?php } ?>
