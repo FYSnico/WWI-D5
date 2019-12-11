@@ -13,7 +13,7 @@ try {
      *
      * See: https://www.mollie.com/dashboard/developers/api-keys
      */
-    require "../initialize.php";
+    require "Mollie/examples/initialize.php";
     /*
      * Generate a unique order id for this example. It is important to include this unique attribute
      * in the redirectUrl (below) so a proper return page can be shown to the customer.
@@ -34,7 +34,7 @@ try {
      *   metadata      Custom metadata that is stored with the payment.
      */
 
-    $payment = $mollie->payments->create(["amount" => ["currency" => "EUR", "value" => "{$total}"], "description" => "{$orderId}", "redirectUrl" => "{$protocol}://{$hostname}/WWI-D5/KBS-WWI/afrekenen.php?order_id={$orderId}", "webhookUrl" => "https://webhook.site/178116a8-bd9c-42fb-9436-c108856b4c6b", "metadata" => ["order_id" => $orderId]]);
+    $payment = $mollie->payments->create(["amount" => ["currency" => "EUR", "value" => "{$total}"], "description" => "{$orderId}", "redirectUrl" => "{$protocol}://{$hostname}{$path}/afrekenen.php?order_id={$orderId}", "webhookUrl" => "https://webhook.site/178116a8-bd9c-42fb-9436-c108856b4c6b", "metadata" => ["order_id" => $orderId]]);
     /*
      * In this example we store the order with its payment status in a database.
      */
