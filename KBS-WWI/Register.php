@@ -58,12 +58,12 @@ $check = false;
                 }
                 //email en wachtwoord inserten
                 if ($check) {
-                    session_start();
-                    print($_POST["email"] . "<br>");
+                    //print($_POST["email"] . "<br>");
                     $_SESSION["email"] = $email;
+                    $_SESSION["naam"] = $naam;
                     //Hashen wachtwoord
                     $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
-                    print($hashedpassword);
+                    //print($hashedpassword);
                     $stmt = $pdo->prepare(
                         "INSERT INTO customers (CustomerName, EmailAddress, HashedPassword, DeliveryPostalCode, DeliveryLocation, PhoneNumber) VALUES (?, ?, ?, ?, ?, ?)"
                     );
@@ -71,7 +71,7 @@ $check = false;
                     unset($stmt);
                     $PDO = null;
                     if (isset($_POST["submit"])) {
-                        print("<h2>U wordt nu ingelogd</h2>");
+                        //print("<h2>U wordt nu ingelogd</h2>");
                         echo '<script type="text/javascript">window.location = "index.php"</script>';
                         die();
                     }
