@@ -22,7 +22,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         print("Een of meerdere velden zijn leeg!");
     } else {
         //Kijk of user exists
-        $stmt = $pdo->prepare("Select Emailaddress, HashedPassword, CustomerName FROM customers where Emailaddress= :email");
+        $stmt = $pdo->prepare("Select Emailaddress, HashedPassword, CustomerName, IsSystemUser FROM customers where Emailaddress= :email");
         $stmt->execute(array("email" => $email));
         $email_dbarray = $stmt->fetch();
         $email_db = $email_dbarray[0];
@@ -34,6 +34,8 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             if (isset($_POST["login"])) {
                 $_SESSION["email"] = $email;
                 $_SESSION["naam"] = $email_dbarray[2];
+                $_SESSION["IsSystemUser"] = $email_dbarray[3];
+
 //                            print("<h2>U wordt nu ingelogd</h2>");
                 echo '<script type="text/javascript">window.location = "index.php"</script>';
                 die();
