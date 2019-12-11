@@ -211,8 +211,8 @@ EOT;
                 <tr>
                     <td><strong>Totaalprijs (incl):</strong></td>
                     <td>&euro;<?php 
-                        $_SESSION["shoppingcart_price"] = number_format($total,2);
-                        echo str_replace(".",",",$_SESSION["shoppingcart_price"]);
+                        $_SESSION["shoppingcart_price"] = number_format($total,2, ".", "");
+                        echo number_format($total,2, ",", ".")
                         ?></td>
 
                 </tr>

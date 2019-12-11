@@ -81,6 +81,7 @@ session_start();
                         print("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\"
                        aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"far fa-user\"></i> Mijn Account</a>");
                         print("<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">");
+                        print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn orders</a>");
                         print("<a class=\"dropdown-item\" href=\"logout.php\">Log Uit</a>");
                         print("</div>");
                     } else {
