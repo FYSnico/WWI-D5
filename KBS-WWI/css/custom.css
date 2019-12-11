@@ -79,10 +79,7 @@ nav button.search {
     margin: 0 auto;
     margin-bottom: 15px!important;
 }
-.product-img-size{
-    width: 475px;
-    height: 600px;
-}
+
 @media (max-width: 580px){
     .kaartbreedte {
         width: 100%!important;
@@ -132,4 +129,65 @@ nav button.search {
 .wwiblauw {
     color: #00bdf3;
     border-color: #00bdf3;
+}
+
+.invoerform {
+    width:350px;
+    margin: 0 auto;
+}
+
+.conversieform label {
+    width: 100%;
+    display: flex;
+}
+
+.conversieform i {
+    margin: auto;
+    font-size: 30px;
+    background-color: #eaeaea;
+    border: 1px solid grey;
+    border-radius: 3px 0 0 3px;
+    padding: 3px;
+    hover: initial;
+    cursor: text;
+    width: 50px;
+    text-align: center;
+}
+
+.conversieform input {
+    border-radius: 0 3px 3px 0;
+    background-color: #f5f5f5;
+    border: 1px solid grey;
+    border-left: none;
+}
+
+.conversieform .inputrequirement {
+    font-size: 0.8em;
+    margin-top: -8px;
+    text-align: center;
+}
+
+.conversieform .opmerking {
+    font-size: 0.8em;
+    margin-bottom: 0px;
+    text-align: right;
+}
+
+.conversieform .formulierknop {
+    display: block;
+    margin: 0 auto;
+    border: 2px solid #00bdf3;
+    color: #fff;
+    background-color: #00bdf3;
+    border-radius: 4px;
+    padding: 6px 22px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.conversieform .pnormaal,
+.pnormaal {
+    font-size: 1.2em;
+    text-align: center;
 }
