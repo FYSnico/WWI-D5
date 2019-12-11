@@ -216,7 +216,7 @@ EOT;
                     <td>&euro;<?php
                         $total = round($total, 2);
                         $_SESSION["shoppingcart_price"] = $total;
-                        echo $_SESSION["shoppingcart_price"];
+                        echo number_format($_SESSION["shoppingcart_price"],2);
                         ?></td>
 
                 </tr>

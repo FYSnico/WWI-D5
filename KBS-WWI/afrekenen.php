@@ -49,11 +49,10 @@ if (!empty($_GET["order_id"]) && ($payment[0]->ispaid() && ($payment[0]->descrip
     if (!$mail->Send()) {
         echo "Mailer Error: " . $mail->ErrorInfo;
     }
-
+    unset($_SESSION["shoppingcart"]);
 } else {
     print("Er is iets mis gegaan, probeer alstublieft opniew te bestellen.");
 }
-
 
 ?>
 </body>
