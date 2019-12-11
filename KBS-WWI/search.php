@@ -43,7 +43,8 @@ if (empty($_GET["query"])) {
     die();
 } elseif (is_numeric($_GET["query"])) {
     $int = $_GET["query"];
-    $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
+    print($int);
+    $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, Photo, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
                             ON S.StockitemID = SIG.StockitemID
@@ -68,7 +69,7 @@ if (empty($_GET["query"])) {
         }
     }
     $zoekterm = implode(" OR ", $sqla);
-    $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
+    $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, Photo, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG   
                             ON S.StockitemID = SIG.StockitemID
@@ -89,12 +90,10 @@ $result = $pdo->query($sql);
             // Currency converter
             $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             // Kijk of er producten in de tabel staan
-            if ($result->rowCount() > 0) {
-                ?>
+            if ($result->rowCount() > 0) { ?>
                 <!--Filteren producten-->
                 <form action="" method="post">
-                    <select name="Order" class="form-control">
-                        <?php
+                    <select name="Order" class="form-control"><?php
                         if($_SESSION["Order"] != NULL){echo "<option value=" . $_SESSION["Order"] . ">" . $dropdown . "</option>";}
                         if($_SESSION["Order"] != "nameASC"){echo "<option value=\"nameASC\">Naam A - Z</option>";}
                         if($_SESSION["Order"] != "nameDESC"){echo "<option value=\"nameDESC\">Naam Z - A</option>";}
@@ -119,9 +118,16 @@ $result = $pdo->query($sql);
                         } else {
                             ?>
                             <div class="card w-25 kaartbreedte" style="width: 18rem;">
-                                <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><img
-                                            class="card-img-top kaartimg" src="<?php echo randomPicture() ?>"
-                                            alt="Productafbeelding"></a>
+                                <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'>
+                                    <?php
+                                    if ($row['Photo']){
+                                        echo '<img class="product-img-size" src="data:image/jpeg;base64,'.base64_encode( $row['Photo'] ).'"/>';
+                                    }else{
+                                        echo '<img class="product-img-size" src="images/default-product.png" alt="">';
+                                    }
+                                    ?>
+
+                                </a>
                                 <div class="card-body">
                                     <h5 class="card-title kaarttitel"><a
                                                 href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'><?php echo $row['StockItemName']; ?></a>
