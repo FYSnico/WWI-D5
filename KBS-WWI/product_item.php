@@ -104,15 +104,13 @@ include("functions.php");
                     echo '</div>';
                     echo '<hr>';
                     //Afbeelding toevoegen
-                if (isset($_SESSION["IsSystemUser"])) {
-                    if ($_SESSION["IsSystemUser"] == 1) {
+                    if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         echo '<form method="POST" action="product_item.php?id=' . $row['StockItemID'] . '"enctype="multipart/form-data">';
                         echo '<input type="file" name="myimage">';
                         echo '<input type="submit" name="submitImage" value="Uploaden">';
                         echo '</form>';
                         echo '<br>';
                     }
-                }
                     if(isset($_POST['submitImage'])) {
                         $id = $row['StockItemID'];
                         if(!empty($_FILES['myimage']['tmp_name'])
@@ -123,12 +121,14 @@ include("functions.php");
                             $insert_image = $pdo->query($sql);
 
                             if( $insert_image) {
-                                echo "Afbeelding uploaded <br>";
+                                echo "Afbeelding uploaded";
+                                echo '<br>';
                             }
                             $secondsWait = 0;
                             echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
                         }else{
-                            echo "Er moet een bestand gekozen worden <br>";
+                            echo "Er moet een bestand gekozen worden";
+                            echo '<br>';
                         }
 
                     }
