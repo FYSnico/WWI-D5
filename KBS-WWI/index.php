@@ -18,7 +18,10 @@ $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailP
                             LIMIT 5
                             ";
 $result = $pdo->query($sql);
-?>
+echo '<img src="images/banner.jpg" alt="">';
+
+
+    ?>
     <div class="container">
         <div class="content">
             <h3>Ontdek onze winkel</h3>

@@ -192,5 +192,6 @@ include("functions.php");
         </div>
     </div>
 </div>
+<?php include('reviews/reviews.php'); ?>
 <br><br>
 <?php include('components/footer.php'); ?>
