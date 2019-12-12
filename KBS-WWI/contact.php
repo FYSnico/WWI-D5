@@ -50,10 +50,10 @@ if(!isset($_POST["naam"])) {
                             <select id="form_need" name="behoefte" class="form-control" required="required"
                                     data-error="Specific a.u.b. uw behoefte">
                                 <option value=""></option>
-                                <option value="">Offerte aanvragen</option>
-                                <option value="">Verzoek om bestelstatus</option>
-                                <option value="">Vraag een kopie van een factuur aan</option>
-                                <option value="">Anders</option>
+                                <option value="offerte">Offerte aanvragen</option>
+                                <option value="bestelstatus">Verzoek om bestelstatus</option>
+                                <option value="factuurkopie">Vraag een kopie van een factuur aan</option>
+                                <option value="anders">Anders</option>
                             </select>
                             <div class="help-block with-errors"></div>
                         </div>
