@@ -19,22 +19,31 @@ include("functions.php");
 $total = 0;
 $itemcount = 0;
 $discount = 0;
-$discount_gelukt = FALSE;
+$discount_gelukt = 0;
 if (isset($_SESSION["shopping_cart_discount"])) {
     $discount = $_SESSION["shopping_cart_discount"];
 }
-$now = new DateTime("m.d.y");
-echo $now;
+
 // als korting wordt ingevoerd.
 if (isset($_POST["discount_code"] )){
     $discount_code = $_POST["discount_code"];
     $query = mysqli_query($mysqli, "SELECT DealDescription, DiscountPercentage, EndDate FROM specialdeals WHERE DealDescription = \"{$discount_code}\";");
     if ($query && mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_assoc($query);
-        if ($row["DealDescription"] == $discount_code) {
-            $_SESSION["shopping_cart_discount"] = $row["DiscountPercentage"];
-            $discount_gelukt = TRUE;
+        $now = str_replace("/", "", date('Y/m/d'));
+        $Enddate = str_replace("-", "", $row["EndDate"]);
+        if ($now <= $Enddate) {
+            if ($row["DealDescription"] == $discount_code) {
+                $_SESSION["shopping_cart_discount"] = $row["DiscountPercentage"];
+                $discount_gelukt = "gelukt";
+            } else {
+                $discount_gelukt = "nietgevonden";
+            }
+        } else {
+            $discount_gelukt = "verlopen";
         }
+    } else {
+        $discount_gelukt = "nietgevonden";
     }
 }
 
@@ -168,16 +177,15 @@ EOT;
                             <input type="submit" name="discount" value="Kortingscode" class="btn btn-primary">
                         </div>
                         <div class="col-3">
-                            <a class="alert alert-success"><strong>✓</strong>Toegevoegd</a>
                             <?php
-                                if (isset($_POST["submit"])) {
-                                    if ($discount_gelukt) {
-                                        echo '<a class="alert alert-success"><strong>✓</strong>Toegevoegd</a>';
+                                if (isset($_POST["discount_code"]) && isset($_POST["discount"])) {
+                                    if ($discount_gelukt == "gelukt") {
+                                        echo '<a class="alert codeverificatie alert-success"><strong>✓</strong>Toegevoegd</a>';
                                         $productmagwordentoegevoegd = true;
-                                        } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
-                                        echo '<a class="alert alert-warning"><strong>!</strong> Aantal graag hoger dan 0.</a>';
-                                        } elseif ($row['LastStockTakeQuantity'] < $_POST["hoeveel"]) {
-                                        echo '<a class="alert alert-warning"><strong>!</strong> Aantal te hoog.</a>';
+                                    } elseif ($discount_gelukt == "verlopen") {
+                                        echo '<a class="alert codeverificatie alert-warning"><strong>!</strong>Verlopen</a>';
+                                    } elseif ($discount_gelukt == "nietgevonden") {
+                                        echo '<a class="alert codeverificatie alert-warning"><strong>!</strong>Ongeldig</a>';
                                     }
                                 }
                             ?>
@@ -204,7 +212,7 @@ EOT;
                     <td style="padding-right: 2rem;">Korting:</td>
                     <td><?php
                         $total -= $total * ($discount / 100);
-                        echo $discount;
+                        echo number_format($discount, 0, "", ".");
                         ?>%</td>
                 </tr>
                 <tr>
