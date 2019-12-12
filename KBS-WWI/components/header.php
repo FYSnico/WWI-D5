@@ -70,7 +70,7 @@ session_start();
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../KBS-WWI/contact.php"><i class="fas fa-home"></i> Contact</a>
+                        <a class="nav-link" href="../KBS-WWI/contact.php"><i class="fas fa-headset"></i> Contact</a>
                     </li>
                 </ul>
             </div>
