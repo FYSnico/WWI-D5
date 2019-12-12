@@ -19,9 +19,34 @@ include("functions.php");
 $total = 0;
 $itemcount = 0;
 $discount = 0;
+$discount_gelukt = 0;
 if (isset($_SESSION["shopping_cart_discount"])) {
     $discount = $_SESSION["shopping_cart_discount"];
 }
+
+// als korting wordt ingevoerd.
+if (isset($_POST["discount_code"] )){
+    $discount_code = $_POST["discount_code"];
+    $query = mysqli_query($mysqli, "SELECT DealDescription, DiscountPercentage, EndDate FROM specialdeals WHERE DealDescription = \"{$discount_code}\";");
+    if ($query && mysqli_num_rows($query) > 0) {
+        $row = mysqli_fetch_assoc($query);
+        $now = str_replace("/", "", date('Y/m/d'));
+        $Enddate = str_replace("-", "", $row["EndDate"]);
+        if ($now <= $Enddate) {
+            if ($row["DealDescription"] == $discount_code) {
+                $_SESSION["shopping_cart_discount"] = $row["DiscountPercentage"];
+                $discount_gelukt = "gelukt";
+            } else {
+                $discount_gelukt = "nietgevonden";
+            }
+        } else {
+            $discount_gelukt = "verlopen";
+        }
+    } else {
+        $discount_gelukt = "nietgevonden";
+    }
+}
+
 
 //product verwijderen moet nog werkend worden gemaakt maar ik weet niet hoe ik de goede session verwijderd in de array van de array komt nog
 if(isset($_POST["Remove"])) {
@@ -145,11 +170,25 @@ EOT;
             <div style="display:flex;align-items:flex-end; height: 250px;">
                 <form method="post" action="">
                     <div class="form-group row">
-                        <div class="col-9">
+                        <div class="col-6">
                             <input type="text" name="discount_code" class="form-control">
                         </div>
                         <div class="col-3">
                             <input type="submit" name="discount" value="Kortingscode" class="btn btn-primary">
+                        </div>
+                        <div class="col-3">
+                            <?php
+                                if (isset($_POST["discount_code"]) && isset($_POST["discount"])) {
+                                    if ($discount_gelukt == "gelukt") {
+                                        echo '<a class="alert codeverificatie alert-success"><strong>✓</strong>Toegevoegd</a>';
+                                        $productmagwordentoegevoegd = true;
+                                    } elseif ($discount_gelukt == "verlopen") {
+                                        echo '<a class="alert codeverificatie alert-warning"><strong>!</strong>Verlopen</a>';
+                                    } elseif ($discount_gelukt == "nietgevonden") {
+                                        echo '<a class="alert codeverificatie alert-warning"><strong>!</strong>Ongeldig</a>';
+                                    }
+                                }
+                            ?>
                         </div>
                     </div>
                 </form>
@@ -173,7 +212,7 @@ EOT;
                     <td style="padding-right: 2rem;">Korting:</td>
                     <td><?php
                         $total -= $total * ($discount / 100);
-                        echo $discount;
+                        echo number_format($discount, 0, "", ".");
                         ?>%</td>
                 </tr>
                 <tr>

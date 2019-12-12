@@ -194,3 +194,8 @@ nav button.search {
     font-size: 1.2em;
     text-align: center;
 }
+
+.codeverificatie{
+    display: inline-block;
+    padding: .375rem .75rem;
+}
