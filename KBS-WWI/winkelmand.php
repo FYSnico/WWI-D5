@@ -19,9 +19,25 @@ include("functions.php");
 $total = 0;
 $itemcount = 0;
 $discount = 0;
+$discount_gelukt = FALSE;
 if (isset($_SESSION["shopping_cart_discount"])) {
     $discount = $_SESSION["shopping_cart_discount"];
 }
+$now = new DateTime("m.d.y");
+echo $now;
+// als korting wordt ingevoerd.
+if (isset($_POST["discount_code"] )){
+    $discount_code = $_POST["discount_code"];
+    $query = mysqli_query($mysqli, "SELECT DealDescription, DiscountPercentage, EndDate FROM specialdeals WHERE DealDescription = \"{$discount_code}\";");
+    if ($query && mysqli_num_rows($query) > 0) {
+        $row = mysqli_fetch_assoc($query);
+        if ($row["DealDescription"] == $discount_code) {
+            $_SESSION["shopping_cart_discount"] = $row["DiscountPercentage"];
+            $discount_gelukt = TRUE;
+        }
+    }
+}
+
 
 //product verwijderen moet nog werkend worden gemaakt maar ik weet niet hoe ik de goede session verwijderd in de array van de array komt nog
 if(isset($_POST["Remove"])) {
@@ -145,11 +161,26 @@ EOT;
             <div style="display:flex;align-items:flex-end; height: 250px;">
                 <form method="post" action="">
                     <div class="form-group row">
-                        <div class="col-9">
+                        <div class="col-6">
                             <input type="text" name="discount_code" class="form-control">
                         </div>
                         <div class="col-3">
                             <input type="submit" name="discount" value="Kortingscode" class="btn btn-primary">
+                        </div>
+                        <div class="col-3">
+                            <a class="alert alert-success"><strong>✓</strong>Toegevoegd</a>
+                            <?php
+                                if (isset($_POST["submit"])) {
+                                    if ($discount_gelukt) {
+                                        echo '<a class="alert alert-success"><strong>✓</strong>Toegevoegd</a>';
+                                        $productmagwordentoegevoegd = true;
+                                        } elseif (isset($_POST["submit"]) && $_POST["hoeveel"] <= 0) {
+                                        echo '<a class="alert alert-warning"><strong>!</strong> Aantal graag hoger dan 0.</a>';
+                                        } elseif ($row['LastStockTakeQuantity'] < $_POST["hoeveel"]) {
+                                        echo '<a class="alert alert-warning"><strong>!</strong> Aantal te hoog.</a>';
+                                    }
+                                }
+                            ?>
                         </div>
                     </div>
                 </form>
