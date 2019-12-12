@@ -69,6 +69,9 @@ session_start();
                             ?>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../KBS-WWI/contact.php"><i class="fas fa-home"></i> Contact</a>
+                    </li>
                 </ul>
             </div>
             <div class="collapse navbar-collapse  fix-margin-left" id="navbarNavDropdown">
