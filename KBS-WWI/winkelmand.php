@@ -19,10 +19,7 @@ include("functions.php");
 $total = 0;
 $itemcount = 0;
 $discount = 0;
-$discount_gelukt = 0;
-if (isset($_SESSION["shopping_cart_discount"])) {
-    $discount = $_SESSION["shopping_cart_discount"];
-}
+$discount_gelukt = "";
 
 // als korting wordt ingevoerd.
 if (isset($_POST["discount_code"] )){
@@ -45,6 +42,9 @@ if (isset($_POST["discount_code"] )){
     } else {
         $discount_gelukt = "nietgevonden";
     }
+}
+if (isset($_SESSION["shopping_cart_discount"])) {
+    $discount = $_SESSION["shopping_cart_discount"];
 }
 
 
@@ -175,6 +175,7 @@ EOT;
                         </div>
                         <div class="col-3">
                             <input type="submit" name="discount" value="Kortingscode" class="btn btn-primary">
+                </form>
                         </div>
                         <div class="col-3">
                             <?php
@@ -191,7 +192,6 @@ EOT;
                             ?>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
         <?php
