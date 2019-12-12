@@ -12,22 +12,38 @@ use PHPMailer\PHPMailer\PHPMailer;
 <body>
 <?php
 require "mollie/examples/initialize.php";
+//Verkrijg alle betalingen van Mollie
 $payment = $mollie->payments->page();
+//Check of er een order is en of deze betaald is
 if (!empty($_GET["order_id"]) && ($payment[0]->ispaid() && ($payment[0]->description) == $_GET["order_id"])) {
+    //Verkrijg CustomerID van diegene die besteld
+    $order = $_GET["order_id"];
+    $sentTo = $_SESSION["email"];
+    $sqlcustomer = "Select CustomerID FROM customers WHERE EmailAddress = '$sentTo'";
+    $result = $pdo->query($sqlcustomer)->fetch();
+    $customer = $result["CustomerID"];
+    //Zet bestelling in Orders
+    $sql = "INSERT INTO orders (OrderID, CustomerID, Orderdate) Values ($order, $customer, CURRENT_TIMESTAMP )";
+    $pdo->query($sql);
     print("Betaald, U ontvangt nu een bevestingsmail");
     $producten = ($_SESSION["shoppingcart"]);
-    $bevestigingsmail = "Bedankt voor uw bestelling<br>";
+    //Start van het maken van een mailtje
+    $datum = date('d/m/y');
+    $bevestigingsmail = "Bedankt voor uw bestelling<br> U heeft besteld op ". $datum;
     foreach ($producten as $index => $waarde) {
         print("<BR>");
         print("productnummer: " . $waarde[0] . " ");
         print("Aantal: " . $waarde[1]);
+        $sql = "INSERT INTO orderlines (OrderID, StockItemId, Quantity) VALUES ($order, $waarde[0], $waarde[1])";
+        $pdo->query($sql);
+        //Voor ieder product het aantal en productnummer in de mail
         $bevestigingsmail .= "<br>Productnummer: " . $waarde[0] . " Aantal: " . $waarde[1];
+        //update de voorraad
         $sql = "UPDATE stockitemholdings SET LastStocktakeQuantity = LastStocktakeQuantity-$waarde[1] Where StockItemID = $waarde[0]";
         $stmt = $pdo->query($sql);
         unset($stmt);
     }
     $bevestigingsmail .= "<br><br>Vriendelijke groeten WWI";
-    $sentTo = $_SESSION["email"];
     require 'PHPMailer-master/src/Exception.php';
     require 'PHPMailer-master/src/PHPMailer.php';
     require 'PHPMailer-master/src/SMTP.php';
