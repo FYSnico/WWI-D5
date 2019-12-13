@@ -12,7 +12,7 @@ include("functions.php");
                 session_start();
             }
             $item = $_GET['id'];
-            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, UnitPrice, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
+            $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, Photo2, Photo3, videoportaal, UnitPrice, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
 
                     FROM stockitems S 
                     JOIN stockitemholdings SIH
@@ -37,8 +37,19 @@ include("functions.php");
                                     echo '<div class="carousel-item active">';
                                         if ($row['Photo']){
                                             echo '<img class="product-img-size" src="data:image/jpeg;base64,'.base64_encode( $row['Photo'] ).'"/>';
+                                            if ($row['Photo2']){
+                                                echo '<img class="product-img-size" src="data:image/jpeg;base64,'.base64_encode( $row['Photo2'] ).'"/>';
+                                                if ($row['Photo3']){
+                                                    echo '<img class="product-img-size" src="data:image/jpeg;base64,'.base64_encode( $row['Photo3'] ).'"/>';
+                                                }
+                                            }
                                         }else{
                                             echo '<img class="product-img-size" src="images/default-product.png" alt="">';
+                                        }
+                                        if ($row['videoportaal']){
+                                            $video = $row['videoportaal'];
+                                            echo "<object width=\"425\" height=\"350\" data=\"{$video}\" type=\"application/x-shockwave-flash\"><param name=\"src\" value=\"{$video}\" /></object>";
+                                            echo "<iframe width=\"420\" height=\"315\" src=\"$video\" ></iframe>";
                                         }
                                     echo '</div>';
                                 echo '</div>';
