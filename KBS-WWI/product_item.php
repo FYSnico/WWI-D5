@@ -50,6 +50,7 @@ include("functions.php");
                     echo '<article class="card-body p-5">';
                         echo '<h3 class="title mb-3">';
                             echo $row['StockItemName'];
+                            $id = $row['StockItemID'];
                         echo '</h3>';
                         echo '<p class="price-detail-wrap">';
                             echo '<dl class="param param-inline">';
@@ -192,6 +193,6 @@ include("functions.php");
         </div>
     </div>
 </div>
-<?php include('reviews/reviews.php'); ?>
+<?php include('reviews.php'); ?>
 <br><br>
 <?php include('components/footer.php'); ?>
