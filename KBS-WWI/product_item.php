@@ -108,17 +108,68 @@ include("functions.php");
                     if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         echo '<form method="POST" action="product_item.php?id=' . $row['StockItemID'] . '"enctype="multipart/form-data">';
                         echo '<input type="file" name="myimage">';
-                        echo '<input type="submit" name="submitImage" value="Uploaden">';
+                        echo '<input type="submit" name="submitImage" value="Uploaden foto 1">';
                         echo '</form>';
                         echo '<br>';
+                        echo '<form method="POST" action="product_item.php?id=' . $row['StockItemID'] . '"enctype="multipart/form-data">';
+                        echo '<input type="file" name="myimage2">';
+                        echo '<input type="submit" name="submitImage" value="Uploaden foto 2">';
+                        echo '</form>';
+                        echo '<br>';
+                        echo '<form method="POST" action="product_item.php?id=' . $row['StockItemID'] . '"enctype="multipart/form-data">';
+                        echo '<input type="file" name="myimage3">';
+                        echo '<input type="submit" name="submitImage" value="Uploaden foto 3">';
+                        echo '</form>';
+                        echo '<br>';
+                        echo '<form method="POST">';
+                        echo '<input type="url" name="videoportaal">';
+                        echo '<input type="submit" name="submitImage" value="Uploaden video">';
+                        echo '</form>';
+                        echo '<br>';
+
                     }
                     if(isset($_POST['submitImage'])) {
                         $id = $row['StockItemID'];
-                        if(!empty($_FILES['myimage']['tmp_name'])
-                            && file_exists($_FILES['myimage']['tmp_name'])) {
+                        if(!empty($_FILES['myimage']['tmp_name']) && file_exists($_FILES['myimage']['tmp_name'])) {
                             $imagename = $_FILES["myimage"]["name"];
                             $imagetmp = addslashes(file_get_contents($_FILES['myimage']['tmp_name']));
                             $sql = "UPDATE stockitems SET Photo = '$imagetmp' WHERE StockItemID = $id";
+                            $insert_image = $pdo->query($sql);
+
+                            if( $insert_image) {
+                                echo "Afbeelding uploaded";
+                                echo '<br>';
+                            }
+                            $secondsWait = 0;
+                            echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
+
+                        }elseif(!empty($_FILES['myimage2']['tmp_name']) && file_exists($_FILES['myimage2']['tmp_name'])) {
+                                $imagename = $_FILES["myimage2"]["name"];
+                                $imagetmp = addslashes(file_get_contents($_FILES['myimage2']['tmp_name']));
+                                $sql = "UPDATE stockitems SET Photo2 = '$imagetmp' WHERE StockItemID = $id";
+                                $insert_image = $pdo->query($sql);
+
+                                if ($insert_image) {
+                                    echo "Afbeelding uploaded";
+                                    echo '<br>';
+                                }
+                                $secondsWait = 0;
+                                echo '<meta http-equiv="refresh" content="' . $secondsWait . '">';
+                        }elseif(!empty($_FILES['myimage3']['tmp_name']) && file_exists($_FILES['myimage3']['tmp_name'])) {
+                            $imagename = $_FILES["myimage3"]["name"];
+                            $imagetmp = addslashes(file_get_contents($_FILES['myimage3']['tmp_name']));
+                            $sql = "UPDATE stockitems SET Photo3 = '$imagetmp' WHERE StockItemID = $id";
+                            $insert_image = $pdo->query($sql);
+
+                            if( $insert_image) {
+                                echo "Afbeelding uploaded";
+                                echo '<br>';
+                            }
+                            $secondsWait = 0;
+                            echo '<meta http-equiv="refresh" content="'.$secondsWait.'">';
+                        }elseif(!empty($_POST['videoportaal'])) {
+                            $imagetmp = $_POST['videoportaal'];
+                            $sql = "UPDATE stockitems SET videoportaal = '$imagetmp' WHERE StockItemID = $id";
                             $insert_image = $pdo->query($sql);
 
                             if( $insert_image) {
