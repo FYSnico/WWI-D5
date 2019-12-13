@@ -17,8 +17,8 @@ if(!isset($_POST["naam"])) {
                         <div class="form-group">
                             <label for="form_name">Naam *</label>
                             <input id="form_name" type="text" name="naam" class="form-control"
-                                   value="<?php if($_SESSION["email"]){print($_SESSION["naam"]);}?>"
-                                   placeholder="<?php if(!$_SESSION["email"]){print("Voer a.u.b. uw naam in");}?>" required="required"
+                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["naam"]);}?>"
+                                   placeholder="<?php if(!isset($_SESSION["email"])){print("Voer a.u.b. uw naam in");}?>" required="required"
                                    data-error="Voornaam is verplicht">
                             <div class="help-block with-errors"></div>
                         </div>
@@ -38,8 +38,8 @@ if(!isset($_POST["naam"])) {
                         <div class="form-group">
                             <label for="form_email">Email *</label>
                             <input id="form_email" type="email" name="email" class="form-control"
-                                   value="<?php if($_SESSION["email"]){print($_SESSION["email"]);}?>"
-                                   placeholder="<?php if(!$_SESSION["email"]){print("Voer a.u.b. uw email in");}?>" required="required"
+                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["email"]);}?>"
+                                   placeholder="<?php if(!isset($_SESSION["email"])){print("Voer a.u.b. uw email in");}?>" required="required"
                                    data-error="Geldige email is verplicht">
                             <div class="help-block with-errors"></div>
                         </div>
