@@ -199,3 +199,65 @@ nav button.search {
     display: inline-block;
     padding: .375rem .75rem;
 }
+
+.conversieform .pnormaal,
+.pnormaal {
+    font-size: 1.2em;
+    text-align: center;
+}
+
+/* Modal product item */
+.modal-header,
+.modal-footer {
+    border: none;
+}
+
+.modal-footer {
+    display: block;
+    text-align: center;
+}
+
+.modal-footer a {
+    color: #00bdf3!important;
+}
+
+.modal-footer a:hover {
+    cursor: pointer;
+    text-decoration: underline!important;
+}
+
+.autobreedte {
+    width: auto!important;
+}
+
+/* Afrekenpagina */
+.besteldproduct {
+    display: flex;
+}
+
+.productinfo {
+    display: flex;
+}
+
+.inforechts p,
+.inforechts h5 {
+    margin: 0 10px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex table {
+    width: 50%;
+}
+
+.contentmiddel {
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.center {
+    display: block;
+    margin: 0 auto;
+}
