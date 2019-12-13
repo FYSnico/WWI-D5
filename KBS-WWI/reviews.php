@@ -79,8 +79,7 @@ if (isset($_POST["Submittoevoegenreview"])) {
 
                 if ($result && mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $name = $row["Name_customer"];
-                        $ster = $row["Stars"];
+                        $name = $ros"];
                         print "<br><h5>$name</h5>";
                         for ($i = 0; $i < $ster; $i++) {
                             print "⭐";
