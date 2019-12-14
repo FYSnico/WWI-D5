@@ -38,7 +38,7 @@ session_start();
             </div>
             <form class="form-inline" action="search.php">
                 <div class="input-group">
-                    <input class="form-control mr-sm-2 search" type="search" placeholder="Zoeken..." aria-label="Search"
+                    <input class="form-control mr-sm-2 search" type="search"<?php if(isset($_GET["query"])){echo " value=\"" . $_GET["query"] . "\"";} ?> placeholder="Zoeken..." aria-label="Search"
                            name="query">
                     <span class="input-group-btn">
                     <button class="btn btn-outline-primary search wwiblauw" type="submit"><i class="fas fa-search"></i>
