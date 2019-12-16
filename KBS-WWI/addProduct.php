@@ -23,6 +23,9 @@ include("functions.php");
                 $sql = ("INSERT INTO stockitems(StockItemName, Size) VALUES ('$name', '$size')");
                 $insert = $pdo->query($sql);
                 $id = $pdo->lastInsertId();
+                print($id);
+                $hoii = ("INSERT INTO stockitemholdings(StockItemID, LastStocktakeQuantity) VALUES ('$id', '1000')");
+                $hoi = $pdo->query($hoii);
                 $categoriess= $_POST['categories'];
                 //Insert Category/ies
                 foreach ($categoriess as $i) {
