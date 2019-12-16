@@ -25,13 +25,20 @@ $check = false;
                 //Validatie
                 if (!$check) {
                     if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm_password"])) {
-                        $password = trim($_POST["password"]);
-                        $email = trim($_POST["email"]);
-                        $adress = trim($_POST["address"]);
-                        $postcode = trim($_POST["PostalCode"]);
-                        $telefoonnummer = trim($_POST["phone"]);
-                        $confirm_password = $_POST["confirm_password"];
-                        $naam = $_POST["name"];
+                        $password = trim(filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING));
+                        $adress = trim(filter_input(INPUT_POST, "address",FILTER_SANITIZE_STRING));
+                        $email = trim(filter_input(INPUT_POST, "email",FILTER_SANITIZE_STRING));
+                        $postcode = trim(filter_input(INPUT_POST, "postcode",FILTER_SANITIZE_STRING));
+                        $telefoonnummer = trim(filter_input(INPUT_POST, "telefoonnummer",FILTER_SANITIZE_STRING));
+                        $confirm_password = trim(filter_input(INPUT_POST, "confirm_password",FILTER_SANITIZE_STRING));
+                        $naam = trim(filter_input(INPUT_POST, "name",FILTER_SANITIZE_STRING));
+//                        $password = trim($_POST["password"]);
+//                        $email = trim($_POST["email"]);
+//                        $adress = trim($_POST["address"]);
+//                        $postcode = trim($_POST["PostalCode"]);
+//                        $telefoonnummer = trim($_POST["phone"]);
+//                        $confirm_password = $_POST["confirm_password"];
+//                        $naam = $_POST["name"];
                         if (empty($email)) {
                             $userror = "<p class=\"alert alert-danger\">E-mailadres is verplicht.</p>";
                             print($userror);
