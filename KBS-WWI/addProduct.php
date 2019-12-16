@@ -21,14 +21,13 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                 $quantity = $_POST['quantity'];
                 $price = $_POST['prijs'];
                 $description = $_POST['omschrijving'];
-                $gekoeld = $_POST['gekoeld'];
+                $cold = $_POST['gekoeld'];
                 //Insert product
                 $sql = ("INSERT INTO stockitems(StockItemName, Size, UnitPrice, SearchDetails, IsChillerStock) 
-                         VALUES ('$name', '$size', '$price', '$description', '$gekoeld')
+                         VALUES ('$name', '$size', '$price', '$description', '$cold')
                          ");
                 $insert = $pdo->query($sql);
                 $id = $pdo->lastInsertId();
-                print($id);
                 $sql2 = ("INSERT INTO stockitemholdings(StockItemID, LastStocktakeQuantity) VALUES ('$id', '$quantity')");
                 $insert2 = $pdo->query($sql2);
                 $categoriess= $_POST['categories'];
@@ -52,15 +51,15 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <input  class="form-control" type="text" name="size" id="size" placeholder="b.v. 457x279x279mm" value="" maxlength="20">
                 </div>
                 <div class="form-group">
-                    <label for="quantity">Voorraad</label>
-                    <input  class="form-control" type="number" name="quantity" id="quantity" placeholder="b.v. 11540" value="">
+                    <label for="quantity">Voorraad<strong class="text-danger">*</strong></label>
+                    <input  class="form-control" type="number" name="quantity" id="quantity" placeholder="b.v. 11540" value="" step=".01" min="0"  required>
                 </div>
                 <div class="form-group">
-                    <label for="prijs">Prijs</label>
-                    <input  class="form-control" type="number" name="prijs" id="prijs" placeholder="b.v. 14,50" value="">
+                    <label for="prijs">Prijs<strong class="text-danger">*</strong></label>
+                    <input  class="form-control" type="number" name="prijs" id="prijs" placeholder="b.v. 14,50" value="" min="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="categories">Selecteer</label>
+                    <label for="categories">Categorieën<strong class="text-danger">*</strong></label>
                     <select class="selectpicker w-25" name="categories[]" required multiple>
                         <?php
                         while ($categories = $result->fetch()) {
@@ -70,17 +69,18 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="omschrijving">Omschrijving</label>
-                    <textarea class="form-control"  name="omschrijving" id="omschrijving" rows="3"></textarea>
+                    <label for="omschrijving">Omschrijving<strong class="text-danger">*</strong></label>
+                    <textarea class="form-control"  name="omschrijving" id="omschrijving" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="gekoeld">Gekoeld:</label>
-                    <select class="form-control" id="gekoeld" name="gekoeld">
-                        <option>Ja</option>
-                        <option>Nee</option>
+                    <label for="gekoeld">Gekoeld:<strong class="text-danger">*</strong><strong class="blockquote-footer">(Ja of Nee)</strong></label>
+                    
+                    <select class="form-control" id="gekoeld" name="gekoeld" required>
+                        <option name="gekoeld" value="1">Ja</option>
+                        <option name="gekoeld" value="2">Nee</option>
                     </select>
                 </div>
-                <button class="btn btn-primary mb-2" type="submit" name="submit" value="Save">Submit</button>
+                <button class="btn btn-primary mb-2" type="submit" name="submit" value="Save">Toevoegen</button>
             </form>
         </main>
     </div>

@@ -15,9 +15,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         <div class="col col-xs-12">
                             <h3 class="panel-title">Producten
                                 <a href="addProduct.php">
-                                    <button type="button" class="btn btn-primary btn-create"><i class="fa fa-plus"
-                                                                                                aria-hidden="true"></i>
-                                    </button>
+                                    <button type="button" class="btn btn-primary btn-create"><i class="fa fa-plus" aria-hidden="true"></i></button>
                                 </a>
                             </h3>
                         </div>
@@ -33,7 +31,6 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                             <th>Naam</th>
                             <th>Prijs</th>
                             <th class="text-center"><i class="fa fa-cog" aria-hidden="true"></i></th>
-
                         </tr>
                         </thead>
                         <tbody>
@@ -47,7 +44,6 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         $result = $pdo->query($sql);
                         $convertRate = @convertCurrency2(1, 'USD', 'EUR');
                         while ($row = $result->fetch()) {
-
                             echo '<tr>';
                             echo '<td class="hidden-xs">' . $row['StockItemID'] . '</td>';
                             echo '<td>' . $row['StockItemName'] . '</td>';
@@ -62,7 +58,6 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         ?>
                         </tbody>
                     </table>
-
                 </div>
                 <!-- <div class="panel-footer">
                   <div class="row">
