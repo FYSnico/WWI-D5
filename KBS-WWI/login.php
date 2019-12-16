@@ -46,7 +46,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
             }
 
         }
-    }
+    
 }
 ?>
     <div class="container">
