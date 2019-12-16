@@ -60,6 +60,11 @@ nav button.search {
     border-width: 2px;
 }
 
+header nav li:hover i,
+a {
+    color: #00bdf3;
+}
+
 .form-inline {
     display: block !important;
     width: 55% !important;
@@ -84,6 +89,9 @@ nav button.search {
     height: 630px;
 }
 @media (max-width: 580px){
+    * {
+        font-size: 12px;
+    }
     .kaartbreedte {
         width: 100%!important;
     }
@@ -230,9 +238,10 @@ nav button.search {
     width: auto!important;
 }
 
-/* Afrekenpagina */
+/* Afrekenpagina en mijn bestellingen */
 .besteldproduct {
     display: flex;
+    padding: 5px;
 }
 
 .productinfo {
@@ -244,20 +253,67 @@ nav button.search {
     margin: 0 10px;
 }
 
+.inforechts {
+    margin: 0 15px;
+    width: 80%;
+}
+
 .flex {
-    display: flex;
+    text-align: center;
 }
 
 .flex table {
-    width: 50%;
+    display: inline-flex;
+    text-align: left;
+    margin: 10px;
 }
 
 .contentmiddel {
-    max-width: 620px;
+    max-width: 650px;
     margin: 0 auto;
+}
+
+.afrekenenmidden {
+    border: 1px solid grey;
+    border-radius: 15px;
+    padding: 15px;
 }
 
 .center {
     display: block;
     margin: 0 auto;
+}
+
+/* Orderpagina */
+.bestelregel .productinfo {
+    display: block;
+}
+
+.bestelregel {
+    border: 1px solid grey;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.productafbeelding {
+    width: 20%;
+    height: 130px;
+}
+
+.productafbeelding img {
+    width: 100%;
+}
+
+.groen {
+    color: green;
+}
+
+.rood {
+    color: red;
+}
+
+.productinfo table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 7px 10px;
 }

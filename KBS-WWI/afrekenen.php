@@ -7,7 +7,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 require "mollie/examples/initialize.php";
 ?>
     <div class="container">
-    <div class="contentmiddel">
+    <div class="contentmiddel afrekenenmidden">
         <?php
         // Verkrijg alle betalingen van Mollie
         $payment = $mollie->payments->page();
@@ -37,11 +37,6 @@ require "mollie/examples/initialize.php";
         $pdo->query($sql);
         $producten = ($_SESSION["shoppingcart"]);
         $totaalPrijs = ($_SESSION["shoppingcart_price"]);
-
-        // Dit werkt helaas nog niet
-        //                setlocale(LC_MONETARY, 'nl_NL.UTF-8');
-        //                $totaalPrijs = money_format('%(#1n', $prijzen);
-
         // Nederlandse besteldatum weergeven
         setlocale(LC_TIME, 'NL_nl');
         $datum = strftime('%e %B %Y');
@@ -67,7 +62,7 @@ require "mollie/examples/initialize.php";
                 </tr>
                 <tr>
                     <td>Totaalbedrag:</td>
-                    <td>€ <?php echo $totaalPrijs; ?></td>
+                    <td>€ <?php echo number_format($totaalPrijs,2,",","."); ?></td>
                 </tr>
             </table>
             <table>
@@ -98,11 +93,20 @@ require "mollie/examples/initialize.php";
                     <div class="inforechts">
                         <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='<?php echo $waarde[0] ?>'">
                             <h5>
-                                Productnaam</h5></a>
+                                <?php echo $waarde[0]; ?> | Productnaam</h5></a>
                         <div class="productinfo">
-                            <p>Productnummer: <?php echo $waarde[0]; ?></p>
-                            <p>Hoeveelheid: <?php echo $waarde[1]; ?></p>
-                            <p>Prijs: Staat in een array in een array ofzo</p>
+                            <table>
+                                <tr>
+                                    <th>Prijs</th>
+                                    <th>Hoeveelheid</th>
+                                    <th>Totaal</th>
+                                </tr>
+                                <tr>
+                                    <td>€ Staat ergens in een array in een array ofzo</td>
+                                    <td><?php echo $waarde[1]; ?></td>
+                                    <td>€ Kan berekend worden</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -143,7 +147,7 @@ require "mollie/examples/initialize.php";
             }
             unset($_SESSION["shoppingcart"]);
             } else {
-                print("Er is iets mis gegaan, probeer alstublieft opniew te bestellen.");
+                print("<h5>Er is iets mis gegaan, probeer alstublieft opniew te bestellen.</h5>");
             }
 
             ?>
