@@ -30,7 +30,7 @@ if (isset($_SESSION["Order"])) {
 }
 
 $_GET["query"] = str_replace('&','\&', $_GET["query"]);
-$_GET["query"] = str_replace('\'','\\\'', $_GET["query"]);
+$_GET["query"] = str_replace('\'','\'\'', $_GET["query"]);
 $_GET["query"] = str_replace('%','\%', $_GET["query"]);
 $_GET["query"] = str_replace('_','\_', $_GET["query"]);
 $_GET["query"] = str_replace('\\','\\\\', $_GET["query"]);
