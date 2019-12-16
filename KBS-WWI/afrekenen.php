@@ -1,6 +1,7 @@
 <?php
 include 'components/header.php';
 include("components/config.php");
+include "functions.php";
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -88,7 +89,20 @@ require "mollie/examples/initialize.php";
         <br>
         <div class="besteldproducten">
             <h4>Bestelde producten</h4>
-            <?php foreach ($producten as $index => $waarde) { ?>
+            <?php foreach ($producten as $index => $waarde) {
+                //Product(en) inserten in orderlines
+                $sql = "INSERT INTO orderlines (OrderID, StockItemId, Quantity) VALUES ($order, $waarde[0], $waarde[1])";
+                $pdo->query($sql);
+                //Voor ieder product het aantal en productnummer in de mail
+                $bevestigingsmail .= "<br>Productnummer: " . $waarde[0] . " Aantal: " . $waarde[1];
+                //update de voorraad
+                $sql = "UPDATE stockitemholdings SET LastStocktakeQuantity = LastStocktakeQuantity-$waarde[1] Where StockItemID = $waarde[0]";
+                $stmt = $pdo->query($sql);
+                unset($stmt);
+                //Product informatie ophalen van bestelde producten
+                $productinfo = ("SELECT StockItemName, S.UnitPrice FROM orderlines O JOIN StockItems S ON S.StockItemID = O.StockItemID WHERE OrderID = $order AND S.StockItemID = $waarde[0]");
+                $info = $pdo->query($productinfo)->fetch();
+                ?>
                 <hr>
                 <div class="besteldproduct">
                     <div class="productafbeelding">
@@ -98,24 +112,17 @@ require "mollie/examples/initialize.php";
                     <div class="inforechts">
                         <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='<?php echo $waarde[0] ?>'">
                             <h5>
-                                Productnaam</h5></a>
+                                <?php echo $info["StockItemName"]; ?></h5></a>
                         <div class="productinfo">
                             <p>Productnummer: <?php echo $waarde[0]; ?></p>
                             <p>Hoeveelheid: <?php echo $waarde[1]; ?></p>
-                            <p>Prijs: Staat in een array in een array ofzo</p>
+                            <p>Prijs: <?php echo $waarde[1]*convertCurrency($info["UnitPrice"], 'USD', 'EUR')?></p>
                         </div>
                     </div>
                 </div>
 
                 <?php
-                $sql = "INSERT INTO orderlines (OrderID, StockItemId, Quantity) VALUES ($order, $waarde[0], $waarde[1])";
-                $pdo->query($sql);
-                //Voor ieder product het aantal en productnummer in de mail
-                $bevestigingsmail .= "<br>Productnummer: " . $waarde[0] . " Aantal: " . $waarde[1];
-                //update de voorraad
-                $sql = "UPDATE stockitemholdings SET LastStocktakeQuantity = LastStocktakeQuantity-$waarde[1] Where StockItemID = $waarde[0]";
-                $stmt = $pdo->query($sql);
-                unset($stmt);
+                unset($info);
             }
             echo "</div>";
             // Hier stond een }, die heb ik weggehaald. Mocht er iets kapot zijn is het mijn schuld.
