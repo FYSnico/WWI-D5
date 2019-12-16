@@ -16,6 +16,7 @@ function check2Empty($arg1, $arg2)
 //    return $img;
 //}
 function convertCurrency($amount,$from_currency,$to_currency){
+    error_reporting(E_ERROR | E_PARSE);
     $apikey = '4560a3f7760193469e10';
 
     $from_Currency = urlencode($from_currency);
@@ -40,6 +41,6 @@ function convertCurrency($amount,$from_currency,$to_currency){
 }
 
 function convertCurrency2($amount,$from_currency,$to_currency){
-    return 0.90;
+    return $amount*0.90;
 }
 

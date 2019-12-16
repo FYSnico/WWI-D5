@@ -16,7 +16,9 @@ session_start();
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-
+    <!-- bootstrap-select CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css">
 
     <!--  Scripts  -->
@@ -29,6 +31,8 @@ session_start();
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+    <!-- bootstrap-select JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 </head>
 <header>
     <div id="topheader">
@@ -84,6 +88,10 @@ session_start();
                         print("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\"
                        aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"far fa-user\"></i> Mijn Account</a>");
                         print("<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">");
+                        if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
+                            print("<a class=\"dropdown-item\" href=\"dashboard.php\">Dashboard</a>");
+                        }
+                        print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn orders</a>");
                         print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn bestellingen</a>");
                         print("<a class=\"dropdown-item\" href=\"logout.php\">Log Uit</a>");
                         print("</div>");

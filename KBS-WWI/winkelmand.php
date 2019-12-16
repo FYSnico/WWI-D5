@@ -212,6 +212,7 @@ EOT;
                     <td style="padding-right: 2rem;">Korting:</td>
                     <td><?php
                         $total -= $total * ($discount / 100);
+                        //$_SESSION["discount"] = $discount;
                         echo number_format($discount, 0, "", ".");
                         ?>%</td>
                 </tr>
