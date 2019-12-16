@@ -94,7 +94,7 @@ require "mollie/examples/initialize.php";
                 $sql = "INSERT INTO orderlines (OrderID, StockItemId, Quantity) VALUES ($order, $waarde[0], $waarde[1])";
                 $pdo->query($sql);
                 //Voor ieder product het aantal en productnummer in de mail
-                $bevestigingsmail .= "<br>Productnummer: " . $waarde[0] . " Aantal: " . $waarde[1];
+
                 //update de voorraad
                 $sql = "UPDATE stockitemholdings SET LastStocktakeQuantity = LastStocktakeQuantity-$waarde[1] Where StockItemID = $waarde[0]";
                 $stmt = $pdo->query($sql);
@@ -102,6 +102,7 @@ require "mollie/examples/initialize.php";
                 //Product informatie ophalen van bestelde producten
                 $productinfo = ("SELECT StockItemName, S.UnitPrice FROM orderlines O JOIN StockItems S ON S.StockItemID = O.StockItemID WHERE OrderID = $order AND S.StockItemID = $waarde[0]");
                 $info = $pdo->query($productinfo)->fetch();
+                $bevestigingsmail .= "<br>Product " . $info[0] . " Aantal: " . $waarde[1] . " Bedrag: EUR:" . $waarde[1]*convertCurrency($info["UnitPrice"], "USD", "EUR");
                 ?>
                 <hr>
                 <div class="besteldproduct">
@@ -116,7 +117,7 @@ require "mollie/examples/initialize.php";
                         <div class="productinfo">
                             <p>Productnummer: <?php echo $waarde[0]; ?></p>
                             <p>Hoeveelheid: <?php echo $waarde[1]; ?></p>
-                            <p>Prijs: <?php echo $waarde[1]*convertCurrency($info["UnitPrice"], 'USD', 'EUR')?></p>
+                            <p>Prijs: <?php echo $waarde[1] * convertCurrency($info["UnitPrice"], 'USD', 'EUR') ?></p>
                         </div>
                     </div>
                 </div>
@@ -126,7 +127,7 @@ require "mollie/examples/initialize.php";
             }
             echo "</div>";
             // Hier stond een }, die heb ik weggehaald. Mocht er iets kapot zijn is het mijn schuld.
-            $bevestigingsmail .= "<br><br>Vriendelijke groeten WWI";
+            $bevestigingsmail .= "<br>Totaal: " . $totaalPrijs . "<br><br>Vriendelijke groeten WWI";
             require 'PHPMailer-master/src/Exception.php';
             require 'PHPMailer-master/src/PHPMailer.php';
             require 'PHPMailer-master/src/SMTP.php';
@@ -149,8 +150,14 @@ require "mollie/examples/initialize.php";
                 echo "Mailer Error: " . $mail->ErrorInfo;
             }
             unset($_SESSION["shoppingcart"]);
+            } elseif (!empty($_GET["order_id"]) && (!$payment[0]->ispaid() && ($payment[0]->description))&& !empty($payment[0]->getCheckoutURL())) {
+                echo "De betaling staat op open. Om alsnog te betalen<BR>";
+                echo"<a href=" . $payment[0]->getCheckoutURL();
+                echo ">Klik hier</a>";
+            echo "<BR>De betalingsmogelijkheid verloopt binnen 15 minuten.";
             } else {
-                print("Er is iets mis gegaan, probeer alstublieft opniew te bestellen.");
+                print("Er is iets mis gegaan, probeer alstublieft opniew te bestellen.<br>");
+                print("<a href='winkelmand.php'>Klik hier</a> om terug te gaan naar de winkelmand");
             }
 
             ?>
