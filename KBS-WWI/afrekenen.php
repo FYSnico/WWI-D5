@@ -141,7 +141,7 @@ require "mollie/examples/initialize.php";
             if (!$mail->Send()) {
                 echo "Mailer Error: " . $mail->ErrorInfo;
             }
-            //unset($_SESSION["shoppingcart"]);
+            unset($_SESSION["shoppingcart"]);
             } else {
                 print("Er is iets mis gegaan, probeer alstublieft opniew te bestellen.");
             }
