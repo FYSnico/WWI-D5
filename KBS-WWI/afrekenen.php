@@ -45,7 +45,7 @@ require "mollie/examples/initialize.php";
         // Nederlandse besteldatum weergeven
         setlocale(LC_TIME, 'NL_nl');
         $datum = strftime('%e %B %Y');
-        $bevestigingsmail = "Bedankt voor uw bestelling<br> U heeft besteld op " . $datum;
+        $bevestigingsmail = "Bedankt voor uw bestelling<br> U heeft besteld op " . $datum . "<br>";
         ?>
         <img class="center" src="images/logo.png">
         <h1>Bedankt voor uw bestelling</h1>
