@@ -74,7 +74,7 @@ session_start();
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../KBS-WWI/contact.php"><i class="fas fa-headset"></i> Contact</a>
+                        <a class="nav-link" href="../KBS-WWI/contact.php"><i class="fas fa-envelope-open-text"></i> Contact</a>
                     </li>
                 </ul>
             </div>
@@ -92,6 +92,7 @@ session_start();
                             print("<a class=\"dropdown-item\" href=\"dashboard.php\">Dashboard</a>");
                         }
                         print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn orders</a>");
+                        print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn bestellingen</a>");
                         print("<a class=\"dropdown-item\" href=\"logout.php\">Log Uit</a>");
                         print("</div>");
                     } else {

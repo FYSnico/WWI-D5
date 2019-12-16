@@ -19,7 +19,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     }
     //check ifempty
     if (check2Empty($email, $password)) {
-        print("Een of meerdere velden zijn leeg!");
+        print("<p class=\"mt-2 pnormaal\">Een of meerdere velden zijn leeg.</p>");
     } else {
         //Kijk of user exists
         $stmt = $pdo->prepare("Select Emailaddress, HashedPassword, CustomerName, IsSystemUser FROM customers where Emailaddress= :email");
@@ -41,9 +41,12 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                 die();
             }
         } else {
-            print("<p class=\"mt-2 pnormaal\">Dit e-mailadres is niet bekend bij ons. Controleer op spelfouten of registreer je account.</p>");
+                print("<p class=\"mt-2 pnormaal\">De combinatie van e-mailadres en wachtwoord is niet geldig.</p>");
+
+            }
+
         }
-    }
+    
 }
 ?>
     <div class="container">
