@@ -5,10 +5,10 @@ include("functions.php");
 
 ?>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <!-- Sidebar menu -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4">
             <?php
             // Selecteren producten
             $sql = "SELECT *
@@ -18,24 +18,22 @@ include("functions.php");
             if(isset($_POST['submit'])){
                 $name = $_POST['name'];
                 $size = $_POST['size'];
-
+                $quantity = $_POST['quantity'];
+                $price = $_POST['prijs'];
                 //Insert product
-                $sql = ("INSERT INTO stockitems(StockItemName, Size) VALUES ('$name', '$size')");
+                $sql = ("INSERT INTO stockitems(StockItemName, Size, UnitPrice) VALUES ('$name', '$size', '$price')");
                 $insert = $pdo->query($sql);
                 $id = $pdo->lastInsertId();
                 print($id);
-                $hoii = ("INSERT INTO stockitemholdings(StockItemID, LastStocktakeQuantity) VALUES ('$id', '1000')");
-                $hoi = $pdo->query($hoii);
+                $sql2 = ("INSERT INTO stockitemholdings(StockItemID, LastStocktakeQuantity) VALUES ('$id', '$quantity')");
+                $insert2 = $pdo->query($sql2);
                 $categoriess= $_POST['categories'];
                 //Insert Category/ies
                 foreach ($categoriess as $i) {
                     $categoriess = $i;
-                    $sql2 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
-                    $insert = $pdo->query($sql2);
-
+                    $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
+                    $insert = $pdo->query($sql3);
                 }
-
-
             }
             ?>
             <h1 style="margin-top: 10px">Product toevoegen</h1>
@@ -48,6 +46,14 @@ include("functions.php");
                 <div class="form-group">
                     <label for="name">Maat</label>
                     <input  class="form-control" type="text" name="size" id="size" placeholder="b.v. 457x279x279mm" value="" maxlength="20">
+                </div>
+                <div class="form-group">
+                    <label for="name">Voorraad</label>
+                    <input  class="form-control" type="number" name="quantity" id="quantity" placeholder="b.v. 11540" value="">
+                </div>
+                <div class="form-group">
+                    <label for="name">Prijs</label>
+                    <input  class="form-control" type="number" name="prijs" id="prijs" placeholder="b.v. 14,50" value="">
                 </div>
                 <div class="form-group">
                     <label for="categories">Selecteer</label>
