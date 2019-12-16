@@ -17,6 +17,7 @@ require "mollie/examples/initialize.php";
         if (!empty($_GET["order_id"]) && ($payment[0]->ispaid() && ($payment[0]->description) == $_GET["order_id"])) {
 
         // Klantgegevens ophalen
+        $subtotaal = 0;
         $sentTo = $_SESSION["email"];
         $sqlcustomer = "Select CustomerID, CustomerName, DeliveryLocation, DeliveryPostalCode FROM customers WHERE EmailAddress = '$sentTo'";
         $result = $pdo->query($sqlcustomer)->fetch();
@@ -70,6 +71,11 @@ require "mollie/examples/initialize.php";
                     <td>Totaalbedrag:</td>
                     <td>€ <?php echo $totaalPrijs; ?></td>
                 </tr>
+                <!--Korting werkt nog niet
+                <tr>
+                    <td>Korting:</td>
+                    <td><?php /*$_SESSION["discount"] */?></td>-->
+                </tr>
             </table>
             <table>
                 <tr>
@@ -102,7 +108,8 @@ require "mollie/examples/initialize.php";
                 //Product informatie ophalen van bestelde producten
                 $productinfo = ("SELECT StockItemName, S.UnitPrice FROM orderlines O JOIN StockItems S ON S.StockItemID = O.StockItemID WHERE OrderID = $order AND S.StockItemID = $waarde[0]");
                 $info = $pdo->query($productinfo)->fetch();
-                $bevestigingsmail .= "<br>Product " . $info[0] . " Aantal: " . $waarde[1] . " Bedrag: EUR:" . $waarde[1]*convertCurrency($info["UnitPrice"], "USD", "EUR");
+                $bevestigingsmail .= "<br>Product " . $info[0] . " Aantal: " . $waarde[1] . " Bedrag: EUR: " . number_format($waarde[1]*convertCurrency($info["UnitPrice"], "USD", "EUR"), 2) . "<br>";
+                $subtotaal += $waarde[1]*convertCurrency($info["UnitPrice"], "USD", "EUR");
                 ?>
                 <hr>
                 <div class="besteldproduct">
@@ -125,9 +132,10 @@ require "mollie/examples/initialize.php";
                 <?php
                 unset($info);
             }
+            $korting = $subtotaal - $totaalPrijs;
             echo "</div>";
             // Hier stond een }, die heb ik weggehaald. Mocht er iets kapot zijn is het mijn schuld.
-            $bevestigingsmail .= "<br>Totaal: " . $totaalPrijs . "<br><br>Vriendelijke groeten WWI";
+            $bevestigingsmail .= "<br> Uw korting is EUR: -". number_format($korting,2) . "<br>Totaal EUR: " . $totaalPrijs . "<br><br>Vriendelijke groeten WWI";
             require 'PHPMailer-master/src/Exception.php';
             require 'PHPMailer-master/src/PHPMailer.php';
             require 'PHPMailer-master/src/SMTP.php';
@@ -149,7 +157,7 @@ require "mollie/examples/initialize.php";
             if (!$mail->Send()) {
                 echo "Mailer Error: " . $mail->ErrorInfo;
             }
-            unset($_SESSION["shoppingcart"]);
+            //unset($_SESSION["shoppingcart"]);
             } elseif (!empty($_GET["order_id"]) && (!$payment[0]->ispaid() && ($payment[0]->description))&& !empty($payment[0]->getCheckoutURL())) {
                 echo "De betaling staat op open. Om alsnog te betalen<BR>";
                 echo"<a href=" . $payment[0]->getCheckoutURL();
