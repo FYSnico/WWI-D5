@@ -64,12 +64,15 @@ $orderID = $orderResult["OrderID"];
                     <hr>
                     <div class="besteldproduct">
                         <div class="productafbeelding">
-                            <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='#'"><img
-                                        src="images/logo.png"></a>
+                            <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='<?php echo $stockItemID ?>'">
+                                <?php
+                                echo '<img src="data:image/jpeg;base64,' . base64_encode($productAfbeelding) . '"/>';
+                                ?>
+                            </a>
                         </div>
                         <div class="inforechts">
                             <h5>
-                                <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='#'"><?php echo $productNaam ?></a>
+                                <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='<?php echo $stockItemID ?>'"><?php echo $productNaam ?></a>
                             </h5>
                             <div class="productinfo">
                                 <table>
