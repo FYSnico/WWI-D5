@@ -154,7 +154,7 @@ require "mollie/examples/initialize.php";
             if (!$mail->Send()) {
                 echo "Mailer Error: " . $mail->ErrorInfo;
             }
-            //unset($_SESSION["shoppingcart"]);
+            unset($_SESSION["shoppingcart"]);
             } elseif (!empty($_GET["order_id"]) && (!$payment[0]->ispaid() && ($payment[0]->description))&& !empty($payment[0]->getCheckoutURL())) {
                 echo "De betaling staat op open. Om alsnog te betalen<BR>";
                 echo"<a href=" . $payment[0]->getCheckoutURL();
