@@ -1,18 +1,13 @@
 <?php
-// include van ddb
-include "components/ddb_connect_mysqli.php";
 
 // review toeveogen in de database, de gebruiker en ook de
 if (isset($_POST["Submittoevoegenreview"])) {
-    if (isset($_POST["is_anonymous"])) {
-        $naamreview = "Anoniem";
-    } else {
-        $naamreview = $_SESSION["naam"];
-    }
+    $IDreview = $_SESSION["naam"];
+
 
     $sterren = $_POST["score"];
     $item = str_replace("\"", "", $item);
-    $sql = "INSERT INTO reviews (Name_customer, Stars, StockItemID) VALUES (\"{$naamreview}\", {$sterren}, {$item})";
+    $sql = "INSERT INTO reviews (Name_customer, Stars, StockItemID) VALUES (\"{$IDreview}\", {$sterren}, {$item})";
     if (mysqli_query($mysqli, $sql)) {
         echo "<br>";
     } else {
@@ -26,32 +21,29 @@ if (isset($_POST["Submittoevoegenreview"])) {
     <div class="row">
         <div class="col-12">
             <?php
-            if (isset($_SESSION["naam"])) {
-
-            }
-            ?>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <?php
             //kijken of je een reactie mag plaatsen, dit hangt af of je al eerder een reactie hebt geplaats bij de product en of je bent ingelogt.
                 if (isset($_SESSION["naam"])) {
                     $gebruiker = $_SESSION["naam"];
                     $Magreactieplaatsen = TRUE;
+                    $heefteenreactie = FALSE;
                     $item = str_replace("\"", "", $item);
                     $result = $mysqli->query("SELECT * FROM Reviews WHERE StockItemID = {$item};");
 
                     if($result && mysqli_num_rows($result) > 0) {
                         WHILE ($row = mysqli_fetch_assoc($result)) {
-                            $naam = $row["Name_customer"];
-                            if ($naam == $gebruiker) {
+                            $ID = $row["Name_customer"];
+                            if ($ID == $gebruiker) {
                                 $Magreactieplaatsen = FALSE;
                             }
                         }
                     }
+                    $result2 = $mysqli->query("SELECT avg(Stars) FROM Reviews WHERE StockItemID = {$item};");
+
+                    if($result2 && mysqli_num_rows($result2) > 0) {
+                        $row2 = mysqli_fetch_assoc($result2);
+                        $heefteenreactie = TRUE;
+                    }
+
                     if($Magreactieplaatsen == TRUE){
                         //laten zit van invoer veld
                         ?>

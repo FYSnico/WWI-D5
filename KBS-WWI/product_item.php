@@ -1,6 +1,7 @@
 <?php
 include('components/header.php');
 include("components/config.php");
+include "components/ddb_connect_mysqli.php";
 include("functions.php");
 ?>
 
@@ -23,6 +24,16 @@ include("functions.php");
                 ON SIG.StockGroupID = SG.StockGroupID
                 WHERE SIG.StockItemID = $item  
                 ";
+            // kijken of hij een beoordeling heeft en het gemiddelde
+//            $heefteenreactie = FALSE;
+//            $result2 = $mysqli->query("SELECT avg(Stars) FROM Reviews WHERE StockItemID = {$item};");
+//            if($result2 && mysqli_num_rows($result2) > 0) {
+//                $row2 = implode(mysqli_fetch_assoc($result2));
+//                if ($row2 >= 1) {
+//                    $heefteenreactie = TRUE;
+//                }
+//            }
+
             $result = $pdo->query($sql);
             $convertRate = @convertCurrency2(1, 'USD', 'EUR');
             while ($row = $result->fetch()) {
@@ -132,6 +143,14 @@ include("functions.php");
                                     echo $row['Size'];
                                     echo '</dt>';
                                 }
+                            echo '</dl>';
+                            echo '<dl class="param param-inline">';
+//                            if ($heefteenreactie == TRUE) {
+//                                echo '<dt> Sterren: ';
+//                                for ($i = 0; $i < $row2; $i++) {
+//                                    print "⭐";
+//                                }
+//                            }
                             echo '</dl>';
                         echo '</div>';
                     echo '</div>';
