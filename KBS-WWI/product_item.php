@@ -162,6 +162,9 @@ include("functions.php");
                         echo '</dt>';
                     }
                     echo '</dl>';
+                    echo '<dl>';
+                    echo '<dt>Garantie: Fabrieksgarantie</dt>';
+                    echo '</dl>';
                     echo '<dl class="param param-inline">';
                             if ($heefteenreactie == TRUE) {
                                 echo '<dt> Sterren: ';
