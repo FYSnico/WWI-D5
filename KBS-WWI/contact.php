@@ -94,7 +94,7 @@ else{
     $stmt = $pdo->query($sql);
     unset($stmt);
 
-    $bevestigingsmail = "Bedankt voor uw bericht<br>We zullen zo snel mogelijk bij u terugkomen<br><br>Vriendelijke groeten WWI";
+    $bevestigingsmail = "Bedankt voor uw bericht,<br>We zullen zo snel mogelijk bij u terugkomen.<br><br>Met vriendelijke groet,<br>WWI";
     $sentTo = $email;
     require 'PHPMailer-master/src/Exception.php';
     require 'PHPMailer-master/src/PHPMailer.php';
