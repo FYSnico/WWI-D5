@@ -5,6 +5,7 @@ include "components/ddb_connect_mysqli.php";
 include("functions.php");
 ?>
 
+
     <div class="container">
         <div class="card shadow">
             <div class="row">
@@ -13,6 +14,21 @@ include("functions.php");
                     session_start();
                 }
                 $item = $_GET['id'];
+                // review toeveogen in de database, de gebruiker en ook de
+                if (isset($_POST["Submittoevoegenreview"])) {
+                    $IDreview = $_SESSION["naam"];
+
+
+                    $sterren = $_POST["score"];
+                    $item = str_replace("\"", "", $item);
+                    $sql = "INSERT INTO reviews (Name_customer, Stars, StockItemID) VALUES (\"{$IDreview}\", {$sterren}, {$item})";
+                    if (mysqli_query($mysqli, $sql)) {
+                        echo "<br>";
+                    } else {
+                        echo "Error: " . $sql . "" . mysqli_error($mysqli);
+                    }
+                }
+
                 $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, Photo2, Photo3, videoportaal, UnitPrice, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
 
                 FROM stockitems S 
@@ -25,14 +41,14 @@ include("functions.php");
                 WHERE SIG.StockItemID = $item  
                 ";
                 // kijken of hij een beoordeling heeft en het gemiddelde
-                //            $heefteenreactie = FALSE;
-                //            $result2 = $mysqli->query("SELECT avg(Stars) FROM Reviews WHERE StockItemID = {$item};");
-                //            if($result2 && mysqli_num_rows($result2) > 0) {
-                //                $row2 = implode(mysqli_fetch_assoc($result2));
-                //                if ($row2 >= 1) {
-                //                    $heefteenreactie = TRUE;
-                //                }
-                //            }
+                            $heefteenreactie = FALSE;
+                            $result2 = $mysqli->query("SELECT avg(Stars) FROM Reviews WHERE StockItemID = {$item};");
+                            if($result2 && mysqli_num_rows($result2) > 0) {
+                                $row2 = implode(mysqli_fetch_assoc($result2));
+                                if ($row2 >= 1) {
+                                    $heefteenreactie = TRUE;
+                                }
+                            }
 
                 $result = $pdo->query($sql);
                 $convertRate = @convertCurrency2(1, 'USD', 'EUR');
@@ -147,12 +163,12 @@ include("functions.php");
                     }
                     echo '</dl>';
                     echo '<dl class="param param-inline">';
-//                            if ($heefteenreactie == TRUE) {
-//                                echo '<dt> Sterren: ';
-//                                for ($i = 0; $i < $row2; $i++) {
-//                                    print "⭐";
-//                                }
-//                            }
+                            if ($heefteenreactie == TRUE) {
+                                echo '<dt> Sterren: ';
+                                for ($i = 0; $i < $row2; $i++) {
+                                    print "⭐";
+                                }
+                            }
                     echo '</dl>';
                     echo '</div>';
                     echo '</div>';

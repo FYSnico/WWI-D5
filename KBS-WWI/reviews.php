@@ -1,21 +1,3 @@
-<?php
-
-// review toeveogen in de database, de gebruiker en ook de
-if (isset($_POST["Submittoevoegenreview"])) {
-    $IDreview = $_SESSION["naam"];
-
-
-    $sterren = $_POST["score"];
-    $item = str_replace("\"", "", $item);
-    $sql = "INSERT INTO reviews (Name_customer, Stars, StockItemID) VALUES (\"{$IDreview}\", {$sterren}, {$item})";
-    if (mysqli_query($mysqli, $sql)) {
-        echo "<br>";
-    } else {
-        echo "Error: " . $sql . "" . mysqli_error($mysqli);
-    }
-}
-
-?>
 <br>
 <div class="container">
     <div class="row">
