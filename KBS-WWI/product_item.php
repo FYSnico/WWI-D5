@@ -73,7 +73,6 @@ include("functions.php");
                             echo '</div>';
                             if ($row['videoportaal']) {
                                 $video = $row['videoportaal'];
-                                echo "<object width=\"425\" height=\"350\" data=\"{$video}\" type=\"application/x-shockwave-flash\"><param name=\"src\" value=\"{$video}\" /></object>";
                                 echo "<iframe width=\"420\" height=\"315\" src=\"$video\" ></iframe>";
                             }
                         echo '</div>';
