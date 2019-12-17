@@ -26,19 +26,13 @@ require "mollie/examples/initialize.php";
         $deliveryLocation = $result["DeliveryLocation"];
         $deliveryPostalCode = $result["DeliveryPostalCode"];
 
-        //                // Ordergegevens ophalen
-        //                $order = $_GET["order_id"];
-        //                $sqlorder = "Select StockItemID, Quantity FROM orderlines WHERE OrderID = '$order'";
-        //                $result2 = $pdo->query($sqlorder)->fetch();
-        //                $stockItemID = $result2["StockItemID"];
-        //                $quantity = $result2["Quantity"];
-
         //Zet bestelling in Orders
         $order = $_GET["order_id"];
         $sql = "INSERT INTO orders (OrderID, CustomerID, Orderdate) Values ($order, $customer, CURRENT_TIMESTAMP )";
         $pdo->query($sql);
         $producten = ($_SESSION["shoppingcart"]);
         $totaalPrijs = ($_SESSION["shoppingcart_price"]);
+
         // Nederlandse besteldatum weergeven
         setlocale(LC_TIME, 'NL_nl');
         $datum = strftime('%e %B %Y');
@@ -115,11 +109,20 @@ require "mollie/examples/initialize.php";
                     <div class="inforechts">
                         <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='<?php echo $waarde[0] ?>'">
                             <h5>
-                                <?php echo $info["StockItemName"]; ?></h5></a>
+                                <?php echo $waarde[0] . " | " .  $info["StockItemName"]; ?></h5></a>
                         <div class="productinfo">
-                            <p>Productnummer: <?php echo $waarde[0]; ?></p>
-                            <p>Hoeveelheid: <?php echo $waarde[1]; ?></p>
-                            <p>Prijs: <?php echo $waarde[1] * convertCurrency($info["UnitPrice"], 'USD', 'EUR') ?></p>
+                            <table>
+                                <tr>
+                                    <th>Prijs</th>
+                                    <th>Hoeveelheid</th>
+                                    <th>Totaal</th>
+                                </tr>
+                                <tr>
+                                    <td>€ <?php echo number_format(convertCurrency($info["UnitPrice"], 'USD', 'EUR'), 2, ",", ".") ?></td>
+                                    <td><?php echo $waarde[1]; ?></td>
+                                    <td>€ <?php echo number_format($waarde[1] * convertCurrency($info["UnitPrice"], 'USD', 'EUR'), 2, ",", ".")?></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -129,7 +132,6 @@ require "mollie/examples/initialize.php";
             }
             $korting = $subtotaal - $totaalPrijs;
             echo "</div>";
-            // Hier stond een }, die heb ik weggehaald. Mocht er iets kapot zijn is het mijn schuld.
             $bevestigingsmail .= "<br> Uw korting is EUR: -". number_format($korting,2) . "<br>Totaal EUR: " . $totaalPrijs . "<br><br>Vriendelijke groeten WWI";
             require 'PHPMailer-master/src/Exception.php';
             require 'PHPMailer-master/src/PHPMailer.php';

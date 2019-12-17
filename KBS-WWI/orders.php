@@ -1,6 +1,7 @@
 <?php
 include "components/header.php";
 include "components/config.php";
+include "functions.php";
 require "mollie/examples/initialize.php";
 
 error_reporting(E_ALL ^ E_NOTICE);
@@ -28,7 +29,8 @@ $orderID = $orderResult["OrderID"];
             foreach ($orderResult
 
             as $orderWaarde) {
-            $orderID = $orderWaarde["OrderID"]
+            $orderID = $orderWaarde["OrderID"];
+            $totaalBestelling = 0;
             ?>
             <br>
             <div class="bestelregel">
@@ -55,7 +57,7 @@ $orderID = $orderResult["OrderID"];
                     $sqlProduct = "SELECT StockItemName, UnitPrice, Photo FROM stockitems WHERE StockItemID = $stockItemID";
                     $productResult = $pdo->query($sqlProduct)->fetch();
                     $productNaam = $productResult["StockItemName"];
-                    $productPrijs = $productResult["UnitPrice"];
+                    $productPrijs = convertCurrency($productResult["UnitPrice"], 'USD', 'EUR');
                     $productAfbeelding = $productResult["Photo"];
 
                     $totaalProduct = $productPrijs * $hoeveelheid;
@@ -66,7 +68,11 @@ $orderID = $orderResult["OrderID"];
                         <div class="productafbeelding">
                             <a href="http://localhost/WWI-D5/KBS-WWI/product_item.php?id='<?php echo $stockItemID ?>'">
                                 <?php
-                                echo '<img src="data:image/jpeg;base64,' . base64_encode($productAfbeelding) . '"/>';
+                                if ($productAfbeelding) {
+                                    echo '<img class="card-img-top kaartimg" src="data:image/jpeg;base64,' . base64_encode($productAfbeelding) . '"/>';
+                                } else {
+                                    echo '<img class="card-img-top kaartimg" src="images/default-product.png" alt="">';
+                                }
                                 ?>
                             </a>
                         </div>
@@ -82,7 +88,7 @@ $orderID = $orderResult["OrderID"];
                                         <th>Totaal</th>
                                     </tr>
                                     <tr>
-                                        <td>€ <?php echo number_format($productResult["UnitPrice"], 2, ",", ".") ?></td>
+                                        <td>€ <?php echo number_format($productPrijs, 2, ",", ".") ?></td>
                                         <td><?php echo $hoeveelheid; ?></td>
                                         <td>€ <?php echo number_format($totaalProduct, 2, ",", ".") ?></td>
                                     </tr>

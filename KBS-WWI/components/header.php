@@ -91,7 +91,6 @@ session_start();
                         if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                             print("<a class=\"dropdown-item\" href=\"dashboard.php\">Dashboard</a>");
                         }
-                        print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn orders</a>");
                         print("<a class=\"dropdown-item\" href=\"orders.php\">Mijn bestellingen</a>");
                         print("<a class=\"dropdown-item\" href=\"logout.php\">Log Uit</a>");
                         print("</div>");
