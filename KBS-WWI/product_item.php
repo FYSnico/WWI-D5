@@ -99,7 +99,7 @@ include("functions.php");
                     echo '</div>';
                     if ($row['videoportaal']) {
                         $video = $row['videoportaal'];
-                        echo "<iframe width=\"420\" height=\"315\" src=\"$video\" ></iframe>";
+                        echo "<iframe class=\"product-img-size\" src=\"$video\" ></iframe>";
                     }
                     echo '</div>';
                     echo '</article>';
