@@ -2,23 +2,28 @@
 include "components/header.php";
 include "components/config.php";
 include "functions.php";
+
+// Betaalgegevens ophalen
 require "mollie/examples/initialize.php";
 
+// Molly dingen weghalen die niet gebruikt worden
 error_reporting(E_ALL ^ E_NOTICE);
 $payment = $mollie->payments->page();
 
 // Klantgegevens ophalen
 $sentTo = $_SESSION["email"];
-$sqlcustomer = "Select CustomerID, CustomerName, DeliveryLocation, DeliveryPostalCode FROM customers WHERE EmailAddress = '$sentTo'";
-$result = $pdo->query($sqlcustomer)->fetch();
+$stmtcustomer = $pdo->prepare('Select CustomerID, CustomerName, DeliveryLocation, DeliveryPostalCode FROM customers WHERE EmailAddress = ?');
+$stmtcustomer->execute(array($sentTo));
+$result = $stmtcustomer->fetch();
 $customer = $result["CustomerID"];
 $customerName = $result["CustomerName"];
 $deliveryLocation = $result["DeliveryLocation"];
 $deliveryPostalCode = $result["DeliveryPostalCode"];
 
 // Ordergegevens ophalen
-$sqlOrder = "SELECT OrderID, OrderDate FROM orders WHERE CustomerID = $customer";
-$orderResult = $pdo->query($sqlOrder)->fetchAll();
+$sqlOrder = $pdo->prepare('SELECT OrderID, OrderDate FROM orders WHERE CustomerID = ?');
+$sqlOrder->execute(array($customer));
+$orderResult = $sqlOrder->fetchAll();
 $orderID = $orderResult["OrderID"];
 ?>
     <div class="container">
@@ -45,17 +50,19 @@ $orderID = $orderResult["OrderID"];
                 <div class="besteldproducten">
                     <?php
                     // Producten in bestelregel weergeven
-                    $sqlOrderLine = "SELECT StockItemID, Quantity FROM orderlines WHERE OrderID = $orderID";
-                    $orderLineResult = $pdo->query($sqlOrderLine)->fetchAll();
+                    $sqlOrderLine = $pdo->prepare('SELECT StockItemID, Quantity FROM orderlines WHERE OrderID = ?');
+                    $sqlOrderLine->execute(array($orderID));
+                    $orderLineResult = $sqlOrderLine->fetchAll();
                     foreach ($orderLineResult
 
                     as $orderLineWaarde) {
-
                     // Productgegevens ophalen
                     $stockItemID = $orderLineWaarde["StockItemID"];
                     $hoeveelheid = $orderLineWaarde["Quantity"];
-                    $sqlProduct = "SELECT StockItemName, UnitPrice, Photo FROM stockitems WHERE StockItemID = $stockItemID";
-                    $productResult = $pdo->query($sqlProduct)->fetch();
+                    $sqlProduct = $pdo->prepare('SELECT StockItemName, UnitPrice, Photo FROM stockitems WHERE StockItemID = ?');
+                    $sqlProduct->execute(array($stockItemID));
+                    $productResult = $sqlProduct->fetch();
+
                     $productNaam = $productResult["StockItemName"];
                     $productPrijs = convertCurrency($productResult["UnitPrice"], 'USD', 'EUR');
                     $productAfbeelding = $productResult["Photo"];
