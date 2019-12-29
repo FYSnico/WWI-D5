@@ -60,7 +60,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                 </div>
                 <div class="form-group">
                     <label for="categories">Categorieën<strong class="text-danger">*</strong></label>
-                    <select class="selectpicker w-25" name="categories[]" required multiple>
+                    <select class="selectpicker w-25" name="categories[]" data-max-options="3" required multiple>
                         <?php
                         while ($categories = $result->fetch()) {
                             echo "<option value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";

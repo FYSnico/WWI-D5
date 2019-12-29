@@ -49,17 +49,20 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     $categories = $i;
                     
                     //Insert 
-                    // $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
-                    // $update = $pdo->query($sql3);
+                    $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
+                    $update = $pdo->query($sql3);
                     //Update  
                     // $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
                     // $update2 = $pdo->query($sql4);
                     //Delete
-                    // $sql5 = "DELETE FROM stockitemstockgroups WHERE StockItemID = $id AND StockGroupID = $i";
-                    // $update2 = $pdo->query($sql5);
-                    
-                    
-
+        
+                }
+            }else if(isset($_POST['delete'])){
+                $categories= $_POST['categories'];
+                foreach ($categories as $i) {
+                    $categories = $i;
+                    $sql5 = "DELETE FROM stockitemstockgroups WHERE StockItemID = $id AND StockGroupID = $i";
+                    $update2 = $pdo->query($sql5);
                 }
             }
             //pre data van categorieen laten tonen
@@ -84,9 +87,9 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <label for="name">Maat</label>
                     <input  class="form-control" type="text" name="size" id="size" placeholder="b.v. 457x279x279mm" value="<?php echo $size;?>" maxlength="20">
                 </div>
-                <div class="form-group">
-                    <label for="categories">Categorieën</label>
-                    <select class="selectpicker w-25 " name="categories[]" multiple title="Selecteer een categorie..." data-max-options="3"  required multiple>
+                <div class="form-group d-flex align-items-center">
+                    <label class="m-0" for="categories">Categorieën</label>
+                    <select class="selectpicker w-25 "  id="select" name="categories[]" multiple title="Selecteer een categorie..." data-max-options="3"   required multiple>
                         <?php
                      
                             foreach($stockgroups as $categories){
@@ -99,6 +102,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                             }
                         ?>
                     </select>
+                    <input type="submit" name="delete" value="Leeg maken" class="btn btn-outline-secondary">
                 </div>
                 <div class="form-group">
                 <label for="status">Status</label>
