@@ -3,15 +3,16 @@ include('components/header.php');
 include("components/config.php");
 include("functions.php");
 
+if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
 ?>
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <!-- Sidebar menu -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4">
             <?php
-            // Selecteren producten
-            $id = $_GET['id'];
+            // ophalen producten gegevens
+            $id = $_GET['id']; //id van huidige product
             $sql = "SELECT *
                     FROM stockitems S
                     JOIN stockitemholdings SIH
@@ -20,26 +21,61 @@ include("functions.php");
                     ON S.StockitemID = SIG.StockitemID
                     JOIN stockgroups SG
                     ON SIG.StockGroupID = SG.StockGroupID
-                    WHERE S.StockItemID = $id";  
-
+                    WHERE S.StockItemID = $id
+                    ";  
             $result = $pdo->query($sql);
+            $sql2 = "SELECT S.StockGroupName
+                     FROM stockgroups S
+                     WHERE NOT EXISTS (SELECT SIG.StockGroupID 
+                                       FROM stockitemstockgroups SIG 
+                                       WHERE S.StockGroupID = SIG.StockGroupID 
+                                       AND SIG.StockItemID = $id)
+                    ";
+            $result2 = $pdo->query($sql2);
+        
+            $sql5 = "SELECT * FROM stockgroups";
+            $stockgroups = $pdo->query($sql5);
             if(isset($_POST['submit'])){
                 $name = $_POST['name'];
                 $size = $_POST['size'];
+                $status =  $_POST['status'];
 
-                $sql = "UPDATE stockitems SET StockItemName = '$name'";
+                $sql = "UPDATE stockitems SET StockItemName = '$name', Status = '$status' WHERE StockItemID = '$id'";
                 $update = $pdo->query($sql);
+                
+                $categories= $_POST['categories'];
+                //categorieen bijwerken (multiple categorieen)
+                foreach ($categories as $i) {
+                    $categories = $i;
+                    
+                    //Insert 
+                    // $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
+                    // $update = $pdo->query($sql3);
+                    //Update  
+                    // $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
+                    // $update2 = $pdo->query($sql4);
+                    //Delete
+                    // $sql5 = "DELETE FROM stockitemstockgroups WHERE StockItemID = $id AND StockGroupID = $i";
+                    // $update2 = $pdo->query($sql5);
+                    
+                    
 
+                }
             }
+            //pre data van categorieen laten tonen
             while($row = $result->fetch())
             {
                 $name = $row['StockItemName'];
                 $size = $row['Size'];
+                $status = $row['Status'];
             }
+            $result = $pdo->query($sql);
+
             ?>
             <h1 style="margin-top: 10px">Product Bijwerken</h1>
             <p>Velden met <strong class="text-danger">(*)</strong> zijn verplicht</p>
-            <form action="dashboard.php" method="POST">
+            <!-- Producten bijwerken -->
+            <form action="" method="POST">
                 <div class="form-group">
                     <label for="name">Naam<strong class="text-danger">*</strong></label>
                     <input  class="form-control" type="text" name="name" id="name" placeholder="b.v. Shipping carton" value="<?php echo $name;?>" required maxlength="100">
@@ -49,21 +85,36 @@ include("functions.php");
                     <input  class="form-control" type="text" name="size" id="size" placeholder="b.v. 457x279x279mm" value="<?php echo $size;?>" maxlength="20">
                 </div>
                 <div class="form-group">
-                    <label for="categories">Selecteer</label>
-                    <select class="selectpicker w-25" name="categories[]"  multiple>
+                    <label for="categories">Categorieën</label>
+                    <select class="selectpicker w-25 " name="categories[]" multiple title="Selecteer een categorie..." data-max-options="3"  required multiple>
                         <?php
-                        while ($categories = $result->fetch()) {
-                            echo "<option value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";
-                        }
+                     
+                            foreach($stockgroups as $categories){
+                                foreach ($result as $selectedCategories) {
+                                    $isSelected = "selected"; 
+                                    echo "<option . $isSelected . value='".$selectedCategories['StockGroupID']."'>".$selectedCategories['StockGroupName']."</option>";
+                                }
+                                echo "<option . value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";
+
+                            }
                         ?>
                     </select>
                 </div>
-                <input class="btn btn-primary mb-2" type="submit" name="submit" value="submit">
+                <div class="form-group">
+                <label for="status">Status</label>
+                <select class="selectpicker" name="status" >
+                    <option name="status" value="1">Actief</option>
+                    <option name="status" value="0">Niet actief</option>
+                </select>
+                </div>
+                <input class="btn btn-primary mb-2" type="submit" name="submit" value="Bijwerken">
             </form>
         </main>
     </div>
 </div>
 
-
+<?php
+}
+?>
 <br><br>
 <?php include('components/footer.php') ?>

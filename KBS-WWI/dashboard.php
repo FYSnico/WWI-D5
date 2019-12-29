@@ -35,25 +35,30 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         </thead>
                         <tbody>
                         <?php
-                        $sql = "SELECT S.StockItemID, StockItemName, UnitPrice 
-                            FROM stockitems S
-                            JOIN stockitemholdings SIH
-                            ON S.stockitemID = SIH.stockitemID  
-                            ORDER BY S.StockItemID DESC
-                    ";
+                        $sql = "SELECT S.StockItemID, StockItemName, UnitPrice, S.Status 
+                                FROM stockitems S
+                                JOIN stockitemholdings SIH
+                                ON S.stockitemID = SIH.stockitemID  
+                                ORDER BY S.StockItemID DESC
+                                ";
                         $result = $pdo->query($sql);
                         $convertRate = @convertCurrency2(1, 'USD', 'EUR');
                         while ($row = $result->fetch()) {
                             echo '<tr>';
-                            echo '<td class="hidden-xs">' . $row['StockItemID'] . '</td>';
-                            echo '<td>' . $row['StockItemName'] . '</td>';
-                            echo '<td>€' . $UnitPrice = $row['UnitPrice'] * $convertRate;
-                            number_format($UnitPrice, 2, ",", ".") . '</td>';
-                            echo '<td align="center" class="">';
-                            echo '<a href="editProduct.php?id=' . $row['StockItemID'] . '" class="btn btn-warning mr-1"><i class="fa fa-edit" aria-hidden="true"></i></a>';
-                            echo '<a class="btn btn-danger ml-1"><i class="fa fa-trash"></i></a>';
-                            echo '</td>';
+                                echo '<td class="hidden-xs">' . $row['StockItemID'] . '</td>';
+                                echo '<td>' . $row['StockItemName'] . '</td>';
+                                echo '<td>€' . $UnitPrice = $row['UnitPrice'] * $convertRate; number_format($UnitPrice, 2, ",", ".") . '</td>';
+                                echo '<td align="center" class="">';
+                                    echo '<a href="editProduct.php?id=' . $row['StockItemID'] . '" class="btn btn-warning mr-1"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                                    if ($row['Status'] == 1){
+                                        echo '<a class="btn btn-success mr-1"><i class="fa fa-power-off" aria-hidden="true"></i></a>';
+                                    }else{
+                                        echo '<a class="btn btn-secondery bg-secondary mr-1"><i class="fa fa-power-off" aria-hidden="true"></i></a>';
+        
+                                    }
+                                echo '</td>';
                             echo '</tr>';
+                            
                         }
                         ?>
                         </tbody>

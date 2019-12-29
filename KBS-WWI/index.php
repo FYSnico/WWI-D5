@@ -13,6 +13,7 @@ $sql = "SELECT SG.StockGroupID, S.StockItemID, StockItemName, RecommendedRetailP
                             ON S.StockitemID = SIG.StockitemID
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
+                            WHERE S.Status = 1
                             ORDER BY RAND()
                             LIMIT 5
                             ";

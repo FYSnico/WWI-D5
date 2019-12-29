@@ -49,6 +49,7 @@ $sql = "SELECT StockItemName, S.StockItemID, RecommendedRetailPrice, Photo, Unit
                             JOIN stockgroups SG
                             ON SIG.StockGroupID = SG.StockGroupID
                             WHERE SIG.StockGroupID = $item
+                            AND S.Status = 1
                             ORDER BY $volgorde
                             ";
 
