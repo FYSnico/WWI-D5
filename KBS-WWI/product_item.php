@@ -4,8 +4,6 @@ include("components/config.php");
 include "components/ddb_connect_mysqli.php";
 include("functions.php");
 ?>
-
-
     <div class="container">
         <div class="card shadow">
             <div class="row">
@@ -28,7 +26,6 @@ include("functions.php");
                         echo "Error: " . $sql . "" . mysqli_error($mysqli);
                     }
                 }
-
                 $sql = "SELECT SG.StockGroupID, Barcode, IsChillerStock, Size, Photo, Photo2, Photo3, videoportaal, UnitPrice, SearchDetails, S.StockItemID, StockItemName, RecommendedRetailPrice, LastStockTakeQuantity, StockGroupName
 
                 FROM stockitems S 
