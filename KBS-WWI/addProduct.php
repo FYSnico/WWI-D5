@@ -41,7 +41,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
             ?>
             <h1 style="margin-top: 10px">Product toevoegen</h1>
             <p>Velden met <strong class="text-danger">(*)</strong> zijn verplicht</p>
-            <form action="dashboard.php" method="POST">
+            <form method="POST">
                 <div class="form-group">
                     <label for="name">Naam<strong class="text-danger">*</strong></label>
                     <input  class="form-control" type="text" name="name" id="name" placeholder="b.v. Shipping carton" value="" required maxlength="100">
