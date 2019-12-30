@@ -13,7 +13,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
             <?php
             // ophalen producten gegevens
             $id = $_GET['id']; //id van huidige product
-            $sql = "SELECT *
+            $sql = "SELECT S.StockItemName, Size, UnitPrice, SearchDetails, IsChillerStock, LastStocktakeQuantity, S.Status,  SG.StockGroupID, StockGroupName
                     FROM stockitems S
                     JOIN stockitemholdings SIH
                     ON S.stockitemID = SIH.stockitemID
@@ -24,60 +24,60 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     WHERE S.StockItemID = $id
                     ";  
             $result = $pdo->query($sql);
-            $sql2 = "SELECT S.StockGroupName
-                     FROM stockgroups S
-                     WHERE NOT EXISTS (SELECT SIG.StockGroupID 
-                                       FROM stockitemstockgroups SIG 
-                                       WHERE S.StockGroupID = SIG.StockGroupID 
-                                       AND SIG.StockItemID = $id)
-                    ";
-            $result2 = $pdo->query($sql2);
-        
-            $sql5 = "SELECT * FROM stockgroups";
+
+            $sql5 = "SELECT StockGroupID, StockGroupName FROM stockgroups";
             $stockgroups = $pdo->query($sql5);
+
             if(isset($_POST['submit'])){
                 $name = $_POST['name'];
                 $size = $_POST['size'];
                 $status =  $_POST['status'];
+                $quantity = $_POST['quantity'];
+                $price = $_POST['prijs'];
+                $description = $_POST['omschrijving'];
+                $cold = $_POST['gekoeld'];
+                //Product gegevens bijwerken
+                $sql = "UPDATE stockitems SET StockItemName = '$name', Size = '$size', Status = '$status', UnitPrice = '$price', SearchDetails = '$description', IsChillerStock = '$cold'  WHERE StockItemID = '$id'";
+                $updateProduct = $pdo->query($sql);
+                //Product voorraad bijwerken
+                $sql2 = "UPDATE stockitemholdings SET StockItemID = '$id',  LastStocktakeQuantity = '$quantity' WHERE StockItemID = '$id'";
+                $updateQuantity = $pdo->query($sql2);
 
-                $sql = "UPDATE stockitems SET StockItemName = '$name', Status = '$status' WHERE StockItemID = '$id'";
-                $update = $pdo->query($sql);
-                
-                $categories= $_POST['categories'];
                 //categorieen bijwerken (multiple categorieen)
+                $categories= $_POST['categories'];
                 foreach ($categories as $i) {
                     $categories = $i;
-                    
-                    //Insert 
+                    //Aanmaken categorieen 
                     $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
-                    $update = $pdo->query($sql3);
-                    //Update  
-                    // $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
-                    // $update2 = $pdo->query($sql4);
-                    //Delete
-        
+                    $insertCategories = $pdo->query($sql3);
                 }
             }else if(isset($_POST['delete'])){
+                //Verwijderen categorieen
                 $categories= $_POST['categories'];
                 foreach ($categories as $i) {
                     $categories = $i;
-                    $sql5 = "DELETE FROM stockitemstockgroups WHERE StockItemID = $id AND StockGroupID = $i";
-                    $update2 = $pdo->query($sql5);
+                    $sql4 = "DELETE FROM stockitemstockgroups WHERE StockItemID = $id AND StockGroupID = $i";
+                    $updateCategories = $pdo->query($sql4);
                 }
             }
-            //pre data van categorieen laten tonen
+            //Product data uit de database ophalen
             while($row = $result->fetch())
             {
                 $name = $row['StockItemName'];
                 $size = $row['Size'];
+                $price = $row['UnitPrice'];
                 $status = $row['Status'];
+                $quantity = $row['LastStocktakeQuantity'];
+                $description = $row['SearchDetails'];
+                $cold = $row['IsChillerStock'];
+
             }
             $result = $pdo->query($sql);
 
             ?>
             <h1 style="margin-top: 10px">Product Bijwerken</h1>
             <p>Velden met <strong class="text-danger">(*)</strong> zijn verplicht</p>
-            <!-- Producten bijwerken -->
+            <!-- Producten bijwerken form -->
             <form id="form" method="POST">
                 <div class="form-group">
                     <label for="name">Naam<strong class="text-danger">*</strong></label>
@@ -87,7 +87,15 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <label for="name">Maat</label>
                     <input  class="form-control" type="text" name="size" id="size" placeholder="b.v. 457x279x279mm" value="<?php echo $size;?>" maxlength="20">
                 </div>
-                <div class="form-group d-flex align-items-center">
+                <div class="form-group">
+                    <label for="quantity">Voorraad<strong class="text-danger">*</strong></label>
+                    <input  class="form-control" type="number" name="quantity" id="quantity" placeholder="b.v. 11540" value="<?php echo $quantity;?>"  min="0"  required>
+                </div>
+                <div class="form-group">
+                    <label for="prijs">Prijs<strong class="text-danger">*</strong></label>
+                    <input  class="form-control" type="number" name="prijs" id="prijs" placeholder="b.v. 14,50" value="<?php echo $price;?>" step=".01" min="0" required>
+                </div>
+                <div class="form-group d-flex align-items-center mb-0">
                     <label class="m-0" for="categories">Categorieën</label>
                     <select class="selectpicker w-25 "  id="select" name="categories[]" multiple title="Selecteer een categorie..." data-max-options="3"   required multiple>
                         <?php
@@ -108,13 +116,39 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <input type="submit" name="delete" value="Leeg maken" class="btn btn-outline-secondary">
                 </div>
                 <p id="small-text">Bij het bijwerken of verwijderen van de huidige categorieën, graag eerst op de knop "leeg maken" klikken en daarna vervolgens uw wijzigingen invoeren.</p>
-
                 <div class="form-group">
-                <label for="status">Status</label>
-                <select class="selectpicker" name="status" >
-                    <option name="status" value="1">Actief</option>
-                    <option name="status" value="0">Niet actief</option>
-                </select>
+                    <label for="omschrijving">Omschrijving<strong class="text-danger">*</strong></label>
+                    <textarea class="form-control" name="omschrijving" id="omschrijving" rows="3" required><?php echo $description;?></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="gekoeld">Gekoeld:<strong class="text-danger">*</strong><strong class="blockquote-footer">(Ja of Nee)</strong></label>
+                    
+                    <select class="form-control" id="gekoeld" name="gekoeld" required>
+                        <?php 
+                        if($cold == 1){
+                            echo '<option name="gekoeld" value="1">Ja</option>';
+                            echo '<option name="gekoeld" value="0">Nee</option>';
+                        }else{
+                            echo '<option name="gekoeld" value="0">Nee</option>';
+                            echo '<option name="gekoeld" value="1">Ja</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select class="selectpicker" name="status" >
+                        <?php
+                        if ($status == 1){
+                            echo '<option name="status" value="1">Actief</option>';
+                            echo '<option name="status" value="0">Niet actief</option>';
+                        }else{
+                            echo '<option name="status" value="0">Niet actief</option>';
+                            echo '<option name="status" value="1">Actief</option>';
+
+                        }
+                        ?>
+                    </select>
                 </div>
                 <input class="btn btn-primary mb-2" type="submit" name="submit" value="Bijwerken">
             </form>

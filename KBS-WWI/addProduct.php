@@ -52,11 +52,11 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                 </div>
                 <div class="form-group">
                     <label for="quantity">Voorraad<strong class="text-danger">*</strong></label>
-                    <input  class="form-control" type="number" name="quantity" id="quantity" placeholder="b.v. 11540" value="" step=".01" min="0"  required>
+                    <input  class="form-control" type="number" name="quantity" id="quantity" placeholder="b.v. 11540" value="" min="0" required>
                 </div>
                 <div class="form-group">
                     <label for="prijs">Prijs<strong class="text-danger">*</strong></label>
-                    <input  class="form-control" type="number" name="prijs" id="prijs" placeholder="b.v. 14,50" value="" min="0" required>
+                    <input  class="form-control" type="number" name="prijs" id="prijs" placeholder="b.v. 14,50" value=""  step=".01" min="0"  required>
                 </div>
                 <div class="form-group">
                     <label for="categories">Categorieën<strong class="text-danger">*</strong></label>
