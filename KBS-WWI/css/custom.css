@@ -333,3 +333,7 @@ a {
 .bekendeMerken img {
     width: 50px;
 }
+#small-text{
+    font-size: 12px;
+    font-weight: bold;
+}

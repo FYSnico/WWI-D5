@@ -49,11 +49,11 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     $categories = $i;
                     
                     //Insert 
-                    // $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
-                    // $update = $pdo->query($sql3);
+                    $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
+                    $update = $pdo->query($sql3);
                     //Update  
-                    $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
-                    $update2 = $pdo->query($sql4);
+                    // $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
+                    // $update2 = $pdo->query($sql4);
                     //Delete
         
                 }
@@ -78,7 +78,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
             <h1 style="margin-top: 10px">Product Bijwerken</h1>
             <p>Velden met <strong class="text-danger">(*)</strong> zijn verplicht</p>
             <!-- Producten bijwerken -->
-            <form id="form"  method="POST">
+            <form id="form" method="POST">
                 <div class="form-group">
                     <label for="name">Naam<strong class="text-danger">*</strong></label>
                     <input  class="form-control" type="text" name="name" id="name" placeholder="b.v. Shipping carton" value="<?php echo $name;?>" required maxlength="100">
@@ -107,6 +107,8 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     </select>
                     <input type="submit" name="delete" value="Leeg maken" class="btn btn-outline-secondary">
                 </div>
+                <p id="small-text">Bij het bijwerken of verwijderen van de huidige categorieën, graag eerst op de knop "leeg maken" klikken en daarna vervolgens uw wijzigingen invoeren.</p>
+
                 <div class="form-group">
                 <label for="status">Status</label>
                 <select class="selectpicker" name="status" >
@@ -123,11 +125,5 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
 <?php
 }
 ?>
-<script>
-$("#form").on("submit",function(e) {
-   e.preventDefault(); // cancel submission
-   window.location.replace("dashboard.php");
-});
-</script>
 <br><br>
 <?php include('components/footer.php') ?>
