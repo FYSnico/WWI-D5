@@ -49,11 +49,11 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     $categories = $i;
                     
                     //Insert 
-                    $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
-                    $update = $pdo->query($sql3);
+                    // $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
+                    // $update = $pdo->query($sql3);
                     //Update  
-                    // $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
-                    // $update2 = $pdo->query($sql4);
+                    $sql4 = "UPDATE `stockitemstockgroups` SET StockGroupID = '$i' WHERE StockItemID = $id";
+                    $update2 = $pdo->query($sql4);
                     //Delete
         
                 }
@@ -78,7 +78,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
             <h1 style="margin-top: 10px">Product Bijwerken</h1>
             <p>Velden met <strong class="text-danger">(*)</strong> zijn verplicht</p>
             <!-- Producten bijwerken -->
-            <form action="" method="POST">
+            <form id="form"  method="POST">
                 <div class="form-group">
                     <label for="name">Naam<strong class="text-danger">*</strong></label>
                     <input  class="form-control" type="text" name="name" id="name" placeholder="b.v. Shipping carton" value="<?php echo $name;?>" required maxlength="100">
@@ -91,15 +91,18 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <label class="m-0" for="categories">Categorieën</label>
                     <select class="selectpicker w-25 "  id="select" name="categories[]" multiple title="Selecteer een categorie..." data-max-options="3"   required multiple>
                         <?php
-                     
-                            foreach($stockgroups as $categories){
-                                foreach ($result as $selectedCategories) {
-                                    $isSelected = "selected"; 
-                                    echo "<option . $isSelected . value='".$selectedCategories['StockGroupID']."'>".$selectedCategories['StockGroupName']."</option>";
-                                }
-                                echo "<option . value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";
-
+                        echo '<optgroup label="Huidige categorieën">';
+                            foreach ($result as $selectedCategories) {
+                                $isSelected = "selected"; 
+                                echo "<option class='text-primary' . $isSelected . value='".$selectedCategories['StockGroupID']."'>".$selectedCategories['StockGroupName']."</option>";
                             }
+                        echo '<option data-divider="true"></option>';                            
+                        echo '<optgroup label="Alle categorieën">';
+                            foreach($stockgroups as $categories){
+
+                                echo "<option . value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";
+                            }
+                        echo '</optgroup>';
                         ?>
                     </select>
                     <input type="submit" name="delete" value="Leeg maken" class="btn btn-outline-secondary">
@@ -120,5 +123,11 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
 <?php
 }
 ?>
+<script>
+$("#form").on("submit",function(e) {
+   e.preventDefault(); // cancel submission
+   window.location.replace("dashboard.php");
+});
+</script>
 <br><br>
 <?php include('components/footer.php') ?>
