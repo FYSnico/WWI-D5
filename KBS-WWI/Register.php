@@ -72,7 +72,7 @@ $check = false;
                     $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
                     //print($hashedpassword);
                     $stmt = $pdo->prepare(
-                        "INSERT INTO customers (CustomerName, EmailAddress, HashedPassword, DeliveryPostalCode, DeliveryLocation, PhoneNumber) VALUES (?, ?, ?, ?, ?, ?)"
+                        "INSERT INTO customers (CustomerName, EmailAddress, HashedPassword, DeliveryPostalCode, DeliveryLocation, PhoneNumber, IsSystemUser) VALUES (?, ?, ?, ?, ?, ?, 0)"
                     );
                     $stmt->execute(array(($naam), ($email), ($hashedpassword), ($postcode), ($adress), ($telefoonnummer)));
                     unset($stmt);
