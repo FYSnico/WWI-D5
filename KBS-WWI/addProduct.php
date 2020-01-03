@@ -11,7 +11,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
         <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4">
             <?php
             // Selecteren producten
-            $sql = "SELECT *
+            $sql = "SELECT StockGroupID, StockGroupName
             FROM stockgroups 
             ";
             $result = $pdo->query($sql);
@@ -22,16 +22,17 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                 $price = $_POST['prijs'];
                 $description = $_POST['omschrijving'];
                 $cold = $_POST['gekoeld'];
-                //Insert product
+                //Product gegevens toevoegen
                 $sql = ("INSERT INTO stockitems(StockItemName, Size, UnitPrice, SearchDetails, IsChillerStock, Status) 
                          VALUES ('$name', '$size', '$price', '$description', '$cold', 1)
                          ");
                 $insert = $pdo->query($sql);
                 $id = $pdo->lastInsertId();
+                //Product voorraad toevoegen
                 $sql2 = ("INSERT INTO stockitemholdings(StockItemID, LastStocktakeQuantity) VALUES ('$id', '$quantity')");
                 $insert2 = $pdo->query($sql2);
                 $categoriess= $_POST['categories'];
-                //Insert Category/ies
+                //Categorieen toevoegen
                 foreach ($categoriess as $i) {
                     $categoriess = $i;
                     $sql3 = "INSERT INTO `stockitemstockgroups` (StockItemID, StockGroupID) VALUES ('$id', '$i')";
@@ -62,6 +63,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <label for="categories">Categorieën<strong class="text-danger">*</strong></label>
                     <select class="selectpicker w-25" name="categories[]" data-max-options="3" required multiple>
                         <?php
+                        //Alle categorieen worden opgehaald
                         while ($categories = $result->fetch()) {
                             echo "<option value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";
                         }
