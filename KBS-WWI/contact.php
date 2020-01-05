@@ -1,7 +1,7 @@
 <?php include 'components/header.php';
 include 'components/config.php';
 use PHPMailer\PHPMailer\PHPMailer;
-//print_r($_POST);
+//Controleren of bericht is gemaakt, als die nog niet is aangemaakt gaat die hier verder
 if(!isset($_POST["naam"])) {
     ?>
     <div class="container">
@@ -17,28 +17,19 @@ if(!isset($_POST["naam"])) {
                         <div class="form-group">
                             <label for="form_name">Naam *</label>
                             <input id="form_name" type="text" name="naam" class="form-control"
-                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["naam"]);}?>"
+                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["naam"]);}?>" <!-- Als de gebruiker is ingelogd wordt automatisch zijn naam ingevuld -->
                                    placeholder="<?php if(!isset($_SESSION["email"])){print("Voer a.u.b. uw naam in");}?>" required="required"
                                    data-error="Voornaam is verplicht">
                             <div class="help-block with-errors"></div>
                         </div>
                     </div>
-<!--                    <div class="col-md-6">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="form_lastname">Achternaam *</label>-->
-<!--                            <input id="form_lastname" type="text" name="achternaam" class="form-control"-->
-<!--                                   placeholder="Voer a.u.b. uw achternaam in" required="required"-->
-<!--                                   data-error="Achternaam is verplicht">-->
-<!--                            <div class="help-block with-errors"></div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="form_email">Email *</label>
                             <input id="form_email" type="email" name="email" class="form-control"
-                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["email"]);}?>"
+                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["email"]);}?>" <!-- Als de gebruiker is ingelogd wordt automatisch zijn email ingevuld -->
                                    placeholder="<?php if(!isset($_SESSION["email"])){print("Voer a.u.b. uw email in");}?>" required="required"
                                    data-error="Geldige email is verplicht">
                             <div class="help-block with-errors"></div>
@@ -84,14 +75,15 @@ if(!isset($_POST["naam"])) {
 
     <?php
 }
+//Als het bericht is aangemaakt gaat het nu hier verder en wordt het bericht in de database gestopt, wordt een bevestigingsmail verstuurd en komt er een bevestigingspagina
 else{
     $naam = $_POST["naam"];
     $email = $_POST["email"];
     $behoefte = $_POST["behoefte"];
     $bericht = $_POST["bericht"];
 
-    $sql = "INSERT INTO contact VALUES(NULL, '$naam', '$email', '$bericht', '$behoefte')";
-    $stmt = $pdo->query($sql);
+    $stmt = $pdo->prepare("INSERT INTO contact VALUES(NULL, ?, ?, ?, ?);");
+    $stmt->execute(array($naam, $email, $bericht, $behoefte));
     unset($stmt);
 
     $bevestigingsmail = "Bedankt voor uw bericht,<br>We zullen zo snel mogelijk bij u terugkomen.<br><br>Met vriendelijke groet,<br>WWI";
