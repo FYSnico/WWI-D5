@@ -31,6 +31,7 @@ $result = $pdo->query($sql);
         if ($result->rowCount() > 0) {
 
             echo "<div class=\"card-deck kaartdeck\">";
+                //producten gegevens ophalen
                 while ($row = $result->fetch()) { ?>
                     <div class="card w-25 kaartbreedte" style="width: 18rem;">
                         <a href='product_item.php?id="<?php echo $row['StockItemID'] ?>"'>
@@ -52,6 +53,7 @@ $result = $pdo->query($sql);
                                         href='product.php?id="<?php echo $row['StockGroupID'] ?>"'><?php echo $row['StockGroupName'] ?></a>
                             </p>
                             <p class='card-text text-warning'><?php echo $row['LastStockTakeQuantity'] ?> stocks op voorraad</p>
+                            <!-- prijs van dollar naar euro converten -->
                             <p class="card-text">
                                 €<?php $UnitPrice = $row['UnitPrice'] * $convertRate;
                             echo number_format($UnitPrice,2,",",".") ?></p>

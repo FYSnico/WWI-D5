@@ -2,7 +2,7 @@
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
-
+//checken of user een admin is
 if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
 ?>
 <div class="container">
@@ -76,7 +76,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                 </div>
                 <div class="form-group">
                     <label for="gekoeld">Gekoeld:<strong class="text-danger">*</strong><strong class="blockquote-footer">(Ja of Nee)</strong></label>
-                    
+                    <!-- gekoeld of niet gekoeld selecteren -->
                     <select class="form-control" id="gekoeld" name="gekoeld" required>
                         <option name="gekoeld" value="1">Ja</option>
                         <option name="gekoeld" value="2">Nee</option>

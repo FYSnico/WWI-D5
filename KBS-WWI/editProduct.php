@@ -2,7 +2,7 @@
 include('components/header.php');
 include("components/config.php");
 include("functions.php");
-
+//checken of user een admin is
 if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
 ?>
 
@@ -100,12 +100,14 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <select class="selectpicker w-25 "  id="select" name="categories[]" multiple title="Selecteer een categorie..." data-max-options="3"   required multiple>
                         <?php
                         echo '<optgroup label="Huidige categorieën">';
+                            //geselecteerde categorieen weergegeven
                             foreach ($result as $selectedCategories) {
                                 $isSelected = "selected"; 
                                 echo "<option class='text-primary' . $isSelected . value='".$selectedCategories['StockGroupID']."'>".$selectedCategories['StockGroupName']."</option>";
                             }
                         echo '<option data-divider="true"></option>';                            
                         echo '<optgroup label="Alle categorieën">';
+                            //alle categorieen weergeven
                             foreach($stockgroups as $categories){
 
                                 echo "<option . value='".$categories['StockGroupID']."'>".$categories['StockGroupName']."</option>";
@@ -125,6 +127,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     
                     <select class="form-control" id="gekoeld" name="gekoeld" required>
                         <?php 
+                        //gekoeld of niet gekoeld selecteren
                         if($cold == 1){
                             echo '<option name="gekoeld" value="1">Ja</option>';
                             echo '<option name="gekoeld" value="0">Nee</option>';
@@ -139,6 +142,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                     <label for="status">Status</label>
                     <select class="selectpicker" name="status" >
                         <?php
+                        //actief of niet actief selecteren
                         if ($status == 1){
                             echo '<option name="status" value="1">Actief</option>';
                             echo '<option name="status" value="0">Niet actief</option>';

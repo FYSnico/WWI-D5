@@ -4,6 +4,7 @@ include("components/config.php");
 include("functions.php");
 ?>
 <?php
+//check of user een admin is
 if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
 ?>
 <div class="container">
@@ -35,6 +36,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         </thead>
                         <tbody>
                         <?php
+                        //alle gegevens van producten ophalen
                         $sql = "SELECT S.StockItemID, StockItemName, UnitPrice, S.Status 
                                 FROM stockitems S
                                 JOIN stockitemholdings SIH
@@ -42,7 +44,9 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                                 ORDER BY S.StockItemID DESC
                                 ";
                         $result = $pdo->query($sql);
+                        //dollar naar euro prijs converten
                         $convertRate = @convertCurrency2(1, 'USD', 'EUR');
+                        //alle producten gegevens laten weergeven
                         while ($row = $result->fetch()) {
                             echo '<tr>';
                                 echo '<td class="hidden-xs">' . $row['StockItemID'] . '</td>';
@@ -50,6 +54,7 @@ if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                                 echo '<td>€' . $UnitPrice = $row['UnitPrice'] * $convertRate; number_format($UnitPrice, 2, ",", ".") . '</td>';
                                 echo '<td align="center" class="">';
                                     echo '<a href="editProduct.php?id=' . $row['StockItemID'] . '" class="btn btn-warning mr-1"><i class="fa fa-edit" aria-hidden="true"></i></a>';
+                                    //status van product weergeven
                                     if ($row['Status'] == 1){
                                         echo '<a class="btn btn-success mr-1"><i class="fa fa-power-off" aria-hidden="true"></i></a>';
                                     }else{
