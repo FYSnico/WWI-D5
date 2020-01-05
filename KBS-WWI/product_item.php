@@ -72,16 +72,16 @@ include("functions.php");
                     // foto's in een slide zetten
                     if ($row['Photo']) {
                         echo '<div class="carousel-item active">';
-                        echo '<img class="product-img-size" src="data:image/jpeg;base64,' . base64_encode($row['Photo']) . '"/>';
+                        echo '<img class="product-img-size img-fluid" src="data:image/jpeg;base64,' . base64_encode($row['Photo']) . '"/>';
                         echo '</div>';
                         if ($row['Photo2']) {
                             echo '<div class="carousel-item">';
-                            echo '<img class="product-img-size" src="data:image/jpeg;base64,' . base64_encode($row['Photo2']) . '"/>';
+                            echo '<img class="product-img-size img-fluid" src="data:image/jpeg;base64,' . base64_encode($row['Photo2']) . '"/>';
                             echo '</div>';
                         }
                         if ($row['Photo3']) {
                             echo '<div class="carousel-item">';
-                            echo '<img class="product-img-size" src="data:image/jpeg;base64,' . base64_encode($row['Photo3']) . '"/>';
+                            echo '<img class="product-img-size img-fluid" src="data:image/jpeg;base64,' . base64_encode($row['Photo3']) . '"/>';
                             echo '</div>';
                         }
                     } else {
