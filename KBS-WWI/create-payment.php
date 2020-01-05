@@ -6,6 +6,7 @@ namespace _PhpScoper5de0f335c4b90;
  * How to prepare a new payment with the Mollie API.
  */
 try {
+    //Bedrag uit sessie halen
     session_start();
     $total = $_SESSION["shoppingcart_price"];
     /*

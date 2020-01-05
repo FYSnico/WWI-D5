@@ -96,6 +96,7 @@ require "mollie/examples/initialize.php";
                 // Ophalen productinformatie
                 $productinfo = ("SELECT StockItemName, S.UnitPrice FROM orderlines O JOIN StockItems S ON S.StockItemID = O.StockItemID WHERE OrderID = $order AND S.StockItemID = $waarde[0]");
                 $info = $pdo->query($productinfo)->fetch();
+                //Bevestigingsmail bouwen
                 $bevestigingsmail .= "<br>Product " . $info[0] . " Aantal: " . $waarde[1] . " Bedrag: EUR: " . number_format($waarde[1] * convertCurrency($info["UnitPrice"], "USD", "EUR"), 2) . "<br>";
                 $subtotaal += $waarde[1] * convertCurrency($info["UnitPrice"], "USD", "EUR");
                 ?>
@@ -130,6 +131,7 @@ require "mollie/examples/initialize.php";
                 <?php
                 unset($info);
             }
+            //Hier wordt de email opgebouwd
             $korting = $subtotaal - $totaalPrijs;
             echo "</div>";
             $bevestigingsmail .= "<br> Uw korting is EUR: -" . number_format($korting, 2) . "<br>Totaal EUR: " . $totaalPrijs . "<br><br>Vriendelijke groeten WWI";
@@ -150,11 +152,12 @@ require "mollie/examples/initialize.php";
             $mail->Subject = "Orderbevestiging " . $_GET["order_id"];
             $mail->Body = $bevestigingsmail;
             $mail->AddAddress($sentTo);
-
+// Als de email niet is verzonden komt er een error
             if (!$mail->Send()) {
                 echo "Mailer Error: " . $mail->ErrorInfo;
             }
             unset($_SESSION["shoppingcart"]);
+            //Als de betaling nog open staat:
             } elseif (!empty($_GET["order_id"]) && (!$payment[0]->ispaid() && ($payment[0]->description)) && !empty($payment[0]->getCheckoutURL())) {
                 echo "De betaling staat op open. Om alsnog te betalen<BR>";
                 echo "<a href=" . $payment[0]->getCheckoutURL();
