@@ -55,6 +55,7 @@ include("functions.php");
                     echo '<div class="img-big-wrap">';
                     echo '<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">';
                     echo '<ol class="carousel-indicators">';
+                    // foto van producten weergeven
                     if ($row['Photo']) {
                         echo '<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>';
                         if ($row['Photo2']) {
@@ -68,6 +69,7 @@ include("functions.php");
                     }
                     echo '</ol>';
                     echo '<div class="carousel-inner">';
+                    // foto's in een slide zetten
                     if ($row['Photo']) {
                         echo '<div class="carousel-item active">';
                         echo '<img class="product-img-size" src="data:image/jpeg;base64,' . base64_encode($row['Photo']) . '"/>';
@@ -97,6 +99,7 @@ include("functions.php");
                     echo '<span class="sr-only">Next</span>';
                     echo '</a>';
                     echo '</div>';
+                    //videoportaal van product laten zien
                     if ($row['videoportaal']) {
                         $video = $row['videoportaal'];
                         echo "<iframe class=\"product-img-size\" src=\"$video\" ></iframe>";
@@ -107,6 +110,7 @@ include("functions.php");
                     echo '<aside class="col-sm-7 pb-3">';
                     echo '<article class="card-body p-5">';
                     echo '<h3 class="title mb-3">';
+                    // gegevens van de producten laten zien
                     echo $row['StockItemName'];
                     $id = $row['StockItemID'];
                     echo '</h3>';
@@ -173,7 +177,7 @@ include("functions.php");
                     echo '</div>';
                     echo '</div>';
                     echo '<hr>';
-                    //Afbeelding toevoegen
+                    //Afbeeldingen of video toevoegen
                     if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                         echo '<form method="POST" action="product_item.php?id=' . $row['StockItemID'] . '"enctype="multipart/form-data">';
                         echo '<input type="file" name="myimage">';
@@ -300,9 +304,10 @@ include("functions.php");
                 </div>
             </div>
             <?php
+            //als product mag worden toegevoegd, gaat het systeem het hier verwerken
             if (isset($_POST["submit"])) {
-                echo "<script>$('#modal').modal('show')</script>"; // Show modal
                 if ($_POST["hoeveel"] > 0 && $productmagwordentoegevoegd) {
+                    echo "<script>$('#modal').modal('show')</script>"; // Show modal
                     //"" verwijderen dit komt door number type en hoeveel ophalen
                     $id = trim($item, "\"\"");
                     $hoeveel = $_POST["hoeveel"];
