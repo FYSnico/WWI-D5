@@ -81,6 +81,7 @@ session_start();
             <div class="collapse navbar-collapse  fix-margin-left" id="navbarNavDropdown">
                 <ul class="navbar-nav ml-auto">
                     <?php
+                    //Wel of niet ingelogd
                     if (isset($_SESSION["email"])) {
                         $naam = $_SESSION["naam"];
                         echo "<li class='nav-item welkom'>Welkom<br>$naam</li>";
@@ -88,6 +89,7 @@ session_start();
                         print("<a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarDropdownMenuLink\" data-toggle=\"dropdown\"
                        aria-haspopup=\"true\" aria-expanded=\"false\"><i class=\"far fa-user\"></i> Mijn Account</a>");
                         print("<div class=\"dropdown-menu\" aria-labelledby=\"navbarDropdownMenuLink\">");
+                        //Wel of geen SystemUser
                         if (isset($_SESSION["IsSystemUser"]) && $_SESSION["IsSystemUser"] == 1) {
                             print("<a class=\"dropdown-item\" href=\"dashboard.php\">Dashboard</a>");
                         }
