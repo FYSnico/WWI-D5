@@ -15,9 +15,10 @@ if(!isset($_POST["naam"])) {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <!-- Als de gebruiker is ingelogd wordt automatisch zijn naam ingevuld -->
                             <label for="form_name">Naam *</label>
                             <input id="form_name" type="text" name="naam" class="form-control"
-                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["naam"]);}?>" <!-- Als de gebruiker is ingelogd wordt automatisch zijn naam ingevuld -->
+                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["naam"]);}?>"
                                    placeholder="<?php if(!isset($_SESSION["email"])){print("Voer a.u.b. uw naam in");}?>" required="required"
                                    data-error="Voornaam is verplicht">
                             <div class="help-block with-errors"></div>
@@ -27,9 +28,10 @@ if(!isset($_POST["naam"])) {
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
+                            <!-- Als de gebruiker is ingelogd wordt automatisch zijn email ingevuld -->
                             <label for="form_email">Email *</label>
                             <input id="form_email" type="email" name="email" class="form-control"
-                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["email"]);}?>" <!-- Als de gebruiker is ingelogd wordt automatisch zijn email ingevuld -->
+                                   value="<?php if(isset($_SESSION["email"])){print($_SESSION["email"]);}?>"
                                    placeholder="<?php if(!isset($_SESSION["email"])){print("Voer a.u.b. uw email in");}?>" required="required"
                                    data-error="Geldige email is verplicht">
                             <div class="help-block with-errors"></div>
