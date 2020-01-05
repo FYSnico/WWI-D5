@@ -5,6 +5,8 @@ include("functions.php");
 if(isset($_POST["Order"])) {
     $_SESSION["Order"] = $_POST["Order"];
 }
+
+//Checken of er een sortering is toegepast, die dan weer herbruiken
 if (isset($_SESSION["Order"])) {
     if ($_SESSION["Order"] == "nameASC") {
         $volgorde = " StockItemName ASC";
@@ -29,6 +31,7 @@ if (isset($_SESSION["Order"])) {
     $volgorde = " StockItemName ASC";
 }
 
+//Escapen van problematieke tekens
 $_GET["query"] = str_replace('&','\&', $_GET["query"]);
 $_GET["query"] = str_replace('\'','\'\'', $_GET["query"]);
 $_GET["query"] = str_replace('%','\%', $_GET["query"]);
@@ -43,13 +46,15 @@ if (isset($_GET['p'])) {
     $huidigepagina = 1;
 }
 
-// Controleren invoer
+// Controleren of invoer leeg is
 if (empty($_GET["query"])) {
     echo "<div class='w-100 mt-5 pt-5'><h2 class='text-center'>Niks ingevoerd. </h2></div>";
     die();
+// Artikelcode zoeken als er alleen een nummer is ingevoerd
 } elseif (is_numeric($_GET["query"])) {
     $int = $_GET["query"];
     print($int);
+    //Query wordt uitgevoerd
     $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, Photo, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG 
@@ -61,20 +66,21 @@ if (empty($_GET["query"])) {
                             WHERE S.StockItemID = $int
                             GROUP BY S.StockItemID
                             ORDER BY $volgorde";
+//Query aanmaken door eerste woord van invoer te specialiseren en door daarna ieder woord uit elkaar te trekken en weer samenvoegen met OR's
 } else {
+    //Eerste woord
     $eerste = $_GET["query"];
+    //Uitelkaar trekken van invoer
     $query_array = explode(' ', $_GET["query"]);
-    //print_r($query_array);
-    //$sqla = array('0'); // Stop errors when $words is empty
+    //Eerste woord wordt compatibel gemaakt voor sql samenvoeging
     $sqla[0] = "S.StockItemName = '$eerste'";
+    //Elk ander woord wordt compatibel gemaakt voor sql samenvoeging
     foreach ($query_array as $word) {
         $sqla[] = "S.SearchDetails LIKE '%$word%'";
-        if ($word == "'1'") {
-            echo "<img src='https://media.makeameme.org/created/sql-injection-sql.jpg' height=\"100%\" width=\"100%\">";
-            die();
-        }
     }
+    //Array van sql compatibele woorden wordt samengevoegd
     $zoekterm = implode(" OR ", $sqla);
+    //Query wordt uitgevoerd
     $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, Photo, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
                             FROM stockitems S 
                             JOIN stockitemstockgroups SIG   

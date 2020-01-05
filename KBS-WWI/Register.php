@@ -25,13 +25,7 @@ $check = false;
                 //Validatie
                 if (!$check) {
                     if (isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm_password"])) {
-//                        $password = trim(filter_input(INPUT_POST, "password",FILTER_SANITIZE_STRING));
-//                        $adress = trim(filter_input(INPUT_POST, "address",FILTER_SANITIZE_STRING));
-//                        $email = trim(filter_input(INPUT_POST, "email",FILTER_SANITIZE_STRING));
-//                        $postcode = trim(filter_input(INPUT_POST, "postcode",FILTER_SANITIZE_STRING));
-//                        $telefoonnummer = trim(filter_input(INPUT_POST, "telefoonnummer",FILTER_SANITIZE_STRING));
-//                        $confirm_password = trim(filter_input(INPUT_POST, "confirm_password",FILTER_SANITIZE_STRING));
-//                        $naam = trim(filter_input(INPUT_POST, "name",FILTER_SANITIZE_STRING));
+                        //Gegevens uit POST halen
                         $password = trim($_POST["password"]);
                         $email = trim($_POST["email"]);
                         $adress = trim($_POST["address"]);
@@ -39,16 +33,21 @@ $check = false;
                         $telefoonnummer = trim($_POST["phone"]);
                         $confirm_password = $_POST["confirm_password"];
                         $naam = $_POST["name"];
+                        //Checken of email is ingevuld
                         if (empty($email)) {
                             $userror = "<p class=\"alert alert-danger\">E-mailadres is verplicht.</p>";
                             print($userror);
+                        //Checken of wachtwoord is ingevuld
                         } elseif (empty(trim($_POST["password"]))) {
                             $passerror = "<p class=\"alert alert-danger\">Wachtwoord is verplicht.</p>";
                             print($passerror);
+                        //Checken of wachtwoord een nummer, een letter, een hoofdletter en minimaal 8 tekens bevat
                         } elseif (!preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,}$/m', $password)) {
                             print("<p class=\"alert alert-danger\">Het wachtwoord moet minimaal 8 tekens lang zijn, een hoofdletter bevatten, een getal en één van de speciale tekens.</p>");
+                        //Checken of wachtwoord gelijk is aan het ander ingevoerde wachtewoord
                         } elseif (!($password == $confirm_password)) {
                             print("<p class=\"alert alert-danger\">Beide wachtwoorden moeten hetzelfde zijn.</p>");
+                        //Checken of email al bestaat in de database
                         } else {
                             $email = $_POST["email"];
                             $stmt = $pdo->prepare("Select EmailAddress FROM customers where EmailAddress = :email");
@@ -63,14 +62,13 @@ $check = false;
                         }
                     }
                 }
-                //email en wachtwoord inserten
+                //Gegevens inserten
                 if ($check) {
                     //print($_POST["email"] . "<br>");
                     $_SESSION["email"] = $email;
                     $_SESSION["naam"] = $naam;
                     //Hashen wachtwoord
                     $hashedpassword = password_hash($password, PASSWORD_BCRYPT);
-                    //print($hashedpassword);
                     $stmt = $pdo->prepare(
                         "INSERT INTO customers (CustomerName, EmailAddress, HashedPassword, DeliveryPostalCode, DeliveryLocation, PhoneNumber, IsSystemUser) VALUES (?, ?, ?, ?, ?, ?, 0)"
                     );
