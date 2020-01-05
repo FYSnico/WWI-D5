@@ -40,6 +40,7 @@ function convertCurrency($amount,$from_currency,$to_currency){
 
 }
 
+//goede convert currency
 function convertCurrency2($amount,$from_currency,$to_currency){
     return $amount*0.90;
 }

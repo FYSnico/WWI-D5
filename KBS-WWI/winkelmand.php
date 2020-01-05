@@ -5,6 +5,7 @@ include 'components/header.php';
 include 'components/ddb_connect_mysqli.php';
 include("functions.php");
 
+////Test data, om Session te testen
 //$fakedata = array(
 //    array(1, 4),
 //    array(17, 1),

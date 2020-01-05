@@ -12,7 +12,7 @@ include("functions.php");
                     session_start();
                 }
                 $item = $_GET['id'];
-                // review toeveogen in de database, de gebruiker en ook de
+                // review toeveogen in de database - Johan
                 if (isset($_POST["Submittoevoegenreview"])) {
                     $IDreview = $_SESSION["naam"];
 
@@ -37,7 +37,7 @@ include("functions.php");
                 ON SIG.StockGroupID = SG.StockGroupID
                 WHERE SIG.StockItemID = $item  
                 ";
-                // kijken of hij een beoordeling heeft en het gemiddelde
+                // kijken of hij een beoordeling heeft en het gemiddelde - Johan
                             $heefteenreactie = FALSE;
                             $result2 = $mysqli->query("SELECT avg(Stars) FROM Reviews WHERE StockItemID = {$item};");
                             if($result2 && mysqli_num_rows($result2) > 0) {

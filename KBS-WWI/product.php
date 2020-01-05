@@ -1,4 +1,3 @@
-
 <?php
 include('components/header.php');
 include("components/config.php");
