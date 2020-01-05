@@ -27,16 +27,12 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $email_dbarray = $stmt->fetch();
         $email_db = $email_dbarray[0];
         if (($email_db == $email) && password_verify($password, $email_dbarray[1])) {
-//                     print("email: " . $email_db . " bestaat!<BR>");
-//                        print("Password is " . $user_dbarray[1]);
             unset($stmt);
             $pdo = NULL;
             if (isset($_POST["login"])) {
                 $_SESSION["email"] = $email;
                 $_SESSION["naam"] = $email_dbarray[2];
                 $_SESSION["IsSystemUser"] = $email_dbarray[3];
-
-//                            print("<h2>U wordt nu ingelogd</h2>");
                 echo '<script type="text/javascript">window.location = "index.php"</script>';
                 die();
             }

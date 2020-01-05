@@ -7,6 +7,7 @@
     <div class="container text-center p-2">
         <small>Copyright &copy; <?php echo date("Y"); ?> - WWI-Webshop</small>
         <?php
+        //Database connecties sluiten aan het einde van de pagina
         if (isset($mysqli)) {
             mysqli_close($mysqli);
         }
