@@ -66,19 +66,19 @@ if (empty($_GET["query"])) {
                             WHERE S.StockItemID = $int
                             GROUP BY S.StockItemID
                             ORDER BY $volgorde";
-//Query aanmaken door eerste woord van invoer te specialiseren en door daarna ieder woord uit elkaar te trekken en weer samenvoegen met OR's
+//Query aanmaken door gehele tekst van invoer te specialiseren en door daarna ieder woord uit elkaar te trekken en weer samenvoegen met OR's
 } else {
-    //Eerste woord
+    //Gehele tekst
     $eerste = $_GET["query"];
     //Uitelkaar trekken van invoer
     $query_array = explode(' ', $_GET["query"]);
-    //Eerste woord wordt compatibel gemaakt voor sql samenvoeging
+    //Gehele tekst krijgt definitie van de productnaam in de database ervoor met sql syntax
     $sqla[0] = "S.StockItemName = '$eerste'";
-    //Elk ander woord wordt compatibel gemaakt voor sql samenvoeging
+    //Alle woorden krijgen definitie van de productnaam in de database ervoor met sql syntax
     foreach ($query_array as $word) {
         $sqla[] = "S.SearchDetails LIKE '%$word%'";
     }
-    //Array van sql compatibele woorden wordt samengevoegd
+    //Array van sql compatibele syntax woorden wordt samengevoegd
     $zoekterm = implode(" OR ", $sqla);
     //Query wordt uitgevoerd
     $sql = "SELECT StockItemName, UnitPrice, QuantityPerOuter, Photo, StockGroupName, S.StockItemID, SIH.LastStockTakeQuantity 
